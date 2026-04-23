@@ -4,13 +4,20 @@ from __future__ import annotations
 import logging
 import signal
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 
 from src.agent import run_cycle
 from src.config import Settings, load_settings
+
+# Fiksuotas tvarkarastis: darbo dienos (pir-pen), 7:00-19:00 Vilniaus laiku
+# (13 valandiniu slot'u x 5 dienos = 65 ciklai per savaite). Keiciant - cia.
+SCHEDULE_TIMEZONE = "Europe/Vilnius"
+SCHEDULE_DAYS = "mon-fri"
+SCHEDULE_HOURS = "7-19"
+SCHEDULE_MINUTE = 0
 
 
 def setup_logging(level: str) -> None:
@@ -45,22 +52,41 @@ def main() -> int:
     settings.state_dir.mkdir(parents=True, exist_ok=True)
 
     log.info(
-        "Start: keywords=%s interval=%dmin headless=%s state_dir=%s run_on_start=%s",
+        "Start: keywords=%s schedule='%s %s:%02d %s' headless=%s state_dir=%s "
+        "run_on_start=%s",
         settings.keywords,
-        settings.check_interval_minutes,
+        SCHEDULE_DAYS,
+        SCHEDULE_HOURS,
+        SCHEDULE_MINUTE,
+        SCHEDULE_TIMEZONE,
         settings.headless,
         settings.state_dir,
         settings.run_on_start,
     )
+    if settings.check_interval_minutes != 60:
+        log.warning(
+            "CHECK_INTERVAL_MINUTES=%d ignoruojamas - tvarkarastis hardcoded "
+            "(cron %s %s:%02d %s)",
+            settings.check_interval_minutes,
+            SCHEDULE_DAYS,
+            SCHEDULE_HOURS,
+            SCHEDULE_MINUTE,
+            SCHEDULE_TIMEZONE,
+        )
 
-    scheduler = BlockingScheduler(timezone="UTC")
+    scheduler = BlockingScheduler(timezone=SCHEDULE_TIMEZONE)
     scheduler.add_job(
         _job,
-        trigger=IntervalTrigger(minutes=settings.check_interval_minutes),
+        trigger=CronTrigger(
+            day_of_week=SCHEDULE_DAYS,
+            hour=SCHEDULE_HOURS,
+            minute=SCHEDULE_MINUTE,
+            timezone=SCHEDULE_TIMEZONE,
+        ),
         args=[settings],
-        id="hourly_check",
-        name="viesiejipirkimai hourly check",
-        next_run_time=datetime.utcnow() if settings.run_on_start else None,
+        id="business_hours_check",
+        name=f"viesiejipirkimai {SCHEDULE_DAYS} {SCHEDULE_HOURS}:00 {SCHEDULE_TIMEZONE}",
+        next_run_time=datetime.now(timezone.utc) if settings.run_on_start else None,
         max_instances=1,
         coalesce=True,
         misfire_grace_time=300,

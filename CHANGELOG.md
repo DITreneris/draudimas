@@ -7,6 +7,23 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
+### Changed
+- **Scheduler: `IntervalTrigger` -> `CronTrigger`** (`main.py`). Darbo valandu
+  grafikas hardcoded: `day_of_week="mon-fri"`, `hour="7-19"`, `minute=0`,
+  `timezone="Europe/Vilnius"` (DST-safe per `zoneinfo`). **13 ciklu/diena x 5
+  darbo dienos = 65 ciklai/savaite** (vietoj 168 = 24 x 7 anksciau, -61%).
+  - `BlockingScheduler(timezone="Europe/Vilnius")` (buvo `"UTC"`).
+  - Job id/name atnaujinti: `business_hours_check` / `"viesiejipirkimai mon-fri
+    7-19:00 Europe/Vilnius"`.
+  - `datetime.utcnow()` -> `datetime.now(timezone.utc)` (Py3.12+ deprecation).
+  - `CHECK_INTERVAL_MINUTES` env var tapo **deprecated** - `main.py` jo
+    nebeizunaudoja. Jei reiksme != 60, `log.warning` pranesa, kad ignoruojama.
+  - `SCHEDULE_TIMEZONE` / `SCHEDULE_DAYS` / `SCHEDULE_HOURS` / `SCHEDULE_MINUTE`
+    konstantos `main.py` virsuje - vieninteli vieta, kur keiciamas grafikas.
+  - `AGENTS.md` + `.cursor/rules/project-map.mdc` + `README.md` (header,
+    Konfiguracija lentele, Railway Variables pavyzdys, commit history
+    apskaiciavimas ~3400/metus vietoj ~8760) sinchronizuoti.
+
 ### Added
 - **Telegram asmeninis pranesimas** (`src/notifier.py` `TelegramNotifier`) -
   kiekvienas naujas skelbimas (tas pats, kuris eina i `notifications.log`)
@@ -23,6 +40,10 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   - `src/agent.py` `run_cycle` - notifier instancijuojamas tik kai
     `TELEGRAM_ENABLED=true` IR token'as IR `chat_id` ne tusti; iskvieciamas
     po `ConsoleLogNotifier.notify` toje pacioje `new_items` ciklo iteracijoje.
+  - **Smoke test (live):** `python run_once.py` su `TELEGRAM_ENABLED=true` -
+    nuskaityta 10 irasu, visi 10 sekmingai issiusti i Telegram asmenini
+    chat'a (HTML formatavimas, diakritikos, URL preview - OK). Jokiu
+    `HTTPError` ar `exception` stack trace'u.
 
 ### Fixed
 - **Windows stdout UTF-8** (`main.py` `setup_logging`) - pries konfiguruojant

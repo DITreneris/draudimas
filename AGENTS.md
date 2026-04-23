@@ -13,7 +13,7 @@ Every hour, poll `viesiejipirkimai.lt` using configured keyword fragments, detec
 ## 2. Architecture map
 
 ```
-main.py            -> APScheduler BlockingScheduler, runs run_cycle every CHECK_INTERVAL_MINUTES
+main.py            -> APScheduler BlockingScheduler, CronTrigger mon-fri 7-19:00 Europe/Vilnius
 run_once.py        -> Smoke test: single run_cycle, no scheduler
 src/config.py      -> Settings (frozen dataclass) + load_settings() from env
 src/scraper.py     -> Playwright (Chromium sync) -> ResultItem list

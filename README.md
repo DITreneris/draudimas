@@ -1,6 +1,7 @@
 # Viesiejipirkimai.lt hourly agent (MVP)
 
-Agentas kas valandą automatiškai patikrina [viesiejipirkimai.lt](https://viesiejipirkimai.lt/epps/home.do)
+Agentas **darbo dienomis 7:00–19:00 Vilniaus laiku** (kas valandą, 13 ciklų/dieną)
+automatiškai patikrina [viesiejipirkimai.lt](https://viesiejipirkimai.lt/epps/home.do)
 išplėstinę paiešką pagal konfigūruojamus raktinių žodžių fragmentus (pvz. `draudim`) ir
 praneša apie **naujus** skelbimus (pagal „Pirkimo ID“). Suprojektuotas Railway debesiui
 kaip always-on workeris su vidiniu APScheduler. Po kiekvieno ciklo (jei įjungta) agentas
@@ -8,7 +9,9 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 
 ## Architektūra
 
-- `main.py` – įėjimo taškas, paleidžia APScheduler (`IntervalTrigger` kas `CHECK_INTERVAL_MINUTES`).
+- `main.py` – įėjimo taškas, paleidžia APScheduler su
+  `CronTrigger(day_of_week="mon-fri", hour="7-19", minute=0, timezone="Europe/Vilnius")`.
+  Grafikas **hardcoded** — keičiama tik kode (`SCHEDULE_*` konstantos `main.py` viršuje).
 - `src/scraper.py` – Playwright (Chromium) atidaro advanced search, įveda keyword į `#Title`,
   spaudžia „Ieškoti“, parsinamas rezultatų lentelę pagal stulpelių antraštes (`Pavadinimas`,
   `Pirkimo ID`, `Paskelbimo data`, `PV`).
@@ -24,7 +27,7 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 | Kintamasis | Default | Paaiškinimas |
 | --- | --- | --- |
 | `KEYWORDS` | `draudim` | Kableliais atskirti fragmentai, pvz. `draudim,kasko,civilin` |
-| `CHECK_INTERVAL_MINUTES` | `60` | Kas kiek minučių kartoti ciklą |
+| `CHECK_INTERVAL_MINUTES` | `60` | **Deprecated** – ignoruojamas, grafikas hardcoded (`CronTrigger mon-fri 7-19:00 Europe/Vilnius`) |
 | `MAX_RESULTS_PER_KEYWORD` | `50` | Kiek rezultatų nuskaitom per keyword |
 | `HEADLESS` | `true` | Playwright headless režimas |
 | `STATE_DIR` | `./state` (lokaliai) / `/data` (Docker) | Kur laikoma SQLite + log |
@@ -58,7 +61,7 @@ Vienkartinis smoke-test (be scheduler'io):
 python run_once.py
 ```
 
-Always-on režimas (kas valandą):
+Always-on režimas (darbo dienos 7:00–19:00 Vilniaus laiku):
 
 ```bash
 python main.py
@@ -71,7 +74,7 @@ python main.py
 3. **Pridėk Volume**, prijungtą prie `/data` (čia bus SQLite ir log failas).
 4. **Service → Variables** suvesk:
    - `KEYWORDS=draudim,kasko`
-   - `CHECK_INTERVAL_MINUTES=60`
+   - *(nebereikia `CHECK_INTERVAL_MINUTES` – grafikas hardcoded)*
    - `MAX_RESULTS_PER_KEYWORD=50`
    - `HEADLESS=true`
    - `STATE_DIR=/data`
@@ -150,9 +153,9 @@ raktažodžio filtru, auto-refresh kas 60s.
 - Repo – viešas, todėl **ir duomenys bus viešai matomi**. Jei jautrūs – rinkis privatų
   repo + kitą hosting'ą (Cloudflare Pages, Netlify).
 - PAT token'as **niekada** neturi atsidurti kode ar `.env` repo'je (yra `.gitignore`).
-- Commit'ų istorija augs po 1 commit'ą per valandą — per metus ~8760 commit'ų, tai normalu;
-  jei nepatinka, vėliau galima perkelti `items.json` į atskirą `gh-pages` branch'ą ir
-  force-push'inti su `squash`.
+- Commit'ų istorija augs po 1 commit'ą per ciklą — **~65 commit'ų per savaitę**
+  (13 slot'ų × 5 darbo dienos), ~3400 per metus. Jei nepatinka, vėliau galima perkelti
+  `items.json` į atskirą `gh-pages` branch'ą ir force-push'inti su `squash`.
 
 ## Raktažodžių keitimas
 
