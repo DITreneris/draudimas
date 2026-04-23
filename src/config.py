@@ -54,6 +54,10 @@ class Settings:
     github_file_path: str = "docs/items.json"
     github_max_items: int = 500
 
+    telegram_enabled: bool = False
+    telegram_bot_token: str = ""
+    telegram_chat_id: str = ""
+
     @property
     def db_path(self) -> Path:
         return self.state_dir / "seen.sqlite3"
@@ -83,4 +87,7 @@ def load_settings() -> Settings:
         github_file_path=os.getenv("GITHUB_FILE_PATH", "docs/items.json").strip()
         or "docs/items.json",
         github_max_items=_get_int("GITHUB_MAX_ITEMS", 500),
+        telegram_enabled=_get_bool("TELEGRAM_ENABLED", False),
+        telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", "").strip(),
+        telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", "").strip(),
     )

@@ -7,7 +7,7 @@ from datetime import datetime
 from .config import Settings
 from .db import SeenStore
 from .exporter import GithubConfig, export_and_push
-from .notifier import ConsoleLogNotifier
+from .notifier import ConsoleLogNotifier, TelegramNotifier
 from .scraper import ResultItem, search_keyword
 
 logger = logging.getLogger(__name__)
@@ -17,6 +17,16 @@ def run_cycle(settings: Settings) -> dict[str, int]:
     """Vykdo viena pilna cikla per visus keywords. Grazina {keyword: new_count}."""
     store = SeenStore(settings.db_path)
     notifier = ConsoleLogNotifier(settings.log_path)
+    telegram: TelegramNotifier | None = None
+    if (
+        settings.telegram_enabled
+        and settings.telegram_bot_token
+        and settings.telegram_chat_id
+    ):
+        telegram = TelegramNotifier(
+            settings.telegram_bot_token, settings.telegram_chat_id
+        )
+        logger.info("Telegram notifier aktyvus (chat_id=%s)", settings.telegram_chat_id)
 
     started = datetime.now()
     logger.info(
@@ -50,6 +60,8 @@ def run_cycle(settings: Settings) -> dict[str, int]:
             )
             for item in new_items:
                 notifier.notify(keyword, item)
+                if telegram is not None:
+                    telegram.notify(keyword, item)
                 store.mark_seen(
                     pirkimo_id=item.pirkimo_id,
                     title=item.title,

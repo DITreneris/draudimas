@@ -36,6 +36,9 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 | `GITHUB_BRANCH` | `main` | Branch'as, į kurį commit'inama |
 | `GITHUB_FILE_PATH` | `docs/items.json` | Kelias repo viduje |
 | `GITHUB_MAX_ITEMS` | `500` | Kiek naujausių įrašų export'inti |
+| `TELEGRAM_ENABLED` | `false` | Ar siųsti pranešimą į Telegram apie kiekvieną naują pirkimą |
+| `TELEGRAM_BOT_TOKEN` | – | Bot token'as iš `@BotFather` (formatas `123:AAE...`) |
+| `TELEGRAM_CHAT_ID` | – | Asmeninio chat `chat_id` (gauk per `@userinfobot` arba `getUpdates`) |
 
 Pavyzdys: `.env.example`.
 
@@ -102,7 +105,8 @@ python main.py
 
 - Nuskaito tik pirmą rezultatų puslapį (iki `MAX_RESULTS_PER_KEYWORD`). Jei naujų per
   valandą būna daugiau – padidinkite reikšmę arba pridėkite puslapiavimą.
-- Pranešimas tik į konsolę/log. El. pašto / Telegram integracijos – ateityje.
+- Pranešimas į konsolę/log **ir** (pasirinktinai) į Telegram asmeninį chat'ą.
+  El. pašto integracija – ateityje.
 - Nėra rate-limit / retry su eksponentiniu backoff – tik paprastas `try/except`.
 - Selektoriai remiasi matomais stulpelių antraščių tekstais – jei portalas pervadins
   „Pirkimo ID“, reikės koreguoti `HEADER_*` konstantas `src/scraper.py` viršuje.
@@ -159,3 +163,32 @@ KEYWORDS=draudim,kasko,civilin,turto
 ```
 
 Po keitimo – restart service'ą (Railway padaro automatiškai po `Variables` update).
+
+## Telegram asmeninis pranešimas
+
+Agentas gali kiekvieną **naują** skelbimą (tą patį, kuris eina į `notifications.log`)
+iš karto nusiųsti į tavo asmeninį Telegram chat'ą. Naudojama tik stdlib `urllib`,
+jokių papildomų dependency'ų.
+
+### Setup (vienkartinis)
+
+1. **Sukurk botą:** Telegram'e atsidaryk [@BotFather](https://t.me/BotFather) → `/newbot`
+   → duok pavadinimą → gauk `TELEGRAM_BOT_TOKEN` (formatas `1234567890:AAE...`).
+2. **Paspausk `/start` savo naujam botui** (kitaip jis tau negalės siųsti žinutės).
+3. **Gauk `chat_id`:** atidaryk [@userinfobot](https://t.me/userinfobot) → `/start` →
+   parodys tavo skaitinį `Id: 123456789`. Tai ir yra `TELEGRAM_CHAT_ID`.
+4. **Railway Variables** (arba lokaliam testui `.env`):
+   - `TELEGRAM_ENABLED=true`
+   - `TELEGRAM_BOT_TOKEN=<iš 1 žingsnio>`
+   - `TELEGRAM_CHAT_ID=<iš 3 žingsnio>`
+5. Restart service'ą. Po kito ciklo kiekvienas naujas `pirkimo_id` atsiras
+   Telegram chat'e kaip HTML-formatuota žinutė su pavadinimu, ID, organizacija,
+   paskelbimo data ir URL.
+
+### Saugumo pastabos
+
+- `TELEGRAM_BOT_TOKEN` – secret, **niekada** necommit'inti (`.env` jau yra
+  `.gitignore`). Agentas nelogina token'o net `DEBUG` lygyje.
+- Telegram klaida nesustabdo ciklo – tik `logger.error`/`logger.exception`.
+- Jei `TELEGRAM_ENABLED=false` arba token/chat_id tušti – pranešėjas apskritai
+  neinstancijuojamas.

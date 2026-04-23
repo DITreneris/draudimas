@@ -7,6 +7,23 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
+### Added
+- **Telegram asmeninis pranesimas** (`src/notifier.py` `TelegramNotifier`) -
+  kiekvienas naujas skelbimas (tas pats, kuris eina i `notifications.log`)
+  papildomai issiunciamas i Telegram chat'a per Bot API `sendMessage`.
+  - Naudoja tik stdlib `urllib.request` (be naujo dependency).
+  - HTML parse mode, `html.escape` apsauga nuo title/org su `<`, `>`, `&`.
+  - Klaidos (`HTTPError`, timeout, bet koks `Exception`) tik logdinamos -
+    `run_cycle` tesiasi; token'as niekada nelogintas.
+  - 3 nauji env vars: `TELEGRAM_ENABLED` (default `false`), `TELEGRAM_BOT_TOKEN`,
+    `TELEGRAM_CHAT_ID`. Pridet i `src/config.py` `Settings`, `.env.example`,
+    `.env` (su `[RAILWAY-ONLY]` zymejimu secret'ams) ir `README.md`
+    (Konfiguracija + naujas skyrius *Telegram asmeninis pranesimas* su setup
+    per `@BotFather` + `@userinfobot`).
+  - `src/agent.py` `run_cycle` - notifier instancijuojamas tik kai
+    `TELEGRAM_ENABLED=true` IR token'as IR `chat_id` ne tusti; iskvieciamas
+    po `ConsoleLogNotifier.notify` toje pacioje `new_items` ciklo iteracijoje.
+
 ### Fixed
 - **Windows stdout UTF-8** (`main.py` `setup_logging`) - pries konfiguruojant
   `logging.basicConfig`, iskvieciame `sys.stdout.reconfigure(encoding="utf-8",
