@@ -1,0 +1,38 @@
+---
+description: Project architecture map + invariants. First rule you see in every session.
+alwaysApply: true
+---
+
+# Project map
+
+This is the **viesiejipirkimai.lt hourly agent** — a Python worker that performs a Playwright search every hour, dedups via SQLite, and pushes `items.json` to GitHub Pages. See `AGENTS.md` at the repo root for full context.
+
+## Modules (one line each)
+
+- `main.py` — APScheduler `BlockingScheduler`, `IntervalTrigger`, SIGINT/SIGTERM handling.
+- `run_once.py` — single `run_cycle`, smoke-test entry point.
+- `src/config.py` — `Settings` frozen dataclass + env parsers (`_get_bool/int/list`).
+- `src/scraper.py` — `search_keyword(kw) -> list[ResultItem]`; Playwright Chromium sync.
+- `src/db.py` — `SeenStore` (SQLite), `pirkimo_id` PK, `filter_new`/`mark_seen`/`count`.
+- `src/notifier.py` — `ConsoleLogNotifier` (stdout + `notifications.log`).
+- `src/exporter.py` — `build_payload` / `write_local` / `push_to_github` / `export_and_push`. `urllib` only.
+- `src/agent.py` — `run_cycle(settings)`: search -> dedup -> notify -> mark_seen -> export.
+- `docs/` — vanilla HTML/CSS/JS GitHub Pages frontend.
+
+## Invariants
+
+1. **Dedup key = `pirkimo_id`** (not title, url, or date).
+2. **Stdlib first.** `requirements.txt` holds **only 3** deps: `playwright`, `apscheduler`, `python-dotenv`. Don't pull in `requests`, `httpx`, `pydantic`, `sqlalchemy`, etc.
+3. **`run_cycle` doesn't abort** on a single-keyword failure or on export failure (only `logger.exception`).
+4. **UTC everywhere** at runtime; UI formats client-side.
+5. **Secrets** (`GITHUB_TOKEN`) — env only, never logged, never in `docs/`.
+6. **`SCHEMA` (`src/db.py`) changes** require migration — `CREATE TABLE IF NOT EXISTS` + idempotent `ALTER TABLE`.
+7. **Header constants** (`HEADER_*` at the top of `src/scraper.py`) — the only place to touch when the portal rewrites its headers.
+
+## Smoke test
+
+```bash
+python run_once.py
+```
+
+Must finish without an `exception` stack trace; `state/seen.sqlite3` created; `state/items.json` written.

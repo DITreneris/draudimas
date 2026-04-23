@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.env
+state/
+*.sqlite3
+*.log
+.DS_Store
+.idea/
+.vscode/
+# Planning screenshots not referenced in code
+image*.png

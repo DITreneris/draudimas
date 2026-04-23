@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.env
+state/
+*.sqlite3
+*.log
+.git/
+.gitignore
+.idea/
+.vscode/
+*.png
+*.md

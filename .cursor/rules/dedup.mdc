@@ -1,0 +1,41 @@
+---
+description: SQLite dedup invariants - pirkimo_id PK, INSERT OR IGNORE, per-batch dedup
+globs: src/db.py,src/agent.py
+alwaysApply: false
+---
+
+# Dedup invariants
+
+## SQLite (`src/db.py`)
+
+- **`pirkimo_id` is the PRIMARY KEY.** Never add `UNIQUE(title)` or similar.
+- **`INSERT OR IGNORE`** — inserts must be idempotent. Never `INSERT OR REPLACE` (would wipe `first_seen_at`).
+- `first_seen_at` = **UTC ISO** (`datetime.now(timezone.utc).isoformat(timespec="seconds")`). Local timezones forbidden.
+- Schema changes: append `CREATE TABLE IF NOT EXISTS` / `CREATE INDEX IF NOT EXISTS` to the `SCHEMA` string. For ALTER, wrap `ALTER TABLE ... ADD COLUMN` in `try/except sqlite3.OperationalError` so existing DBs upgrade cleanly.
+- `_connect()` — `@contextmanager` with `conn.commit()` + `conn.close()` in `finally`. Don't mix in direct `sqlite3.connect(...)` usage.
+
+## Orchestration (`src/agent.py`)
+
+`_select_new_items` performs **double dedup**:
+
+1. DB-level: `store.filter_new(ids)` (SQL `WHERE pirkimo_id IN ...`).
+2. **Batch-level:** if the same `pirkimo_id` repeats inside a single result set (rare edge case), notify **only the first** occurrence.
+
+```python
+seen_in_batch: set[str] = set()
+for it in items:
+    if it.pirkimo_id in new_ids and it.pirkimo_id not in seen_in_batch:
+        result.append(it)
+        seen_in_batch.add(it.pirkimo_id)
+```
+
+## Cross-keyword dedup (important)
+
+- When the same tender matches **multiple keywords**, it is notified **only once** (for the first keyword that finds it in that cycle). This is a side-effect of `store.mark_seen(...)` — the next `search_keyword` still returns that `pirkimo_id`, but `filter_new` drops it.
+- **First-run behavior:** all visible results count as "new" (DB is empty). This is documented in the README.
+
+## Don't
+
+- Don't synthesize `pirkimo_id` from a title+date hash. The portal provides it in a dedicated column.
+- Don't drop `INSERT OR IGNORE` → `INSERT` even "when you're sure there can't be a conflict".
+- `filter_new` — use `IN (?,?,...)` with parametrized placeholders. Never an f-string with IDs.

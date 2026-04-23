@@ -1,0 +1,53 @@
+---
+description: GitHub exporter policy - stdlib urllib only, secret hygiene, idempotent commits
+globs: src/exporter.py
+alwaysApply: false
+---
+
+# Exporter (`src/exporter.py`)
+
+## Strict stdlib policy
+
+- HTTP — **only `urllib.request` + `urllib.error`**. Don't pull in `requests`, `httpx`, `PyGithub`.
+- Base64 — `base64.b64encode(...)`. JSON — `json.dumps(..., ensure_ascii=False, indent=2)`.
+- **If stdlib is missing something — ask the user first.** New dependencies need justification.
+
+## GitHub API protocol
+
+1. `GET /repos/{owner}/{repo}/contents/{path}?ref={branch}` — canonical way to fetch the current `sha`.
+   - `200` -> `sha` from JSON.
+   - `404` -> file doesn't exist yet; `sha = None` (we'll create it).
+   - Otherwise -> `logger.warning`, return `None` (we'll try to create; GitHub will reject if it actually exists).
+2. `PUT /repos/{owner}/{repo}/contents/{path}` body:
+   - `message`, `content` (base64), `branch`, `sha` (if present).
+3. Headers — **required**:
+   - `Authorization: Bearer {token}`
+   - `Accept: application/vnd.github+json`
+   - `X-GitHub-Api-Version: 2022-11-28`
+   - `User-Agent: viesiejipirkimai-agent`
+
+## Secret hygiene
+
+- `GITHUB_TOKEN` — **only** from `Settings` (loaded from env). Never write the token to logs, commit messages, the local export file, the `docs/` frontend, or git history.
+- `logger.info("GitHub push OK sha=%s", commit.get("sha", "?")[:7])` — OK (short sha).
+- `logger.debug(f"body={body}")` — NOT OK (body contains everything). Mask if you debug.
+
+## Idempotency & fail-safe
+
+- `GithubConfig.is_valid()` — single source: `enabled AND token AND repo`. Use it everywhere that checks "should we push?".
+- `export_and_push` must **always write `local_path`** (even when the GitHub push is disabled). Useful for debugging / dry-run.
+- `push_to_github` returns `bool` — **never raises**. The caller (`run_cycle`) already has `try/except`.
+
+## JSON payload schema (stable contract with `docs/app.js`)
+
+```json
+{
+  "generated_at": "ISO UTC",
+  "stats": { "total_items": N, "keywords": [...] },
+  "items": [
+    { "pirkimo_id", "title", "url", "first_seen_at", "keyword_first_seen", "published_at" }
+  ]
+}
+```
+
+If you change these fields, update `docs/app.js` `render()` **in the same change**.

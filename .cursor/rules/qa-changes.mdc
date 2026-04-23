@@ -1,0 +1,49 @@
+---
+description: Q&A and code-change workflow - lean delta, smoke test, CHANGELOG
+alwaysApply: true
+---
+
+# Q&A + change workflow
+
+## Q&A mode
+
+When the user asks a question, **don't start coding**:
+
+1. Answer first; don't jump to edits.
+2. Cite files using the `src/file.py:Lx-Ly` format.
+3. Reply in the user's language (Lithuanian by default, ASCII-safe).
+4. Don't fix "another problem" they didn't ask about — mention it as a footnote.
+
+## Change mode
+
+When the user asks for a code change:
+
+1. **Read** the relevant files first (with the Read tool). Never edit blind.
+2. **Smallest delta.** Don't redesign the public API (`Settings` fields, `run_cycle` signature, `items.json` schema) unless required.
+3. **Constraints:**
+   - No new pip dependency unless truly required (stdlib first).
+   - No new file when you can extend an existing one.
+   - No new public function when you can adjust an existing one.
+4. **Smoke test:**
+
+   ```bash
+   python run_once.py
+   ```
+
+   Must finish with `log.info("Apibendrinimas: %s", summary)` and no `Exception` stack trace.
+5. **CHANGELOG.md** — add a line under `## [Unreleased]` following Keep a Changelog (`### Added` / `### Changed` / `### Fixed` / `### Removed`).
+6. **AGENTS.md / rules** — if the change affects an invariant (new env var, new schema column, etc.), update the corresponding file.
+
+## Always avoid
+
+- `# TODO` without a ticket reference or explanation.
+- Comments that just narrate what the code does (`# increment counter`).
+- New "utility" files (`utils.py`, `helpers.py`) that hold a single function.
+- Background threads / asyncio. The scheduler already manages concurrency.
+- Log spam at `INFO`. `DEBUG` for detail, `INFO` for user-relevant state transitions.
+
+## When to ask the user
+
+- Before adding a dependency.
+- Before changing `SCHEMA` / `HEADER_*` / the JSON payload schema.
+- If the task is ambiguous or there are multiple acceptable approaches with different trade-offs.

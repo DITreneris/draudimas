@@ -1,0 +1,36 @@
+---
+description: Env var conventions, default-safe parsers, Settings dataclass
+globs: src/config.py,.env,.env.example
+alwaysApply: false
+---
+
+# Configuration
+
+## Golden rule
+
+When adding a new env var, touch **all three places** in the same change:
+
+1. `src/config.py` — `Settings` field + a parser call in `load_settings()`.
+2. `.env.example` — document the default and purpose (as a comment).
+3. `README.md` — `## Konfiguracija` table row.
+
+(Optional: `.env` for local testing; `.env` is gitignored.)
+
+## Parser usage
+
+- **Booleans** — `_get_bool(name, default)`. Accepts `1/true/yes/y/on` (case-insensitive).
+- **Ints** — `_get_int(name, default)`. Invalid value = default (no exception).
+- **Lists** — `_get_list(name, default)`. CSV, whitespace-trimmed, empty parts dropped.
+- **Strings with defaults** — `os.getenv("X", "default").strip()`. If a non-empty default is required — `... or "fallback"`.
+
+## Settings = frozen dataclass
+
+- `@dataclass(frozen=True)` — `Settings` is immutable for the duration of a cycle.
+- Use `field(default_factory=lambda: ...)` for list / `Path` defaults, never `= []` or `= Path(...)` (shared mutable state).
+- `@property` is for **derived** values (`db_path`, `log_path`, `local_export_path`). Don't re-compute `state_dir + filename` elsewhere — use the property.
+
+## Don't
+
+- `os.getenv("FOO")` used directly without a default — **disallowed**. Always go through a parser or `Settings`.
+- Don't import `dotenv` without `try/except`. The package may be absent in some Railway build contexts; treat it as optional.
+- `STATE_DIR` — **always** `Path(...).resolve()`. Relative paths drift at runtime.

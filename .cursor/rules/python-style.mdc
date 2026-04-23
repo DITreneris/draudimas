@@ -1,0 +1,60 @@
+---
+description: Python coding conventions for this repo
+globs: **/*.py
+alwaysApply: false
+---
+
+# Python style
+
+## Required
+
+- `from __future__ import annotations` at the top of every `.py` file (except `__init__.py`).
+- `logging.getLogger(__name__)` instead of `print`. Never log tokens.
+- Dataclasses — `@dataclass(frozen=True)` for config / value objects.
+- Type annotations: `list[X]`, `dict[str, X]`, `str | None` (PEP 604). Python 3.13 applies.
+- Docstrings in English, ASCII-safe (match the rest of the codebase).
+- File names — `snake_case`; classes — `PascalCase`; constants — `UPPER_SNAKE`.
+
+## Errors / exceptions
+
+- Network / Playwright / GitHub errors — catch `Exception`, log with `logger.exception(...)`, continue the cycle.
+- Introduce domain errors (`SearchError` already exists) only when the caller has something different to do.
+
+## Don't
+
+```python
+# BAD
+try:
+    run_cycle(settings)
+except Exception:
+    pass   # error swallowed
+
+# BAD
+logger.info(f"token={settings.github_token}")  # secret leak
+
+# BAD
+from requests import get   # don't pull in requests; use urllib
+```
+
+## Do
+
+```python
+# GOOD
+try:
+    run_cycle(settings)
+except Exception:
+    logger.exception("run_cycle failed")
+
+# GOOD
+logger.info("GitHub push OK sha=%s", commit.get("sha", "?")[:7])
+
+# GOOD
+import urllib.request
+req = urllib.request.Request(url, data=data, method="PUT")
+```
+
+## Formatting
+
+- No black/ruff config — follow existing style (4 spaces, ~95 col max).
+- Import order: stdlib -> third-party -> `.relative`. Alphabetical within a group.
+- No `# type: ignore` without a comment explaining why.

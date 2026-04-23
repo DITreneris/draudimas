@@ -1,0 +1,39 @@
+---
+description: Playwright scraper guardrails (selector strategy, header constants)
+globs: src/scraper.py
+alwaysApply: false
+---
+
+# Scraper guardrails (`src/scraper.py`)
+
+## Selector strategy (the critical bit)
+
+- **The results table is located by column header text**, not by CSS classes or `nth-child`. This keeps us resilient to portal CSS churn.
+- `HEADER_TITLE`, `HEADER_PIRKIMO_ID`, `HEADER_PUBLISHED`, `HEADER_ORG` are the only "magic strings" we touch when the portal rewrites headers. Edit the constants, not `_find_header_indices`.
+- The "Ieskoti" (Search) button click has **4 fallbacks** (+ `Enter` press). Don't remove any of them.
+
+## Playwright hygiene
+
+- **Always** use the `with sync_playwright() as p:` context; call `context.close()` and `browser.close()` in a `finally` block.
+- `context = browser.new_context(locale="lt-LT")` — supports Lithuanian date/number formatting on the portal.
+- Use `page.set_default_timeout(timeout_ms)` instead of passing `timeout=` to every call.
+- Use `wait_for_function(...)` with JS regex (`Pirkimo\\s*ID`), not `wait_for_selector(".some-class")`.
+
+## Data validation
+
+- `pirkimo_id` must match `^\d+$` (see `_extract_rows`). A non-numeric value = skip the row.
+- URL normalization — **only** through `_absolute_url(href)`. No ad-hoc `BASE_URL + href`.
+- `inner_text() or ""` + `.strip()` — never assume Playwright returns non-None.
+
+## Don't
+
+- Don't switch `sync_playwright` to `async_playwright` — APScheduler's `BlockingScheduler` is synchronous.
+- Don't add a request/response cache — each cycle must be fresh and independent.
+- Don't reuse the browser context across keywords. `search_keyword` opens a fresh context each time so sessions don't bleed.
+
+## When the portal changes
+
+1. Open `https://viesiejipirkimai.lt/epps/prepareAdvancedSearch.do?type=cftFTS` manually.
+2. Verify the `#Title` input selector — if it's no longer `#Title`, update `page.fill("#Title", ...)`.
+3. Verify column headers — update the `HEADER_*` constants.
+4. Run `python run_once.py` with `HEADLESS=false` in `.env` to watch the browser.

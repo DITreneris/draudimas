@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viesiejipirkimai.lt agentas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <h1>Viesiejipirkimai.lt &mdash; agento stebejimas</h1>
+      <div class="meta">
+        <span id="meta-generated">Kraunama&hellip;</span>
+        <span id="meta-total"></span>
+        <span id="meta-keywords"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls">
+      <input type="search" id="search" placeholder="Filtruoti pagal pavadinima..." />
+      <select id="keyword-filter">
+        <option value="">Visi raktazodziai</option>
+      </select>
+      <label class="auto">
+        <input type="checkbox" id="auto-refresh" checked />
+        Auto-refresh (60s)
+      </label>
+      <button id="refresh-btn" type="button">Atnaujinti dabar</button>
+    </section>
+
+    <section class="status" id="status"></section>
+
+    <section class="table-wrap">
+      <table id="items">
+        <thead>
+          <tr>
+            <th>Pirkimo ID</th>
+            <th>Pavadinimas</th>
+            <th>Raktazodis</th>
+            <th>Paskelbta</th>
+            <th>Pirma karta aptikta (UTC)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="empty" class="empty" hidden>Irasu nera.</div>
+    </section>
+
+    <footer class="foot">
+      <span>Duomenys atnaujinami automatiskai Railway agento, push'inami i GitHub.</span>
+      <span id="foot-digest"></span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

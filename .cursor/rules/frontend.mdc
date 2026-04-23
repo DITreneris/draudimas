@@ -1,0 +1,38 @@
+---
+description: docs/ GitHub Pages frontend policy - vanilla JS, escapeHtml, no frameworks
+globs: docs/**
+alwaysApply: false
+---
+
+# Frontend (`docs/`)
+
+## Stack
+
+- **Vanilla JS** (ES5-compatible, `'use strict'` IIFE). No React, Vue, Svelte, jQuery, webpack, npm.
+- **Vanilla CSS** (`style.css`). No Tailwind, Sass, PostCSS.
+- **One HTML file** (`index.html`). No SSG (Jekyll, Hugo). `.nojekyll` is present.
+
+## Security
+
+- **Always run user data through `escapeHtml(s)`** (already in `app.js`) before inserting into `innerHTML`. `title`, `pirkimo_id`, `keyword_first_seen`, `published_at`, `url` — **all** come from the scraper and must be treated as untrusted.
+- For `href="..."` links — `target="_blank" rel="noopener noreferrer"`.
+
+## Data contract
+
+The frontend fetches `items.json` (see `.cursor/rules/exporter.mdc`). When you change the JSON schema:
+
+1. Update `src/exporter.py` `build_payload` + `_fetch_items`.
+2. Update `docs/app.js` `render()` and `rebuildKeywordOptions()`.
+3. Update `docs/index.html` table headers.
+
+## Performance
+
+- `fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' })` — busts the GitHub Pages CDN cache.
+- Auto-refresh = 60s. If you change it — also update the checkbox label (`Auto-refresh (60s)`).
+- No virtualization needed (up to `GITHUB_MAX_ITEMS=500`, table rendering is fast).
+
+## Don't
+
+- Don't add `<script src="https://cdn.jsdelivr.net/...">` — creates offline / CSP problems.
+- Don't wire the browser to the GitHub API directly — the token would leak into the client.
+- Don't set `REFRESH_MS` below 30s — GitHub Pages edge cache is ~60s anyway.
