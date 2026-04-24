@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-04-24T16:00:07+00:00",
+  "generated_at": "2026-04-24T17:00:08+00:00",
   "stats": {
-    "total_items": 10,
+    "total_items": 11,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7578603",
+      "title": "Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7578603",
+      "first_seen_at": "2026-04-24T17:00:08.983713+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "24/04/2026 18:58:31",
+      "organization": "Energy cells UAB (PV)"
+    },
     {
       "pirkimo_id": "7541479",
       "title": "Bendrosios civilinės atsakomybės draudimas (Supaprastintas atviras konkursas)",
