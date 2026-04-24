@@ -32,6 +32,7 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 | `HEADLESS` | `true` | Playwright headless režimas |
 | `STATE_DIR` | `./state` (lokaliai) / `/data` (Docker) | Kur laikoma SQLite + log |
 | `RUN_ON_START` | `true` | Ar paleisti ciklą iš karto starto metu |
+| `WIPE_DB_ON_START` | `false` | **Operacinis**: įjungus į `true`, prieš scheduler'į ištrina `$STATE_DIR/seen.sqlite3` ir logina warning'ą. Po vienkartinės užduoties **būtina** išjungti atgal (arba pašalinti kintamąjį), kitaip DB bus trinama kiekvieno restart'o metu. |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` |
 | `GITHUB_EXPORT_ENABLED` | `false` | Ar po kiekvieno ciklo push'inti `items.json` į GitHub |
 | `GITHUB_TOKEN` | – | Fine-grained PAT (Contents: Read & Write teisė) |
@@ -82,6 +83,27 @@ python main.py
    - `LOG_LEVEL=INFO`
 5. Deploy. Service tipas – **worker** (nereikia public networking'o).
 6. Logai – Railway UI (`Deployments → Logs`). Failas `/data/notifications.log` išlieka per deploy'us.
+
+### DB išvalymas (migracija / backfill)
+
+Jei reikia atlikti vienkartinį `seen.sqlite3` reset'ą (pvz. po schemos migracijos
+arba norint atkurti teisingą `first_seen_at` tvarką), naudok operacinį
+`WIPE_DB_ON_START` jungiklį — shell prieigos Railway'uje neprireiks:
+
+1. Railway Dashboard → servisas → **Variables** → pridėk `WIPE_DB_ON_START=true`
+   → **Save** (auto-redeploy).
+2. **Deployments → Logs** palauk eilutės `WARNING [main] WIPE_DB_ON_START=true
+   -> istrinta DB /data/seen.sqlite3 ...`. Po jos turėtų sekti įprastas
+   `INFO [main] Start: ...`, o pirmas ciklas ras visus matomus skelbimus kaip
+   „naujus" (į Telegram nukeliaus atitinkamas pranešimų skaičius — tai tikėtinas
+   šalutinis efektas).
+3. Railway Dashboard → **Variables** → **ištrink** `WIPE_DB_ON_START` (arba
+   nustatyk `false`) → **Save** (auto-redeploy). DB jau bus atkurta, o šįkart
+   wipe'as **nesuveiks** — saugu.
+
+> Jei praleisi 3 žingsnį, kiekvienas restart'as trins DB ir iš naujo siųs visus
+> „naujus" pranešimus į Telegram. Todėl kintamąjį palik įjungtą **tik vienam
+> redeploy'ui**.
 
 ## Duomenų modelis
 

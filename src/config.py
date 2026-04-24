@@ -45,6 +45,7 @@ class Settings:
     headless: bool = True
     state_dir: Path = field(default_factory=lambda: Path("./state"))
     run_on_start: bool = True
+    wipe_db_on_start: bool = False
     log_level: str = "INFO"
 
     github_enabled: bool = False
@@ -79,6 +80,7 @@ def load_settings() -> Settings:
         headless=_get_bool("HEADLESS", True),
         state_dir=Path(os.getenv("STATE_DIR", "./state")).resolve(),
         run_on_start=_get_bool("RUN_ON_START", True),
+        wipe_db_on_start=_get_bool("WIPE_DB_ON_START", False),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         github_enabled=_get_bool("GITHUB_EXPORT_ENABLED", False),
         github_token=os.getenv("GITHUB_TOKEN", "").strip(),

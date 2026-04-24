@@ -51,6 +51,14 @@ def main() -> int:
 
     settings.state_dir.mkdir(parents=True, exist_ok=True)
 
+    if settings.wipe_db_on_start:
+        settings.db_path.unlink(missing_ok=True)
+        log.warning(
+            "WIPE_DB_ON_START=true -> istrinta DB %s. ISJUNK si kintamaji po "
+            "wipe'o, kad nebutu trinama kiekvieno restart'o metu.",
+            settings.db_path,
+        )
+
     log.info(
         "Start: keywords=%s schedule='%s %s:%02d %s' headless=%s state_dir=%s "
         "run_on_start=%s",

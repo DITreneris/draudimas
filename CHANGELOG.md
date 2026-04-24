@@ -8,6 +8,15 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 ## [Unreleased]
 
 ### Added
+- **`WIPE_DB_ON_START` env var** (default `false`) - operacinis jungiklis
+  `seen.sqlite3` išvalymui per Railway **Variables**, be shell prieigos ar
+  `Start Command` override'o. `main.py` pradžioje (po `settings.state_dir.mkdir`)
+  jei `true` - `settings.db_path.unlink(missing_ok=True)` + `log.warning` su
+  priminimu išjungti kintamąjį po wipe'o. Pridėta į `src/config.py` `Settings`
+  (`wipe_db_on_start: bool = False` + `_get_bool("WIPE_DB_ON_START", False)`),
+  `.env.example`, `README.md` („Konfigūracija" lentelė + naujas sub-skyrius
+  *DB išvalymas (migracija / backfill)* Railway deploy skyriuje su 3 žingsnių
+  instrukcija).
 - **`organization` laukas visoje pipeline.** `src/scraper.py` jau seniai
   istraukia perkancios organizacijos (PV) pavadinima i `ResultItem`, bet
   duomuo buvo ismetamas. Dabar pravestas iki UI:
