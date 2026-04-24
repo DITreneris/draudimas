@@ -58,16 +58,24 @@ def run_cycle(settings: Settings) -> dict[str, int]:
                 len(new_items),
                 len(items),
             )
+            # Notifier: newest-published first (scraper order), kad Telegram
+            # chat'e naujausi pasirodytu virsuje.
             for item in new_items:
                 notifier.notify(keyword, item)
                 if telegram is not None:
                     telegram.notify(keyword, item)
+            # DB insert: reversed, kad seniausiai publikuotas gautu anksciausia
+            # `first_seen_at` timestamp'a, o naujausiai publikuotas - veliausia.
+            # Tada `ORDER BY first_seen_at DESC` exporter'yje natūraliai pateikia
+            # naujausiai publikuotus virsuje.
+            for item in reversed(new_items):
                 store.mark_seen(
                     pirkimo_id=item.pirkimo_id,
                     title=item.title,
                     url=item.url,
                     keyword=keyword,
                     published_at=item.published_at,
+                    organization=item.organization,
                 )
         else:
             logger.info(

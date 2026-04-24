@@ -35,7 +35,8 @@ def _fetch_items(db_path: Path, max_items: int) -> list[dict[str, Any]]:
     try:
         cur = conn.execute(
             """
-            SELECT pirkimo_id, title, url, first_seen_at, keyword_first_seen, published_at
+            SELECT pirkimo_id, title, url, first_seen_at, keyword_first_seen,
+                   published_at, organization
             FROM seen_items
             ORDER BY first_seen_at DESC
             LIMIT ?
@@ -53,6 +54,7 @@ def _fetch_items(db_path: Path, max_items: int) -> list[dict[str, Any]]:
             "first_seen_at": r["first_seen_at"],
             "keyword_first_seen": r["keyword_first_seen"],
             "published_at": r["published_at"],
+            "organization": r["organization"],
         }
         for r in rows
     ]

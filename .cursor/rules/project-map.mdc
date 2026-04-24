@@ -9,7 +9,7 @@ This is the **viesiejipirkimai.lt hourly agent** — a Python worker that perfor
 
 ## Modules (one line each)
 
-- `main.py` — APScheduler `BlockingScheduler` (tz `Europe/Vilnius`), `CronTrigger(day_of_week="mon-fri", hour="7-19", minute=0)`, SIGINT/SIGTERM handling. `CHECK_INTERVAL_MINUTES` deprecated (hardcoded grafikas).
+- `main.py` — APScheduler `BlockingScheduler` (tz `Europe/Vilnius`), `CronTrigger(day_of_week="mon-fri", hour="7-21", minute=0)`, SIGINT/SIGTERM handling. `CHECK_INTERVAL_MINUTES` deprecated (hardcoded grafikas).
 - `run_once.py` — single `run_cycle`, smoke-test entry point.
 - `src/config.py` — `Settings` frozen dataclass + env parsers (`_get_bool/int/list`).
 - `src/scraper.py` — `search_keyword(kw) -> list[ResultItem]`; Playwright Chromium sync.

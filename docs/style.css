@@ -7,6 +7,8 @@
   --border: #d7ddd4;
   --row-hover: #eef2ec;
   --danger: #b02a37;
+  --info: #2a6cb0;
+  --ok: #2f7d45;
 }
 
 * { box-sizing: border-box; }
@@ -124,6 +126,43 @@ tbody tr:last-child td { border-bottom: none; }
 .pid { font-family: "Consolas", "Courier New", monospace; color: var(--muted); }
 .kw { display: inline-block; background: #e2ddcc; color: var(--accent-dark); padding: 1px 8px; border-radius: 10px; font-size: 12px; }
 .date { white-space: nowrap; color: var(--muted); }
+
+td.org {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--fg);
+}
+td.org.muted-cell { color: var(--muted); }
+
+.cat {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.cat-broker {
+  background: #dbe7f3;
+  color: var(--info);
+}
+.cat-insurer {
+  background: #dcecd7;
+  color: var(--ok);
+}
+.cat-market-consultation {
+  background: #e6e6e0;
+  color: var(--muted);
+}
+
+.flag-broker {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--info);
+  font-weight: 700;
+  cursor: help;
+}
 
 .empty { padding: 20px; color: var(--muted); text-align: center; }
 

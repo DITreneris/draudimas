@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS seen_items (
     url TEXT,
     first_seen_at TEXT NOT NULL,
     keyword_first_seen TEXT,
-    published_at TEXT
+    published_at TEXT,
+    organization TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_seen_items_first_seen
     ON seen_items (first_seen_at);
@@ -27,6 +28,16 @@ class SeenStore:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         with self._connect() as conn:
             conn.executescript(SCHEMA)
+            self._migrate(conn)
+
+    @staticmethod
+    def _migrate(conn: sqlite3.Connection) -> None:
+        # Lightweight in-place migrations for existing DBs deployed before
+        # the column was added. SQLite's ALTER TABLE is limited; we only ever
+        # ADD COLUMN here, so it's safe.
+        cols = {row["name"] for row in conn.execute("PRAGMA table_info(seen_items)")}
+        if "organization" not in cols:
+            conn.execute("ALTER TABLE seen_items ADD COLUMN organization TEXT")
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
@@ -58,16 +69,21 @@ class SeenStore:
         url: str | None,
         keyword: str,
         published_at: str | None = None,
+        organization: str | None = None,
     ) -> None:
-        now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        # Microsecond precision is the tiebreaker when a batch is inserted in
+        # the same second (e.g. startup backfill). Without it, ORDER BY
+        # first_seen_at DESC is non-deterministic within a second.
+        now = datetime.now(timezone.utc).isoformat(timespec="microseconds")
         with self._connect() as conn:
             conn.execute(
                 """
                 INSERT OR IGNORE INTO seen_items
-                    (pirkimo_id, title, url, first_seen_at, keyword_first_seen, published_at)
-                VALUES (?, ?, ?, ?, ?, ?)
+                    (pirkimo_id, title, url, first_seen_at, keyword_first_seen,
+                     published_at, organization)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
-                (pirkimo_id, title, url, now, keyword, published_at),
+                (pirkimo_id, title, url, now, keyword, published_at, organization),
             )
 
     def count(self) -> int:

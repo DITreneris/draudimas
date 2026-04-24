@@ -12,11 +12,11 @@ from apscheduler.triggers.cron import CronTrigger
 from src.agent import run_cycle
 from src.config import Settings, load_settings
 
-# Fiksuotas tvarkarastis: darbo dienos (pir-pen), 7:00-19:00 Vilniaus laiku
-# (13 valandiniu slot'u x 5 dienos = 65 ciklai per savaite). Keiciant - cia.
+# Fiksuotas tvarkarastis: darbo dienos (pir-pen), 7:00-21:00 Vilniaus laiku
+# (15 valandiniu slot'u x 5 dienos = 75 ciklai per savaite). Keiciant - cia.
 SCHEDULE_TIMEZONE = "Europe/Vilnius"
 SCHEDULE_DAYS = "mon-fri"
-SCHEDULE_HOURS = "7-19"
+SCHEDULE_HOURS = "7-21"
 SCHEDULE_MINUTE = 0
 
 

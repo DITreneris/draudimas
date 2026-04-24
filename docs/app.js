@@ -25,6 +25,28 @@
     timer: null
   };
 
+  var BROKER_MENTION_RE = /\b(UADBB|broker)/i;
+  var CATEGORY_LABEL = {
+    broker: 'Brokeris',
+    insurer: 'Draudikas',
+    market_consultation: 'Rinkos konsultacija'
+  };
+
+  function classify(title) {
+    var raw = title || '';
+    var t = raw.toLowerCase();
+    var brokerMention = BROKER_MENTION_RE.test(raw);
+    var category;
+    if (t.indexOf('rinkos konsultacij') !== -1) {
+      category = 'market_consultation';
+    } else if (t.indexOf('brok') !== -1 || t.indexOf('tarpinink') !== -1) {
+      category = 'broker';
+    } else {
+      category = 'insurer';
+    }
+    return { category: category, brokerMention: brokerMention };
+  }
+
   function escapeHtml(s) {
     if (s == null) return '';
     return String(s)
@@ -65,7 +87,11 @@
     var filtered = state.items.filter(function (it) {
       if (kwFilter && it.keyword_first_seen !== kwFilter) return false;
       if (!q) return true;
-      var hay = [it.title || '', it.pirkimo_id || ''].join(' ').toLowerCase();
+      var hay = [
+        it.title || '',
+        it.pirkimo_id || '',
+        it.organization || ''
+      ].join(' ').toLowerCase();
       return hay.indexOf(q) !== -1;
     });
 
@@ -76,12 +102,26 @@
       els.empty.hidden = true;
       var html = filtered.map(function (it) {
         var title = escapeHtml(it.title || '(be pavadinimo)');
-        var titleHtml = it.url
+        var cls = classify(it.title);
+        var flagHtml = cls.brokerMention
+          ? ' <span class="flag-broker" title="Pavadinime paminetas brokeris (UADBB / broker)">*</span>'
+          : '';
+        var titleLink = it.url
           ? '<a href="' + escapeHtml(it.url) + '" target="_blank" rel="noopener noreferrer">' + title + '</a>'
           : title;
+        var titleHtml = titleLink + flagHtml;
+        var org = it.organization || '';
+        var orgHtml = org
+          ? '<td class="org" title="' + escapeHtml(org) + '">' + escapeHtml(org) + '</td>'
+          : '<td class="org muted-cell">-</td>';
+        var catLabel = CATEGORY_LABEL[cls.category] || cls.category;
+        var catHtml = '<span class="cat cat-' + cls.category.replace('_', '-') + '">' +
+          escapeHtml(catLabel) + '</span>';
         return '<tr>' +
           '<td class="pid">' + escapeHtml(it.pirkimo_id || '') + '</td>' +
           '<td>' + titleHtml + '</td>' +
+          orgHtml +
+          '<td>' + catHtml + '</td>' +
           '<td><span class="kw">' + escapeHtml(it.keyword_first_seen || '') + '</span></td>' +
           '<td class="date">' + escapeHtml(it.published_at || '') + '</td>' +
           '<td class="date">' + escapeHtml(formatUtc(it.first_seen_at)) + '</td>' +

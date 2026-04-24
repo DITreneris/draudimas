@@ -7,14 +7,49 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
+### Added
+- **`organization` laukas visoje pipeline.** `src/scraper.py` jau seniai
+  istraukia perkancios organizacijos (PV) pavadinima i `ResultItem`, bet
+  duomuo buvo ismetamas. Dabar pravestas iki UI:
+  - `src/db.py` - naujas `organization TEXT` stulpelis `seen_items` lenteleje
+    + saugi vienkartine migracija senam volume'ui (`PRAGMA table_info` +
+    `ALTER TABLE ... ADD COLUMN` jei kolona dar neegzistuoja).
+  - `src/db.py` `mark_seen` - naujas `organization` kwarg'as.
+  - `src/agent.py` - `mark_seen` iskvieciamas su `item.organization`.
+  - `src/exporter.py` - `SELECT organization` + `"organization"` key JSON'e.
+  - `docs/index.html` - nauja `Vykdytojas` kolona.
+  - `docs/app.js` - renderinamas organization su `title` atributu pilnam
+    tekstui ant hover; paieska (`#search`) taip pat filtruoja pagal
+    organizacijos pavadinima.
+  - `docs/style.css` - `td.org` ellipsis stilius (max-width 200px).
+- **UI klasifikacija kliente.** `docs/app.js` `classify(title)` gražina 3
+  kategorijas pagal title substring taisykles (case-insensitive):
+  `rinkos konsultacij` -> `market_consultation`; `brok` ar `tarpinink` ->
+  `broker`; kitaip -> `insurer`. Rodoma kaip spalvotas badge'as naujoje
+  `Klase` kolonoje. Papildomai - `UADBB`/`broker` regex paminejimo
+  indikatorius (`*`) greta title'o (jeigu title'e minimas konkretus
+  brokeris). `docs/style.css` - `.cat-broker` (melynas), `.cat-insurer`
+  (zalias), `.cat-market-consultation` (pilkas), `.flag-broker`.
+
 ### Changed
+- **`first_seen_at` tikslumas**: `timespec="seconds"` -> `"microseconds"`
+  (`src/db.py` `mark_seen`). Seconds precision'as buvo neleidziantis
+  surikiuoti batch'o viduje - visi batch'o nariai gaudavo identiska
+  timestamp'a. Microseconds tiebreaker'is isprendzia si atveji.
+- **DB insert eiliskumas `src/agent.py` `run_cycle`** - du atskiri ciklai:
+  `notifier.notify` eina pagal scraper'io tvarka (naujausi publikuoti pirma,
+  kad Telegram chat'e naujausi pasirodytu virsuje); `store.mark_seen`
+  iteruoja `reversed(new_items)` - seniausiai publikuotas irasas gauna
+  anksciausia `first_seen_at` timestamp'a. Tada `ORDER BY first_seen_at DESC`
+  exporter'yje natūraliai patenka naujausiai publikuotas - virsuje.
+
 - **Scheduler: `IntervalTrigger` -> `CronTrigger`** (`main.py`). Darbo valandu
-  grafikas hardcoded: `day_of_week="mon-fri"`, `hour="7-19"`, `minute=0`,
-  `timezone="Europe/Vilnius"` (DST-safe per `zoneinfo`). **13 ciklu/diena x 5
-  darbo dienos = 65 ciklai/savaite** (vietoj 168 = 24 x 7 anksciau, -61%).
+  grafikas hardcoded: `day_of_week="mon-fri"`, `hour="7-21"`, `minute=0`,
+  `timezone="Europe/Vilnius"` (DST-safe per `zoneinfo`). **15 ciklu/diena x 5
+  darbo dienos = 75 ciklai/savaite** (vietoj 168 = 24 x 7 anksciau, -55%).
   - `BlockingScheduler(timezone="Europe/Vilnius")` (buvo `"UTC"`).
   - Job id/name atnaujinti: `business_hours_check` / `"viesiejipirkimai mon-fri
-    7-19:00 Europe/Vilnius"`.
+    7-21:00 Europe/Vilnius"`.
   - `datetime.utcnow()` -> `datetime.now(timezone.utc)` (Py3.12+ deprecation).
   - `CHECK_INTERVAL_MINUTES` env var tapo **deprecated** - `main.py` jo
     nebeizunaudoja. Jei reiksme != 60, `log.warning` pranesa, kad ignoruojama.
@@ -22,7 +57,7 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
     konstantos `main.py` virsuje - vieninteli vieta, kur keiciamas grafikas.
   - `AGENTS.md` + `.cursor/rules/project-map.mdc` + `README.md` (header,
     Konfiguracija lentele, Railway Variables pavyzdys, commit history
-    apskaiciavimas ~3400/metus vietoj ~8760) sinchronizuoti.
+    apskaiciavimas ~3900/metus vietoj ~8760) sinchronizuoti.
 
 ### Added
 - **Telegram asmeninis pranesimas** (`src/notifier.py` `TelegramNotifier`) -
