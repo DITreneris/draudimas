@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-04-29T09:00:05+00:00",
+  "generated_at": "2026-04-29T10:00:05+00:00",
   "stats": {
-    "total_items": 12,
+    "total_items": 13,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7645365",
+      "title": "Mažos vertės pirkimas (Transporto priemonių draudimo paslaugos) Transporto priemonių valdytojų civilinės atsakomybės draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7645365",
+      "first_seen_at": "2026-04-29T10:00:05.699781+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "29/04/2026 12:42:19",
+      "organization": "UAB Trakų paslaugos"
+    },
     {
       "pirkimo_id": "7594458",
       "title": "DARBUOTOJŲ IR PERVEŽAMŲ KELEIVIŲ NUO NELAIMINGŲ ATSITIKIMŲ DRAUDIMO PASLAUGOS (SKELBIAMA APKLAUSA)",
