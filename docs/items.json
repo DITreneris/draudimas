@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-04-30T13:00:05+00:00",
+  "generated_at": "2026-04-30T14:00:08+00:00",
   "stats": {
-    "total_items": 15,
+    "total_items": 16,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7675869",
+      "title": "Rinkos konsultacija dėl rizikų, susijusių su apdraustųjų civiline atsakomybe, draudimo paslaugų",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7675869",
+      "first_seen_at": "2026-04-30T14:00:08.286747+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/04/2026 16:38:30",
+      "organization": "UAB ILTE"
+    },
     {
       "pirkimo_id": "7673881",
       "title": "\"Bendrosios civilinės atsakomybės draudimas (Nr. 10786)\" atviras konkursas (supaprastintas)",
