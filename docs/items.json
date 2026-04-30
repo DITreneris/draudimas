@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-04-30T12:00:06+00:00",
+  "generated_at": "2026-04-30T13:00:05+00:00",
   "stats": {
-    "total_items": 14,
+    "total_items": 15,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7673881",
+      "title": "\"Bendrosios civilinės atsakomybės draudimas (Nr. 10786)\" atviras konkursas (supaprastintas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7673881",
+      "first_seen_at": "2026-04-30T13:00:05.351699+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/04/2026 15:17:59",
+      "organization": "VšĮ Respublikinė Vilniaus universitetinė ligoninė (PV)"
+    },
     {
       "pirkimo_id": "7648321",
       "title": "Draudimo paslaugos (skelbiama apklausa)",
