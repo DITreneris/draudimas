@@ -22,7 +22,7 @@ src/notifier.py    -> ConsoleLogNotifier; optional TelegramNotifier; optional Sm
 src/exporter.py    -> SQLite -> items.json -> GitHub REST API (urllib only)
 src/agent.py       -> run_cycle() orchestrates everything
 docs/              -> Vanilla HTML/CSS/JS GitHub Pages frontend
-Dockerfile         -> mcr.microsoft.com/playwright/python:v1.47.0-jammy
+Dockerfile         -> mcr.microsoft.com/playwright/python:v1.51.0-jammy
 railway.json       -> Railway deploy config (worker, ON_FAILURE restart)
 ```
 

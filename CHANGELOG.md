@@ -7,6 +7,11 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
+### Changed
+- **Playwright 1.51.0** — `requirements.txt` ir `Dockerfile` baze
+  `mcr.microsoft.com/playwright/python:v1.51.0-jammy` (sutampa su pip versija;
+  naudinga ir kai MCR grąžina 429 ant seno tag'o — perbūkinti deploy).
+
 ### Added
 - **SMTP el. pašto pranešimai** (optional, stdlib `smtplib`): `SmtpEmailNotifier` in
   `src/notifier.py`, env `EMAIL_ENABLED`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`,
