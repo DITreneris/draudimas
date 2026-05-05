@@ -7,7 +7,7 @@ from datetime import datetime
 from .config import Settings
 from .db import SeenStore
 from .exporter import GithubConfig, export_and_push
-from .notifier import ConsoleLogNotifier, TelegramNotifier
+from .notifier import ConsoleLogNotifier, SmtpEmailNotifier, TelegramNotifier
 from .scraper import ResultItem, search_keyword
 
 logger = logging.getLogger(__name__)
@@ -27,6 +27,28 @@ def run_cycle(settings: Settings) -> dict[str, int]:
             settings.telegram_bot_token, settings.telegram_chat_id
         )
         logger.info("Telegram notifier aktyvus (chat_id=%s)", settings.telegram_chat_id)
+
+    email_notifier: SmtpEmailNotifier | None = None
+    if settings.email_enabled:
+        if (
+            settings.smtp_host
+            and settings.email_from
+            and settings.email_to
+        ):
+            email_notifier = SmtpEmailNotifier(
+                host=settings.smtp_host,
+                port=settings.smtp_port,
+                mail_from=settings.email_from,
+                mail_to=list(settings.email_to),
+                user=settings.smtp_user,
+                password=settings.smtp_password,
+            )
+            logger.info("SMTP email notifier aktyvus (host=%s)", settings.smtp_host)
+        else:
+            logger.warning(
+                "EMAIL_ENABLED=true bet truksta SMTP_HOST, EMAIL_FROM arba EMAIL_TO "
+                "- el. pastas praleidziamas"
+            )
 
     started = datetime.now()
     logger.info(
@@ -64,6 +86,8 @@ def run_cycle(settings: Settings) -> dict[str, int]:
                 notifier.notify(keyword, item)
                 if telegram is not None:
                     telegram.notify(keyword, item)
+                if email_notifier is not None:
+                    email_notifier.notify(keyword, item)
             # DB insert: reversed, kad seniausiai publikuotas gautu anksciausia
             # `first_seen_at` timestamp'a, o naujausiai publikuotas - veliausia.
             # Tada `ORDER BY first_seen_at DESC` exporter'yje natūraliai pateikia

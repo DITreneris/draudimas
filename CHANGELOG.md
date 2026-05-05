@@ -8,6 +8,10 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 ## [Unreleased]
 
 ### Added
+- **SMTP el. pašto pranešimai** (optional, stdlib `smtplib`): `SmtpEmailNotifier` in
+  `src/notifier.py`, env `EMAIL_ENABLED`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`,
+  `SMTP_PASSWORD`, `EMAIL_FROM`, `EMAIL_TO` (CSV); wired in `src/agent.py` alongside
+  Telegram. Dokumentuota `.env.example`, `README.md`, `AGENTS.md`.
 - **`WIPE_DB_ON_START` env var** (default `false`) - operacinis jungiklis
   `seen.sqlite3` išvalymui per Railway **Variables**, be shell prieigos ar
   `Start Command` override'o. `main.py` pradžioje (po `settings.state_dir.mkdir`)

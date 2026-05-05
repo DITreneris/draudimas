@@ -43,6 +43,15 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 | `TELEGRAM_ENABLED` | `false` | Ar siųsti pranešimą į Telegram apie kiekvieną naują pirkimą |
 | `TELEGRAM_BOT_TOKEN` | – | Bot token'as iš `@BotFather` (formatas `123:AAE...`) |
 | `TELEGRAM_CHAT_ID` | – | Asmeninio chat `chat_id` (gauk per `@userinfobot` arba `getUpdates`) |
+| `EMAIL_ENABLED` | `false` | Ar siųsti el. laišką apie kiekvieną naują pirkimą (SMTP) |
+| `SMTP_HOST` | – | Išsiuntimo serveris (pagal tavo pašto tiekėjo dokumentaciją) |
+| `SMTP_PORT` | `587` | `587` = STARTTLS, `465` = SSL (implicit) |
+| `SMTP_USER` | – | SMTP prisijungimo vardas (gali būti tuščias, jei serveris nereikalauja) |
+| `SMTP_PASSWORD` | – | SMTP slaptažodis / app password |
+| `EMAIL_FROM` | – | Siuntėjo adresas (`From`), pvz. `info@example.com` |
+| `EMAIL_TO` | – | Gavėjai, kableliais atskirti (CSV) |
+
+Siuntimas iš savo domeno paprastai reikalauja tinkamo **SPF/DKIM** DNS įrašų pas domeno / SMTP tiekėją — konfigūruok ten, ne agento kode.
 
 Pavyzdys: `.env.example`.
 

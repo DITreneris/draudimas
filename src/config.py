@@ -59,6 +59,14 @@ class Settings:
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
 
+    email_enabled: bool = False
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    email_from: str = ""
+    email_to: list[str] = field(default_factory=list)
+
     @property
     def db_path(self) -> Path:
         return self.state_dir / "seen.sqlite3"
@@ -92,4 +100,11 @@ def load_settings() -> Settings:
         telegram_enabled=_get_bool("TELEGRAM_ENABLED", False),
         telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", "").strip(),
         telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", "").strip(),
+        email_enabled=_get_bool("EMAIL_ENABLED", False),
+        smtp_host=os.getenv("SMTP_HOST", "").strip(),
+        smtp_port=_get_int("SMTP_PORT", 587),
+        smtp_user=os.getenv("SMTP_USER", "").strip(),
+        smtp_password=os.getenv("SMTP_PASSWORD", "").strip(),
+        email_from=os.getenv("EMAIL_FROM", "").strip(),
+        email_to=_get_list("EMAIL_TO", []),
     )

@@ -1,11 +1,13 @@
-"""Pranesimai apie naujus skelbimus (konsole + failas + Telegram)."""
+"""Pranesimai apie naujus skelbimus (konsole + failas + Telegram + SMTP)."""
 from __future__ import annotations
 
 import html
 import json
 import logging
+import smtplib
 import urllib.error
 import urllib.request
+from email.message import EmailMessage
 from pathlib import Path
 
 from .scraper import ResultItem
@@ -109,4 +111,76 @@ class TelegramNotifier:
         except Exception:
             logger.exception(
                 "Telegram sendMessage nepavyko (chat_id=%s)", self.chat_id
+            )
+
+
+class SmtpEmailNotifier:
+    """Send one plain-text email per new tender via SMTP (stdlib smtplib).
+
+    Connection: port 465 uses SMTP_SSL; other ports use SMTP + STARTTLS.
+    Errors are logged only; they never abort run_cycle. Secrets are never logged.
+    """
+
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        mail_from: str,
+        mail_to: list[str],
+        user: str = "",
+        password: str = "",
+        timeout: int = 30,
+    ) -> None:
+        self.host = host
+        self.port = port
+        self.mail_from = mail_from
+        self.mail_to = mail_to
+        self.user = user
+        self.password = password
+        self.timeout = timeout
+
+    def notify(self, keyword: str, item: ResultItem) -> None:
+        msg = self._build_message(keyword, item)
+        self._send(msg)
+
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+        for item in items:
+            self.notify(keyword, item)
+
+    def _build_message(self, keyword: str, item: ResultItem) -> EmailMessage:
+        msg = EmailMessage()
+        msg["Subject"] = f"[Viesieji pirkimai] naujas: {item.pirkimo_id}"
+        msg["From"] = self.mail_from
+        msg["To"] = ", ".join(self.mail_to)
+        body_lines = [
+            f"Raktazodis: {keyword}",
+            f"Pirkimo ID: {item.pirkimo_id}",
+            f"Pavadinimas: {item.title or '-'}",
+            f"Organizacija: {item.organization or '-'}",
+            f"Paskelbta: {item.published_at or '-'}",
+            f"URL: {item.url or '-'}",
+        ]
+        msg.set_content("\n".join(body_lines))
+        return msg
+
+    def _send(self, message: EmailMessage) -> None:
+        try:
+            if self.port == 465:
+                with smtplib.SMTP_SSL(
+                    self.host, self.port, timeout=self.timeout
+                ) as smtp:
+                    if self.user:
+                        smtp.login(self.user, self.password)
+                    smtp.send_message(message)
+            else:
+                with smtplib.SMTP(self.host, self.port, timeout=self.timeout) as smtp:
+                    smtp.starttls()
+                    if self.user:
+                        smtp.login(self.user, self.password)
+                    smtp.send_message(message)
+        except Exception:
+            logger.exception(
+                "SMTP send_message nepavyko (host=%s port=%s)",
+                self.host,
+                self.port,
             )
