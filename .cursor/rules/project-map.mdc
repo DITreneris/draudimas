@@ -14,7 +14,7 @@ This is the **viesiejipirkimai.lt hourly agent** — a Python worker that perfor
 - `src/config.py` — `Settings` frozen dataclass + env parsers (`_get_bool/int/list`).
 - `src/scraper.py` — `search_keyword(kw) -> list[ResultItem]`; Playwright Chromium sync.
 - `src/db.py` — `SeenStore` (SQLite), `pirkimo_id` PK, `filter_new`/`mark_seen`/`count`.
-- `src/notifier.py` — `ConsoleLogNotifier` (stdout + `notifications.log`); optional `TelegramNotifier`, `SmtpEmailNotifier`.
+- `src/notifier.py` — `ConsoleLogNotifier` (stdout + `notifications.log`); optional `TelegramNotifier`, `ResendEmailNotifier` or `SmtpEmailNotifier`.
 - `src/exporter.py` — `build_payload` / `write_local` / `push_to_github` / `export_and_push`. `urllib` only.
 - `src/agent.py` — `run_cycle(settings)`: search -> dedup -> notify -> mark_seen -> export.
 - `docs/` — vanilla HTML/CSS/JS GitHub Pages frontend.

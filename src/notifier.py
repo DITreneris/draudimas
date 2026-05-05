@@ -1,4 +1,4 @@
-"""Pranesimai apie naujus skelbimus (konsole + failas + Telegram + SMTP)."""
+"""Pranesimai apie naujus skelbimus (konsole + failas + Telegram + el. pastas)."""
 from __future__ import annotations
 
 import html
@@ -13,6 +13,21 @@ from pathlib import Path
 from .scraper import ResultItem
 
 logger = logging.getLogger(__name__)
+
+
+def _email_subject_and_plain_body(keyword: str, item: ResultItem) -> tuple[str, str]:
+    subject = f"[Viesieji pirkimai] naujas: {item.pirkimo_id}"
+    body = "\n".join(
+        [
+            f"Raktazodis: {keyword}",
+            f"Pirkimo ID: {item.pirkimo_id}",
+            f"Pavadinimas: {item.title or '-'}",
+            f"Organizacija: {item.organization or '-'}",
+            f"Paskelbta: {item.published_at or '-'}",
+            f"URL: {item.url or '-'}",
+        ]
+    )
+    return subject, body
 
 
 class ConsoleLogNotifier:
@@ -114,6 +129,54 @@ class TelegramNotifier:
             )
 
 
+class ResendEmailNotifier:
+    """Send email via Resend REST API (HTTPS, urllib). API key is never logged."""
+
+    API_URL = "https://api.resend.com/emails"
+
+    def __init__(
+        self,
+        api_key: str,
+        mail_from: str,
+        mail_to: list[str],
+        timeout: int = 30,
+    ) -> None:
+        self.api_key = api_key
+        self.mail_from = mail_from
+        self.mail_to = mail_to
+        self.timeout = timeout
+
+    def notify(self, keyword: str, item: ResultItem) -> None:
+        subject, text = _email_subject_and_plain_body(keyword, item)
+        self._send(subject, text)
+
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+        for item in items:
+            self.notify(keyword, item)
+
+    def _send(self, subject: str, text: str) -> None:
+        payload = {
+            "from": self.mail_from,
+            "to": self.mail_to,
+            "subject": subject,
+            "text": text,
+        }
+        body = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(self.API_URL, data=body, method="POST")
+        req.add_header("Authorization", f"Bearer {self.api_key}")
+        req.add_header("Content-Type", "application/json")
+        req.add_header("User-Agent", "viesiejipirkimai-agent")
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                if resp.status not in (200, 201):
+                    logger.warning("Resend emails API netiketas status=%s", resp.status)
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="replace")
+            logger.error("Resend emails API HTTP %s body=%s", e.code, err_body)
+        except Exception:
+            logger.exception("Resend emails API nepavyko")
+
+
 class SmtpEmailNotifier:
     """Send one plain-text email per new tender via SMTP (stdlib smtplib).
 
@@ -148,19 +211,12 @@ class SmtpEmailNotifier:
             self.notify(keyword, item)
 
     def _build_message(self, keyword: str, item: ResultItem) -> EmailMessage:
+        subject, plain = _email_subject_and_plain_body(keyword, item)
         msg = EmailMessage()
-        msg["Subject"] = f"[Viesieji pirkimai] naujas: {item.pirkimo_id}"
+        msg["Subject"] = subject
         msg["From"] = self.mail_from
         msg["To"] = ", ".join(self.mail_to)
-        body_lines = [
-            f"Raktazodis: {keyword}",
-            f"Pirkimo ID: {item.pirkimo_id}",
-            f"Pavadinimas: {item.title or '-'}",
-            f"Organizacija: {item.organization or '-'}",
-            f"Paskelbta: {item.published_at or '-'}",
-            f"URL: {item.url or '-'}",
-        ]
-        msg.set_content("\n".join(body_lines))
+        msg.set_content(plain)
         return msg
 
     def _send(self, message: EmailMessage) -> None:

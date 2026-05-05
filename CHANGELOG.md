@@ -13,6 +13,9 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   naudinga ir kai MCR grąžina 429 ant seno tag'o — perbūkinti deploy).
 
 ### Added
+- **Resend el. paštas (HTTPS):** `RESEND_API_KEY` + `EMAIL_FROM` / `EMAIL_TO` — naudojamas
+  prieš SMTP, jei raktas nurodytas (`ResendEmailNotifier`, `urllib`). Tinka Railway,
+  kur outbound SMTP 587 dažnai blokuojamas.
 - **SMTP el. pašto pranešimai** (optional, stdlib `smtplib`): `SmtpEmailNotifier` in
   `src/notifier.py`, env `EMAIL_ENABLED`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`,
   `SMTP_PASSWORD`, `EMAIL_FROM`, `EMAIL_TO` (CSV); wired in `src/agent.py` alongside

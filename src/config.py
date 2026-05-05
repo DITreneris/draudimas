@@ -60,6 +60,7 @@ class Settings:
     telegram_chat_id: str = ""
 
     email_enabled: bool = False
+    resend_api_key: str = ""
     smtp_host: str = ""
     smtp_port: int = 587
     smtp_user: str = ""
@@ -101,6 +102,7 @@ def load_settings() -> Settings:
         telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", "").strip(),
         telegram_chat_id=os.getenv("TELEGRAM_CHAT_ID", "").strip(),
         email_enabled=_get_bool("EMAIL_ENABLED", False),
+        resend_api_key=os.getenv("RESEND_API_KEY", "").strip(),
         smtp_host=os.getenv("SMTP_HOST", "").strip(),
         smtp_port=_get_int("SMTP_PORT", 587),
         smtp_user=os.getenv("SMTP_USER", "").strip(),

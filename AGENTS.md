@@ -18,7 +18,7 @@ run_once.py        -> Smoke test: single run_cycle, no scheduler
 src/config.py      -> Settings (frozen dataclass) + load_settings() from env
 src/scraper.py     -> Playwright (Chromium sync) -> ResultItem list
 src/db.py          -> SeenStore (SQLite, pirkimo_id PK)
-src/notifier.py    -> ConsoleLogNotifier; optional TelegramNotifier; optional SmtpEmailNotifier (SMTP, stdlib)
+src/notifier.py    -> ConsoleLogNotifier; optional TelegramNotifier; optional ResendEmailNotifier (urllib) or SmtpEmailNotifier (stdlib)
 src/exporter.py    -> SQLite -> items.json -> GitHub REST API (urllib only)
 src/agent.py       -> run_cycle() orchestrates everything
 docs/              -> Vanilla HTML/CSS/JS GitHub Pages frontend
@@ -83,7 +83,7 @@ search_keyword(kw) -> [ResultItem]
 - **Python:** 3.13 (per `__pycache__/*.cpython-313.pyc`).
 - **Railway:** `STATE_DIR=/data` (mounted volume). Locally `./state`.
 - **GitHub Pages:** `docs/` folder on `main` branch; `items.json` is committed via the agent's REST call.
-- **SMTP email:** optional (`EMAIL_ENABLED`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM`, `EMAIL_TO` CSV). Deliverability (SPF/DKIM) is configured at the DNS / mail provider, not in this repo.
+- **Email:** optional — **Resend** (`RESEND_API_KEY` + `EMAIL_FROM` + `EMAIL_TO`) preferred on Railway (HTTPS); else **SMTP** (`SMTP_*`, same `EMAIL_FROM`/`EMAIL_TO`). Never log `RESEND_API_KEY` or passwords.
 
 ## 8. What **not** to do
 

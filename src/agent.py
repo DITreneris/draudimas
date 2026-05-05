@@ -7,7 +7,12 @@ from datetime import datetime
 from .config import Settings
 from .db import SeenStore
 from .exporter import GithubConfig, export_and_push
-from .notifier import ConsoleLogNotifier, SmtpEmailNotifier, TelegramNotifier
+from .notifier import (
+    ConsoleLogNotifier,
+    ResendEmailNotifier,
+    SmtpEmailNotifier,
+    TelegramNotifier,
+)
 from .scraper import ResultItem, search_keyword
 
 logger = logging.getLogger(__name__)
@@ -28,9 +33,20 @@ def run_cycle(settings: Settings) -> dict[str, int]:
         )
         logger.info("Telegram notifier aktyvus (chat_id=%s)", settings.telegram_chat_id)
 
-    email_notifier: SmtpEmailNotifier | None = None
+    email_notifier: ResendEmailNotifier | SmtpEmailNotifier | None = None
     if settings.email_enabled:
         if (
+            settings.resend_api_key
+            and settings.email_from
+            and settings.email_to
+        ):
+            email_notifier = ResendEmailNotifier(
+                api_key=settings.resend_api_key,
+                mail_from=settings.email_from,
+                mail_to=list(settings.email_to),
+            )
+            logger.info("Resend email notifier aktyvus")
+        elif (
             settings.smtp_host
             and settings.email_from
             and settings.email_to
@@ -46,8 +62,8 @@ def run_cycle(settings: Settings) -> dict[str, int]:
             logger.info("SMTP email notifier aktyvus (host=%s)", settings.smtp_host)
         else:
             logger.warning(
-                "EMAIL_ENABLED=true bet truksta SMTP_HOST, EMAIL_FROM arba EMAIL_TO "
-                "- el. pastas praleidziamas"
+                "EMAIL_ENABLED=true bet truksta RESEND_API_KEY arba SMTP_HOST, "
+                "ir EMAIL_FROM / EMAIL_TO - el. pastas praleidziamas"
             )
 
     started = datetime.now()
