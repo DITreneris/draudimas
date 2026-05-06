@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-05-06T06:00:03+00:00",
+  "generated_at": "2026-05-06T07:00:07+00:00",
   "stats": {
-    "total_items": 10,
+    "total_items": 11,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7724378",
+      "title": "Statinio statybos techninio prižiūrėtojo civilinės atsakomybės privalomojo draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7724378",
+      "first_seen_at": "2026-05-06T07:00:07.192872+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/05/2026 09:27:34",
+      "organization": "AB „Kauno energija“ (PV)"
+    },
     {
       "pirkimo_id": "7648606",
       "title": "736084 - Draudimo paslaugos",
