@@ -1,12 +1,21 @@
 {
-  "generated_at": "2026-05-06T10:00:14+00:00",
+  "generated_at": "2026-05-06T11:00:03+00:00",
   "stats": {
-    "total_items": 11,
+    "total_items": 12,
     "keywords": [
       "draudim"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7737295",
+      "title": "Bendrosios civilinės atsakomybės draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7737295",
+      "first_seen_at": "2026-05-06T11:00:03.910868+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/05/2026 13:57:21",
+      "organization": "UAB Marijampolės šilumos tinklai (PS)"
+    },
     {
       "pirkimo_id": "7724378",
       "title": "Statinio statybos techninio prižiūrėtojo civilinės atsakomybės privalomojo draudimo paslauga",
