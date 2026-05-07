@@ -1,17 +1,99 @@
 {
-  "generated_at": "2026-05-07T06:00:03+00:00",
+  "generated_at": "2026-05-07T06:04:22+00:00",
   "stats": {
-    "total_items": 13,
+    "total_items": 19,
     "keywords": [
-      "draudim"
+      "draudim",
+      "kasko"
     ]
   },
   "items": [
     {
+      "pirkimo_id": "7242728",
+      "title": "Su transportu susijęs draudimas (Kasko)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7242728",
+      "first_seen_at": "2026-05-07T06:04:22.092151+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "02/04/2026 16:06:09",
+      "organization": "AB \"Panevėžio specialus autotransportas\""
+    },
+    {
+      "pirkimo_id": "7081465",
+      "title": "Kasko draudimas autobusams",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7081465",
+      "first_seen_at": "2026-05-07T06:04:22.084926+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "24/03/2026 15:54:44",
+      "organization": "Uždaroji akcinė bendrovė Tauragės autobusų parkas (PV)"
+    },
+    {
+      "pirkimo_id": "7058392",
+      "title": "TRANSPORTO PRIEMONIŲ (KASKO) DRAUDIMO PASLAUGOS",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7058392",
+      "first_seen_at": "2026-05-07T06:04:22.079479+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "23/03/2026 14:33:14",
+      "organization": "AB \"Panevėžio specialus autotransportas\""
+    },
+    {
+      "pirkimo_id": "6702187",
+      "title": "Lengvųjų ir krovininių iki 3,5 t. automobilių KASKO draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6702187",
+      "first_seen_at": "2026-05-07T06:04:22.070216+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "05/03/2026 05:11:02",
+      "organization": "Valstybės įmonė Valstybinių miškų urėdija (PV)"
+    },
+    {
+      "pirkimo_id": "6797596",
+      "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomo, KASKO ir bendrovės darbuotojų nuo nelaimingų atsitikimų draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6797596",
+      "first_seen_at": "2026-05-07T06:04:22.064437+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "04/03/2026 13:57:54",
+      "organization": "UAB \"Ukmergės vandenys\" (PV)"
+    },
+    {
+      "pirkimo_id": "6462325",
+      "title": "Transporto priemonių KASKO draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6462325",
+      "first_seen_at": "2026-05-07T06:04:22.056646+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "10/02/2026 05:21:31",
+      "organization": "Greitosios medicinos pagalbos tarnyba (PV)"
+    },
+    {
+      "pirkimo_id": "6344828",
+      "title": "Transporto priemonių valdytojų civilinės atsakomybės ir KASKO draudimo paslaugos (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6344828",
+      "first_seen_at": "2026-05-07T06:04:22.048732+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "29/01/2026 11:32:16",
+      "organization": "VšĮ Klaipėdos universiteto ligoninė (Perkančioji organizacija)"
+    },
+    {
+      "pirkimo_id": "6288730",
+      "title": "Trasporto priemonių TPVPCAD ir KASKO draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6288730",
+      "first_seen_at": "2026-05-07T06:04:22.042562+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "25/01/2026 23:14:26",
+      "organization": "Viešoji įstaiga Ekoagros"
+    },
+    {
+      "pirkimo_id": "6273620",
+      "title": "Transporto priemonių kasko ir mobiliosios technikos draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6273620",
+      "first_seen_at": "2026-05-07T06:04:22.032795+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "23/01/2026 09:44:03",
+      "organization": "VšĮ Šiaulių regiono atliekų tvarkymo centras (PV)"
+    },
+    {
       "pirkimo_id": "7740086",
       "title": "Transporto priemonių valdytojų Kasko draudimo paslaugos",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7740086",
-      "first_seen_at": "2026-05-07T04:00:03.824161+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.559159+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "07/05/2026 05:11:08",
       "organization": "UAB \"Kauno švara\""
@@ -20,7 +102,7 @@
       "pirkimo_id": "7737295",
       "title": "Bendrosios civilinės atsakomybės draudimas",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7737295",
-      "first_seen_at": "2026-05-06T11:00:03.910868+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.553917+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "06/05/2026 13:57:21",
       "organization": "UAB Marijampolės šilumos tinklai (PS)"
@@ -29,7 +111,7 @@
       "pirkimo_id": "7724378",
       "title": "Statinio statybos techninio prižiūrėtojo civilinės atsakomybės privalomojo draudimo paslauga",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7724378",
-      "first_seen_at": "2026-05-06T07:00:07.192872+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.546506+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "06/05/2026 09:27:34",
       "organization": "AB „Kauno energija“ (PV)"
@@ -38,7 +120,7 @@
       "pirkimo_id": "7648606",
       "title": "736084 - Draudimo paslaugos",
       "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=7648606",
-      "first_seen_at": "2026-05-05T03:59:08.642438+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.540899+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "04/05/2026 11:35:25",
       "organization": "VšĮ Vilniaus pirkimų agentūra"
@@ -47,7 +129,7 @@
       "pirkimo_id": "7675869",
       "title": "Rinkos konsultacija dėl rizikų, susijusių su apdraustųjų civiline atsakomybe, draudimo paslaugų",
       "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7675869",
-      "first_seen_at": "2026-05-05T03:59:08.639519+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.535146+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "30/04/2026 16:38:30",
       "organization": "UAB ILTE"
@@ -56,7 +138,7 @@
       "pirkimo_id": "7673881",
       "title": "\"Bendrosios civilinės atsakomybės draudimas (Nr. 10786)\" atviras konkursas (supaprastintas)",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7673881",
-      "first_seen_at": "2026-05-05T03:59:08.636665+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.529554+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "30/04/2026 15:17:59",
       "organization": "VšĮ Respublikinė Vilniaus universitetinė ligoninė (PV)"
@@ -65,7 +147,7 @@
       "pirkimo_id": "7648321",
       "title": "Draudimo paslaugos (skelbiama apklausa)",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7648321",
-      "first_seen_at": "2026-05-05T03:59:08.633461+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.521875+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "30/04/2026 11:40:44",
       "organization": "UAB \"Utenos vandenys\" (PV)"
@@ -74,7 +156,7 @@
       "pirkimo_id": "7645365",
       "title": "Mažos vertės pirkimas (Transporto priemonių draudimo paslaugos) Transporto priemonių valdytojų civilinės atsakomybės draudimo paslaugos",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7645365",
-      "first_seen_at": "2026-05-05T03:59:08.630228+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.516062+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "29/04/2026 12:42:19",
       "organization": "UAB Trakų paslaugos"
@@ -83,7 +165,7 @@
       "pirkimo_id": "7594458",
       "title": "DARBUOTOJŲ IR PERVEŽAMŲ KELEIVIŲ NUO NELAIMINGŲ ATSITIKIMŲ DRAUDIMO PASLAUGOS (SKELBIAMA APKLAUSA)",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7594458",
-      "first_seen_at": "2026-05-05T03:59:08.627051+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.510224+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "27/04/2026 14:28:39",
       "organization": "Savivaldybės įmonė Kaišiadorių paslaugos (PV)"
@@ -92,37 +174,10 @@
       "pirkimo_id": "7578603",
       "title": "Draudimo paslaugos",
       "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7578603",
-      "first_seen_at": "2026-05-05T03:59:08.623549+00:00",
+      "first_seen_at": "2026-05-07T06:04:09.500424+00:00",
       "keyword_first_seen": "draudim",
       "published_at": "24/04/2026 18:58:31",
       "organization": "Energy cells UAB (PV)"
-    },
-    {
-      "pirkimo_id": "7541479",
-      "title": "Bendrosios civilinės atsakomybės draudimas (Supaprastintas atviras konkursas)",
-      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7541479",
-      "first_seen_at": "2026-05-05T03:59:08.619453+00:00",
-      "keyword_first_seen": "draudim",
-      "published_at": "23/04/2026 10:31:03",
-      "organization": "UAB Kauno vandenys (PV)"
-    },
-    {
-      "pirkimo_id": "7542229",
-      "title": "Rinkos konsultacija dėl draudimo paslaugų pirkimo",
-      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7542229",
-      "first_seen_at": "2026-05-05T03:59:08.616031+00:00",
-      "keyword_first_seen": "draudim",
-      "published_at": "23/04/2026 10:27:28",
-      "organization": "AB Lietuvos radijo ir televizijos centras"
-    },
-    {
-      "pirkimo_id": "7512150",
-      "title": "Rinkos konsultacija. (PU-15034/26) Įvairios draudimo paslaugos",
-      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7512150",
-      "first_seen_at": "2026-05-05T03:59:08.611972+00:00",
-      "keyword_first_seen": "draudim",
-      "published_at": "22/04/2026 19:00:57",
-      "organization": "AB „Kelių priežiūra“ (PV)"
     }
   ]
 }
