@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-08T18:00:04+00:00",
+  "generated_at": "2026-05-11T04:00:06+00:00",
   "stats": {
-    "total_items": 20,
+    "total_items": 21,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7593798",
+      "title": "Transporto priemonių draudimo paslaugų užsakymai per CPO LT elektroninį katalogą",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=7593798",
+      "first_seen_at": "2026-05-11T04:00:04.078807+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "11/05/2026 05:11:02",
+      "organization": "Viešoji įstaiga CPO LT"
+    },
     {
       "pirkimo_id": "7785121",
       "title": "Sveikatos draudimo paslaugos (SAK)",
