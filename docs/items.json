@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-11T14:00:04+00:00",
+  "generated_at": "2026-05-11T15:00:08+00:00",
   "stats": {
-    "total_items": 21,
+    "total_items": 22,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7808355",
+      "title": "Rinkos konsultacija dėl Turto draudimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7808355",
+      "first_seen_at": "2026-05-11T15:00:06.289663+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "11/05/2026 17:13:54",
+      "organization": "AB „Miesto gijos“ (PV)"
+    },
     {
       "pirkimo_id": "7593798",
       "title": "Transporto priemonių draudimo paslaugų užsakymai per CPO LT elektroninį katalogą",
