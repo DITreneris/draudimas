@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-12T06:00:05+00:00",
+  "generated_at": "2026-05-12T07:00:06+00:00",
   "stats": {
-    "total_items": 22,
+    "total_items": 23,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7814893",
+      "title": "Darbuotojų draudimas nuo nelaimingų atsitikimų",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7814893",
+      "first_seen_at": "2026-05-12T07:00:04.113624+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/05/2026 09:20:15",
+      "organization": "UAB \"Pieno tyrimai\" (PV)"
+    },
     {
       "pirkimo_id": "7808355",
       "title": "Rinkos konsultacija dėl Turto draudimo",
