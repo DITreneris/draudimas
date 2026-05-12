@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-05-12T07:00:06+00:00",
+  "generated_at": "2026-05-12T08:00:08+00:00",
   "stats": {
-    "total_items": 23,
+    "total_items": 25,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7819739",
+      "title": "TAURAGĖS RAJONO SAVIVALDYBĖS ADMINISTRACIJOS, SENIŪNIJŲ IR BIUDŽETINIŲ ĮSTAIGŲ TURTO DRAUDIMAS (SKELBIAMA APKLAUSA)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7819739",
+      "first_seen_at": "2026-05-12T08:00:06.170305+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/05/2026 10:54:51",
+      "organization": "Tauragės rajono savivaldybės administracija"
+    },
+    {
+      "pirkimo_id": "7809287",
+      "title": "PANEVĖŽIO MIESTO SAVIVALDYBĖS 29 IKIMOKYKLINIO UGDYMO ĮSTAIGŲ PASTATŲ, VIDAUS TURTO IR LAUKO STATINIŲ IR ĮRENGINIŲ DRAUDIMO PASLAUGOS",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7809287",
+      "first_seen_at": "2026-05-12T08:00:06.164294+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/05/2026 10:19:00",
+      "organization": "Panevėžio miesto savivaldybės administracija"
+    },
     {
       "pirkimo_id": "7814893",
       "title": "Darbuotojų draudimas nuo nelaimingų atsitikimų",
