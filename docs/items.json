@@ -1,13 +1,40 @@
 {
-  "generated_at": "2026-05-13T12:00:04+00:00",
+  "generated_at": "2026-05-13T13:00:10+00:00",
   "stats": {
-    "total_items": 27,
+    "total_items": 30,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7805534",
+      "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomasis draudimas (TPVCAPD) ir automobilių KASKO draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7805534",
+      "first_seen_at": "2026-05-13T13:00:07.863302+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/05/2026 15:56:44",
+      "organization": "Druskininkų švietimo centras (PV)"
+    },
+    {
+      "pirkimo_id": "7850939",
+      "title": "SAVANORIŠKO DARBUOTOJŲ SVEIKATOS DRAUDIMO PASLAUGŲ PIRKIMAS (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7850939",
+      "first_seen_at": "2026-05-13T13:00:07.855077+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/05/2026 15:09:36",
+      "organization": "UAB \"Utenos vandenys\" (PV)"
+    },
+    {
+      "pirkimo_id": "7851237",
+      "title": "Techninės pagalbos priemonių draudimo paslaugos ID 7851237",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7851237",
+      "first_seen_at": "2026-05-13T13:00:07.843260+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/05/2026 15:04:12",
+      "organization": "Techninės pagalbos priemonių centras"
+    },
     {
       "pirkimo_id": "7819295",
       "title": "VP-3438 Draudimo brokerio konsultavimo paslauga",
