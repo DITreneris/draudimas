@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-12T18:00:05+00:00",
+  "generated_at": "2026-05-13T04:00:06+00:00",
   "stats": {
-    "total_items": 26,
+    "total_items": 27,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7819295",
+      "title": "VP-3438 Draudimo brokerio konsultavimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7819295",
+      "first_seen_at": "2026-05-13T04:00:03.759022+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/05/2026 05:20:30",
+      "organization": "Valstybės įmonė Turto bankas (PV)"
+    },
     {
       "pirkimo_id": "7830253",
       "title": "Kultūros paskirties pastatų, administracinės paskirties pastatų ir gyvenamosios paskirties patalpų draudimas bei administracinės (..) ir gyvenamosios paskirties patalpų civilinės atsakomybės draudimas",
