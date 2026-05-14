@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-14T12:00:04+00:00",
+  "generated_at": "2026-05-14T13:00:10+00:00",
   "stats": {
-    "total_items": 30,
+    "total_items": 31,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7873086",
+      "title": "Verslo turto draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7873086",
+      "first_seen_at": "2026-05-14T13:00:08.258598+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "14/05/2026 15:11:37",
+      "organization": "Vilniaus Gedimino technikos universitetas (PV)"
+    },
     {
       "pirkimo_id": "7805534",
       "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomasis draudimas (TPVCAPD) ir automobilių KASKO draudimas",
