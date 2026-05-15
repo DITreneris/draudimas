@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-15T10:00:04+00:00",
+  "generated_at": "2026-05-15T11:00:05+00:00",
   "stats": {
-    "total_items": 33,
+    "total_items": 34,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7893017",
+      "title": "Turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7893017",
+      "first_seen_at": "2026-05-15T11:00:03.167017+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/05/2026 13:29:20",
+      "organization": "UAB Marijampolės šilumos tinklai (PS)"
+    },
     {
       "pirkimo_id": "7880685",
       "title": "RINKOS KONSULTACIJA \"TARPININKAVIMAS IR KONSULTAVIMAS DRAUDIMO KLAUSIMAIS\"",
