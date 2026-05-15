@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-15T05:00:04+00:00",
+  "generated_at": "2026-05-15T06:00:06+00:00",
   "stats": {
-    "total_items": 32,
+    "total_items": 33,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7880685",
+      "title": "RINKOS KONSULTACIJA \"TARPININKAVIMAS IR KONSULTAVIMAS DRAUDIMO KLAUSIMAIS\"",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7880685",
+      "first_seen_at": "2026-05-15T06:00:03.976317+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/05/2026 08:56:49",
+      "organization": "Lietuvos oro uostai (PV)"
+    },
     {
       "pirkimo_id": "7828990",
       "title": "Darbuotojų sveikatos draudimo paslaugos",
