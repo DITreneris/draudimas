@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-15T13:00:04+00:00",
+  "generated_at": "2026-05-15T14:00:07+00:00",
   "stats": {
-    "total_items": 34,
+    "total_items": 35,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7900799",
+      "title": "Nekilnojamojo turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7900799",
+      "first_seen_at": "2026-05-15T14:00:05.557259+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/05/2026 16:23:21",
+      "organization": "Lietuvos sveikatos mokslų universitetas (PV)"
+    },
     {
       "pirkimo_id": "7893017",
       "title": "Turto draudimo paslaugos",
