@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-14T18:00:04+00:00",
+  "generated_at": "2026-05-15T04:00:05+00:00",
   "stats": {
-    "total_items": 31,
+    "total_items": 32,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7828990",
+      "title": "Darbuotojų sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7828990",
+      "first_seen_at": "2026-05-15T04:00:02.921621+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/05/2026 05:11:41",
+      "organization": "Uždaroji akcinė bendrovė \"TOKSIKA\" (PV)"
+    },
     {
       "pirkimo_id": "7873086",
       "title": "Verslo turto draudimas",
