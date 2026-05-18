@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-05-18T11:00:04+00:00",
+  "generated_at": "2026-05-18T12:00:08+00:00",
   "stats": {
-    "total_items": 36,
+    "total_items": 38,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7915385",
+      "title": "Transporto priemonių valdytojų atsakomybės ir turto (Kasko) draudimo, darbuotojų nuo nelaimingų atsitikimų draudimo paslaugos (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7915385",
+      "first_seen_at": "2026-05-18T12:00:05.883143+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "18/05/2026 14:52:02",
+      "organization": "Rokiškio rajono savivaldybės administracija"
+    },
+    {
+      "pirkimo_id": "7890120",
+      "title": "Transporto priemonių privalomasis ir kasko draudimas (supaprastintas atviras konkursas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7890120",
+      "first_seen_at": "2026-05-18T12:00:05.874365+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "18/05/2026 14:03:03",
+      "organization": "UAB Kauno vandenys (PV)"
+    },
     {
       "pirkimo_id": "7891964",
       "title": "Turto draudimas",
