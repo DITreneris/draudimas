@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-15T18:00:04+00:00",
+  "generated_at": "2026-05-18T04:00:06+00:00",
   "stats": {
-    "total_items": 35,
+    "total_items": 36,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7891964",
+      "title": "Turto draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7891964",
+      "first_seen_at": "2026-05-18T04:00:03.985320+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "18/05/2026 05:31:28",
+      "organization": "AB „Miesto gijos“ (PV)"
+    },
     {
       "pirkimo_id": "7900799",
       "title": "Nekilnojamojo turto draudimo paslaugos",
