@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-21T09:00:04+00:00",
+  "generated_at": "2026-05-21T10:00:07+00:00",
   "stats": {
-    "total_items": 42,
+    "total_items": 43,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7983477",
+      "title": "NT Draudimas 2026 (supaprastintas atviras)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7983477",
+      "first_seen_at": "2026-05-21T10:00:05.127399+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "21/05/2026 12:12:54",
+      "organization": "Lietuvos sveikatos mokslų universitetas (PV)"
+    },
     {
       "pirkimo_id": "7975516",
       "title": "Rinkos konsultacija dėl turto draudimo (Vandenilio gamykla)",
