@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-21T05:00:04+00:00",
+  "generated_at": "2026-05-21T06:00:04+00:00",
   "stats": {
-    "total_items": 41,
+    "total_items": 42,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7975516",
+      "title": "Rinkos konsultacija dėl turto draudimo (Vandenilio gamykla)",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=7975516",
+      "first_seen_at": "2026-05-21T06:00:02.754064+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "21/05/2026 08:30:43",
+      "organization": "AB „Miesto gijos“ (PV)"
+    },
     {
       "pirkimo_id": "7962516",
       "title": "Draudimo tarpininko (brokerio) paslaugos, 3565/2026/TVPC (rinkos konsultacija)",
