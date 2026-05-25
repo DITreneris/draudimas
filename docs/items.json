@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-05-25T07:00:04+00:00",
+  "generated_at": "2026-05-25T08:00:13+00:00",
   "stats": {
-    "total_items": 43,
+    "total_items": 44,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8023420",
+      "title": "Rinkos konsultacija: Draudimo tarpininko (brokerio) paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8023420",
+      "first_seen_at": "2026-05-25T08:00:11.371546+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "25/05/2026 10:11:37",
+      "organization": "UAB Vilniaus viešasis transportas (PV)"
+    },
     {
       "pirkimo_id": "7983477",
       "title": "NT Draudimas 2026 (supaprastintas atviras)",
