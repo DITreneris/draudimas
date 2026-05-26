@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-05-26T06:00:05+00:00",
+  "generated_at": "2026-05-26T07:00:11+00:00",
   "stats": {
-    "total_items": 44,
+    "total_items": 46,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "6679414",
+      "title": "Transporto priemonių civilinės atsakomybės privalomo, KASKO ir bendrovės darbuotojų nuo nelaimingų atsitikimų draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=6679414",
+      "first_seen_at": "2026-05-26T07:00:11.140567+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "25/02/2026 09:34:44",
+      "organization": "UAB \"Ukmergės vandenys\" (PV)"
+    },
+    {
+      "pirkimo_id": "7429438",
+      "title": "Sveikatos draudimas darbuotojams (tarptautinis)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7429438",
+      "first_seen_at": "2026-05-26T07:00:07.074553+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/05/2026 09:46:50",
+      "organization": "AB „Miesto gijos“ (PV)"
+    },
     {
       "pirkimo_id": "8023420",
       "title": "Rinkos konsultacija: Draudimo tarpininko (brokerio) paslaugų pirkimas",
