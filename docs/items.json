@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-05-26T18:00:04+00:00",
+  "generated_at": "2026-05-27T04:00:05+00:00",
   "stats": {
-    "total_items": 46,
+    "total_items": 48,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "7974057",
+      "title": "(PU-15034/26) Įvairios draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7974057",
+      "first_seen_at": "2026-05-27T04:00:03.573774+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "27/05/2026 05:23:23",
+      "organization": "AB „Kelių priežiūra“ (PV)"
+    },
+    {
+      "pirkimo_id": "7929646",
+      "title": "Draudimo paslaugos/Insurance services",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=7929646",
+      "first_seen_at": "2026-05-27T04:00:03.569133+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "27/05/2026 05:21:32",
+      "organization": "Lietuvos oro uostai (PV)"
+    },
     {
       "pirkimo_id": "6679414",
       "title": "Transporto priemonių civilinės atsakomybės privalomo, KASKO ir bendrovės darbuotojų nuo nelaimingų atsitikimų draudimo paslaugų pirkimas",
