@@ -14,9 +14,13 @@ def main() -> int:
     setup_logging(settings.log_level)
     log = logging.getLogger("run_once")
     log.info("Vienkartinis ciklas: keywords=%s", settings.keywords)
-    summary = run_cycle(settings)
-    log.info("Apibendrinimas: %s", summary)
-    return 0
+    try:
+        result = run_cycle(settings)
+    except Exception:
+        log.exception("run_cycle nepavyko")
+        return 1
+    log.info("Apibendrinimas: %s", result.summary)
+    return 0 if result.ok else 1
 
 
 if __name__ == "__main__":

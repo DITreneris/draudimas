@@ -5,14 +5,14 @@ alwaysApply: true
 
 # Project map
 
-This is the **viesiejipirkimai.lt hourly agent** — a Python worker that performs a Playwright search every hour, dedups via SQLite, and pushes `items.json` to GitHub Pages. See `AGENTS.md` at the repo root for full context.
+This is the **viesiejipirkimai.lt agent** — a Python worker that runs **on weekdays (Mon–Fri), every hour from 07:00–21:00 Europe/Vilnius** (`CronTrigger` in `main.py`), performs a Playwright search per keyword, dedups via SQLite, and pushes `items.json` to GitHub Pages. See `AGENTS.md` at the repo root for full context. **Definition of Done:** `dod_system.md`.
 
 ## Modules (one line each)
 
-- `main.py` — APScheduler `BlockingScheduler` (tz `Europe/Vilnius`), `CronTrigger(day_of_week="mon-fri", hour="7-21", minute=0)`, SIGINT/SIGTERM handling. `CHECK_INTERVAL_MINUTES` deprecated (hardcoded grafikas).
+- `main.py` — APScheduler `BlockingScheduler` (tz `Europe/Vilnius`), `CronTrigger(day_of_week="mon-fri", hour="7-21", minute=0)`; kiekvienas slot'as — `run_once.py` subprocess su `CYCLE_MAX_SECONDS`. SIGINT/SIGTERM handling. `CHECK_INTERVAL_MINUTES` deprecated.
 - `run_once.py` — single `run_cycle`, smoke-test entry point.
 - `src/config.py` — `Settings` frozen dataclass + env parsers (`_get_bool/int/list`).
-- `src/scraper.py` — `search_keyword(kw) -> list[ResultItem]`; Playwright Chromium sync.
+- `search_keyword(kw) -> list[ResultItem]` with bounded retries on transient portal failures; Playwright Chromium sync.
 - `src/db.py` — `SeenStore` (SQLite), `pirkimo_id` PK, `filter_new`/`mark_seen`/`count`.
 - `src/notifier.py` — `ConsoleLogNotifier` (stdout + `notifications.log`); optional `TelegramNotifier`, `ResendEmailNotifier` or `SmtpEmailNotifier`.
 - `src/exporter.py` — `build_payload` / `write_local` / `push_to_github` / `export_and_push`. `urllib` only.

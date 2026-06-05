@@ -25,11 +25,18 @@ alwaysApply: false
 - URL normalization — **only** through `_absolute_url(href)`. No ad-hoc `BASE_URL + href`.
 - `inner_text() or ""` + `.strip()` — never assume Playwright returns non-None.
 
+## Resilience
+
+- `search_keyword` retries up to `SEARCH_MAX_ATTEMPTS` (default **3**) with `SEARCH_RETRY_DELAY_SEC` (default **15** s) sleep between attempts. Each attempt uses a **fresh** `sync_playwright()` + browser context.
+- Intermediate failures log at `WARNING`; the final failure propagates to `agent.py` as today.
+
 ## Don't
 
 - Don't switch `sync_playwright` to `async_playwright` — APScheduler's `BlockingScheduler` is synchronous.
 - Don't add a request/response cache — each cycle must be fresh and independent.
-- Don't reuse the browser context across keywords. `search_keyword` opens a fresh context each time so sessions don't bleed.
+- Don't reuse the browser context across keywords **or across retry attempts**
+  of the same keyword. Each `search_keyword` attempt opens a fresh context so
+  sessions don't bleed.
 
 ## When the portal changes
 

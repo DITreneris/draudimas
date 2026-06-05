@@ -1,20 +1,21 @@
-# AGENTS.md — viesiejipirkimai.lt hourly agent
+# AGENTS.md — viesiejipirkimai.lt agent (darbo dienos, kas valandą)
 
 This file is the shared guide for every AI agent (Cursor, CLI, Copilot, etc.) working on this repo. Keep the project **lean**: smallest possible delta, no extra dependencies, no feature creep.
 
 > Finer-grained Cursor rules live in `.cursor/rules/` (auto-applied via file globs).
+> **Definition of Done:** [`dod_system.md`](dod_system.md) — checklists per task type; mandatory before marking work complete.
 
 ---
 
 ## 1. Mission (one-liner)
 
-Every hour, poll `viesiejipirkimai.lt` using configured keyword fragments, detect **new** tenders by `Pirkimo ID`, emit a notification (log/file), and push `docs/items.json` to GitHub Pages for the frontend.
+On **weekdays (Mon–Fri), every hour from 07:00–21:00 Europe/Vilnius**, poll `viesiejipirkimai.lt` using configured keyword fragments, detect **new** tenders by `Pirkimo ID`, emit a notification (log/file, optional Telegram/email), and push `docs/items.json` to GitHub Pages for the frontend.
 
 ## 2. Architecture map
 
 ```
-main.py            -> APScheduler BlockingScheduler, CronTrigger mon-fri 7-21:00 Europe/Vilnius
-run_once.py        -> Smoke test: single run_cycle, no scheduler
+main.py            -> APScheduler; each slot runs run_once.py subprocess (CYCLE_MAX_SECONDS timeout)
+run_once.py        -> Single run_cycle + exit code; also invoked by main.py scheduler
 src/config.py      -> Settings (frozen dataclass) + load_settings() from env
 src/scraper.py     -> Playwright (Chromium sync) -> ResultItem list
 src/db.py          -> SeenStore (SQLite, pirkimo_id PK)
@@ -50,6 +51,8 @@ search_keyword(kw) -> [ResultItem]
 
 ## 4. Q&A workflow (how to answer questions about this repo)
 
+See **`dod_system.md` §3.1 (`QA`)** for the completion checklist.
+
 1. **Start from this file + `.cursor/rules/project-map.mdc`** to build the mental model.
 2. If the question is about a specific module — open **only that file** plus the matching rule.
 3. Reply in the user's language (Lithuanian by default, ASCII-safe; otherwise English).
@@ -58,16 +61,20 @@ search_keyword(kw) -> [ResultItem]
 
 ## 5. Code-change workflow (how to make changes)
 
-1. **Read the relevant `.cursor/rules/` files and this one.**
-2. **Smallest possible delta.** If the fix is <5 lines — don't create a new file, don't change public API.
-3. **Don't expand scope.** If you spot a bug six lines away — file a separate TODO; don't mix it with the current change.
-4. **Smoke test:** `python run_once.py` must complete at least one cycle successfully (HEADLESS=true, KEYWORDS=draudim).
-5. **Stdlib first.** A new dependency is allowed only when:
+Follow **[`dod_system.md`](dod_system.md)** for the full checklist. Summary:
+
+1. **Classify the task** (`FIX`, `FEAT`, `CFG`, `SCR`, `DB`, `UI`, `DOC`, `REL`) and apply every matching DoD section.
+2. **Read** the relevant `.cursor/rules/` files and this one. Never edit blind.
+3. **Smallest possible delta.** If the fix is <5 lines — don't create a new file, don't change public API.
+4. **Don't expand scope.** If you spot a bug six lines away — file a separate TODO; don't mix it with the current change.
+5. **Smoke test:** `python run_once.py` must complete at least one cycle successfully (HEADLESS=true, KEYWORDS=draudim); scraper/parser changes also require `python run_parser_check.py`.
+6. **Stdlib first.** A new dependency is allowed only when:
    - the functionality is substantial (not a helper),
    - a stdlib alternative would be >50 lines,
    - the `requirements.txt` entry is pinned (`==X.Y.Z`).
-6. **CHANGELOG.md** — every meaningful change goes under `[Unreleased]` (`### Added` / `### Changed` / `### Fixed`).
-7. **Lint / types:** no formal linter, but follow existing style (`from __future__ import annotations`, `logging.getLogger(__name__)`, frozen dataclasses, type annotations).
+7. **CHANGELOG.md** — every meaningful change goes under `[Unreleased]` (`### Added` / `### Changed` / `### Fixed`).
+8. **Lint / types:** no formal linter, but follow existing style (`from __future__ import annotations`, `logging.getLogger(__name__)`, frozen dataclasses, type annotations).
+9. **Done** only when all boxes in `dod_system.md` for your task type are satisfied — not when the diff merely applies.
 
 ## 6. When to escalate to the user
 
@@ -82,6 +89,8 @@ search_keyword(kw) -> [ResultItem]
 - **OS:** Windows 10, PowerShell. Commands e.g. `copy`, `.\\.venv\\Scripts\\activate`.
 - **Python:** 3.13 (per `__pycache__/*.cpython-313.pyc`).
 - **Railway:** `STATE_DIR=/data` (mounted volume). Locally `./state`.
+- **Hung cycle:** if Playwright hangs, subprocess is killed after `CYCLE_MAX_SECONDS`;
+  ops alerts via Telegram when `OPS_ALERT_ENABLED=true`. Check `$STATE_DIR/health.json`.
 - **GitHub Pages:** `docs/` folder on `main` branch; `items.json` is committed via the agent's REST call.
 - **Email:** optional — **Resend** (`RESEND_API_KEY` + `EMAIL_FROM` + `EMAIL_TO`) preferred on Railway (HTTPS); else **SMTP** (`SMTP_*`, same `EMAIL_FROM`/`EMAIL_TO`). Never log `RESEND_API_KEY` or passwords.
 

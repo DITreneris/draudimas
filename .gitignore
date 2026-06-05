@@ -14,3 +14,5 @@ state/
 .vscode/
 # Planning screenshots not referenced in code
 image*.png
+# Railway log exports (local analysis only)
+logs.*.json

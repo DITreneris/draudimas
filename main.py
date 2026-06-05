@@ -3,14 +3,17 @@ from __future__ import annotations
 
 import logging
 import signal
+import subprocess
 import sys
 from datetime import datetime, timezone
+from logging import Handler, LogRecord
+from pathlib import Path
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from src.agent import run_cycle
 from src.config import Settings, load_settings
+from src.notifier import send_ops_alert, telegram_from_settings
 
 # Fiksuotas tvarkarastis: darbo dienos (pir-pen), 7:00-21:00 Vilniaus laiku
 # (15 valandiniu slot'u x 5 dienos = 75 ciklai per savaite). Keiciant - cia.
@@ -18,6 +21,8 @@ SCHEDULE_TIMEZONE = "Europe/Vilnius"
 SCHEDULE_DAYS = "mon-fri"
 SCHEDULE_HOURS = "7-21"
 SCHEDULE_MINUTE = 0
+
+_RUN_ONCE_PATH = Path(__file__).resolve().parent / "run_once.py"
 
 
 def setup_logging(level: str) -> None:
@@ -37,11 +42,86 @@ def setup_logging(level: str) -> None:
     logging.getLogger("apscheduler").setLevel(logging.WARNING)
 
 
+class _SchedulerSkipAlertHandler(Handler):
+    """Ops alert when APScheduler skips a job (max_instances reached)."""
+
+    def __init__(self, settings: Settings) -> None:
+        super().__init__(level=logging.WARNING)
+        self._settings = settings
+        self._telegram = telegram_from_settings(
+            settings.telegram_enabled,
+            settings.telegram_bot_token,
+            settings.telegram_chat_id,
+        )
+
+    def emit(self, record: LogRecord) -> None:
+        try:
+            msg = record.getMessage()
+            if "maximum number of running instances reached" not in msg:
+                return
+            send_ops_alert(
+                state_path=self._settings.ops_alert_state_path,
+                ops_alert_enabled=self._settings.ops_alert_enabled,
+                telegram=self._telegram,
+                alert_key="scheduler_skip",
+                message=(
+                    "Scheduler praleido cikla: uzstriges run_cycle "
+                    "(max_instances=1). Jei kartojasi po deploy — restart."
+                ),
+            )
+        except Exception:
+            self.handleError(record)
+
+
 def _job(settings: Settings) -> None:
+    log = logging.getLogger(__name__)
+    telegram = telegram_from_settings(
+        settings.telegram_enabled,
+        settings.telegram_bot_token,
+        settings.telegram_chat_id,
+    )
     try:
-        run_cycle(settings)
+        proc = subprocess.run(
+            [sys.executable, str(_RUN_ONCE_PATH)],
+            timeout=settings.cycle_max_seconds,
+            check=False,
+        )
+    except subprocess.TimeoutExpired:
+        log.error(
+            "Ciklas virsijo %ds (subprocess timeout) — nutrauktas",
+            settings.cycle_max_seconds,
+        )
+        send_ops_alert(
+            state_path=settings.ops_alert_state_path,
+            ops_alert_enabled=settings.ops_alert_enabled,
+            telegram=telegram,
+            alert_key="cycle_timeout",
+            message=(
+                f"Ciklas virsijo {settings.cycle_max_seconds}s ir buvo nutrauktas "
+                "(subprocess timeout)"
+            ),
+        )
+        return
     except Exception:
-        logging.getLogger(__name__).exception("run_cycle nepavyko")
+        log.exception("Subprocess run_once nepavyko")
+        send_ops_alert(
+            state_path=settings.ops_alert_state_path,
+            ops_alert_enabled=settings.ops_alert_enabled,
+            telegram=telegram,
+            alert_key="subprocess_error",
+            message="Subprocess run_once nepavyko (exception)",
+        )
+        return
+
+    if proc.returncode != 0:
+        log.warning("run_once baigesi su exit code %d", proc.returncode)
+        send_ops_alert(
+            state_path=settings.ops_alert_state_path,
+            ops_alert_enabled=settings.ops_alert_enabled,
+            telegram=telegram,
+            alert_key="cycle_exit_fail",
+            message=f"Ciklas baigesi su klaida (exit code {proc.returncode})",
+        )
 
 
 def main() -> int:
@@ -51,6 +131,9 @@ def main() -> int:
 
     settings.state_dir.mkdir(parents=True, exist_ok=True)
 
+    skip_handler = _SchedulerSkipAlertHandler(settings)
+    logging.getLogger("apscheduler.scheduler").addHandler(skip_handler)
+
     if settings.wipe_db_on_start:
         settings.db_path.unlink(missing_ok=True)
         log.warning(
@@ -58,10 +141,21 @@ def main() -> int:
             "wipe'o, kad nebutu trinama kiekvieno restart'o metu.",
             settings.db_path,
         )
+        send_ops_alert(
+            state_path=settings.ops_alert_state_path,
+            ops_alert_enabled=settings.ops_alert_enabled,
+            telegram=telegram_from_settings(
+                settings.telegram_enabled,
+                settings.telegram_bot_token,
+                settings.telegram_chat_id,
+            ),
+            alert_key="wipe_db",
+            message="DB wiped — isjunk WIPE_DB_ON_START",
+        )
 
     log.info(
         "Start: keywords=%s schedule='%s %s:%02d %s' headless=%s state_dir=%s "
-        "run_on_start=%s",
+        "run_on_start=%s cycle_max_seconds=%d",
         settings.keywords,
         SCHEDULE_DAYS,
         SCHEDULE_HOURS,
@@ -70,6 +164,7 @@ def main() -> int:
         settings.headless,
         settings.state_dir,
         settings.run_on_start,
+        settings.cycle_max_seconds,
     )
     if settings.check_interval_minutes != 60:
         log.warning(

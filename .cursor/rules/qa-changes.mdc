@@ -1,13 +1,15 @@
 ---
-description: Q&A and code-change workflow - lean delta, smoke test, CHANGELOG
+description: Q&A and code-change workflow - lean delta, smoke test, CHANGELOG, DoD
 alwaysApply: true
 ---
 
 # Q&A + change workflow
 
+Canonical **Definition of Done:** [`dod_system.md`](../../dod_system.md) at repo root. Classify the task (`QA`, `FIX`, `FEAT`, `CFG`, `SCR`, `DB`, `UI`, `DOC`, `REL`) and satisfy every matching checklist before marking work complete.
+
 ## Q&A mode
 
-When the user asks a question, **don't start coding**:
+When the user asks a question, **don't start coding** (DoD: `dod_system.md` §3.1):
 
 1. Answer first; don't jump to edits.
 2. Cite files using the `src/file.py:Lx-Ly` format.
@@ -16,7 +18,7 @@ When the user asks a question, **don't start coding**:
 
 ## Change mode
 
-When the user asks for a code change:
+When the user asks for a code change (DoD: `dod_system.md` §3.2+):
 
 1. **Read** the relevant files first (with the Read tool). Never edit blind.
 2. **Smallest delta.** Don't redesign the public API (`Settings` fields, `run_cycle` signature, `items.json` schema) unless required.
@@ -31,8 +33,10 @@ When the user asks for a code change:
    ```
 
    Must finish with `log.info("Apibendrinimas: %s", summary)` and no `Exception` stack trace.
+   If `src/scraper.py` parser changed — also `python run_parser_check.py` (see `dod_system.md` §4).
 5. **CHANGELOG.md** — add a line under `## [Unreleased]` following Keep a Changelog (`### Added` / `### Changed` / `### Fixed` / `### Removed`).
-6. **AGENTS.md / rules** — if the change affects an invariant (new env var, new schema column, etc.), update the corresponding file.
+6. **AGENTS.md / rules / dod_system.md** — if the change affects an invariant (new env var, new schema column, etc.), update the corresponding file.
+7. **Done** only when all applicable `dod_system.md` checkboxes pass — not when the patch merely applies.
 
 ## Always avoid
 

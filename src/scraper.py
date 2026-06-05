@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 import re
+import time
 from dataclasses import dataclass
 from typing import Iterable
 
@@ -22,6 +23,10 @@ HEADER_TITLE = "Pavadinimas"
 HEADER_PIRKIMO_ID = "Pirkimo ID"
 HEADER_PUBLISHED = "Paskelbimo data"
 HEADER_ORG = "PV"
+
+SEARCH_MAX_ATTEMPTS = 3
+SEARCH_RETRY_DELAY_SEC = 15
+BROWSER_LAUNCH_TIMEOUT_MS = 60_000
 
 logger = logging.getLogger(__name__)
 
@@ -179,15 +184,38 @@ def _click_search(page: Page) -> None:
     raise SearchError(f"Nepavyko paspausti 'Ieskoti' mygtuko: {last_err}")
 
 
-def search_keyword(
+def _log_search_debug(page: Page, keyword: str, attempt: int) -> None:
+    if not logger.isEnabledFor(logging.DEBUG):
+        return
+    try:
+        logger.debug(
+            "Search debug keyword='%s' attempt=%d url=%s title=%r",
+            keyword,
+            attempt,
+            page.url,
+            page.title(),
+        )
+    except Exception:
+        logger.debug(
+            "Search debug keyword='%s' attempt=%d capture failed",
+            keyword,
+            attempt,
+            exc_info=True,
+        )
+
+
+def _search_keyword_once(
     keyword: str,
-    headless: bool = True,
-    max_results: int = 50,
-    timeout_ms: int = 30000,
+    *,
+    headless: bool,
+    max_results: int,
+    timeout_ms: int,
+    attempt: int,
 ) -> list[ResultItem]:
-    logger.info("Ieskau pagal keyword='%s' (max %d)", keyword, max_results)
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless)
+        browser = p.chromium.launch(
+            headless=headless, timeout=BROWSER_LAUNCH_TIMEOUT_MS
+        )
         context = browser.new_context(locale="lt-LT")
         page = context.new_page()
         page.set_default_timeout(timeout_ms)
@@ -219,9 +247,63 @@ def search_keyword(
             )
             logger.info("Keyword='%s': rasta %d rezultatu", keyword, len(items))
             return items
+        except Exception:
+            _log_search_debug(page, keyword, attempt)
+            raise
         finally:
-            context.close()
-            browser.close()
+            try:
+                context.close()
+            except Exception:
+                logger.warning(
+                    "context.close() nepavyko keyword='%s' attempt=%d",
+                    keyword,
+                    attempt,
+                    exc_info=True,
+                )
+            try:
+                browser.close()
+            except Exception:
+                logger.warning(
+                    "browser.close() nepavyko keyword='%s' attempt=%d",
+                    keyword,
+                    attempt,
+                    exc_info=True,
+                )
+
+
+def search_keyword(
+    keyword: str,
+    headless: bool = True,
+    max_results: int = 50,
+    timeout_ms: int = 30000,
+) -> list[ResultItem]:
+    logger.info("Ieskau pagal keyword='%s' (max %d)", keyword, max_results)
+    last_err: BaseException | None = None
+    for attempt in range(1, SEARCH_MAX_ATTEMPTS + 1):
+        try:
+            return _search_keyword_once(
+                keyword,
+                headless=headless,
+                max_results=max_results,
+                timeout_ms=timeout_ms,
+                attempt=attempt,
+            )
+        except Exception as e:
+            last_err = e
+            if attempt >= SEARCH_MAX_ATTEMPTS:
+                raise
+            logger.warning(
+                "Keyword='%s' paieska nepavyko (bandymas %d/%d): %s; "
+                "bandau po %ds",
+                keyword,
+                attempt,
+                SEARCH_MAX_ATTEMPTS,
+                e,
+                SEARCH_RETRY_DELAY_SEC,
+            )
+            time.sleep(SEARCH_RETRY_DELAY_SEC)
+    assert last_err is not None
+    raise last_err
 
 
 def search_keywords(

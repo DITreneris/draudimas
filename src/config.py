@@ -47,6 +47,9 @@ class Settings:
     run_on_start: bool = True
     wipe_db_on_start: bool = False
     log_level: str = "INFO"
+    cycle_max_seconds: int = 600
+    search_timeout_ms: int = 30000
+    ops_alert_enabled: bool = True
 
     github_enabled: bool = False
     github_token: str = ""
@@ -80,6 +83,14 @@ class Settings:
     def local_export_path(self) -> Path:
         return self.state_dir / "items.json"
 
+    @property
+    def health_path(self) -> Path:
+        return self.state_dir / "health.json"
+
+    @property
+    def ops_alert_state_path(self) -> Path:
+        return self.state_dir / "ops_alert_state.json"
+
 
 def load_settings() -> Settings:
     return Settings(
@@ -91,6 +102,9 @@ def load_settings() -> Settings:
         run_on_start=_get_bool("RUN_ON_START", True),
         wipe_db_on_start=_get_bool("WIPE_DB_ON_START", False),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
+        cycle_max_seconds=_get_int("CYCLE_MAX_SECONDS", 600),
+        search_timeout_ms=_get_int("SEARCH_TIMEOUT_MS", 30000),
+        ops_alert_enabled=_get_bool("OPS_ALERT_ENABLED", True),
         github_enabled=_get_bool("GITHUB_EXPORT_ENABLED", False),
         github_token=os.getenv("GITHUB_TOKEN", "").strip(),
         github_repo=os.getenv("GITHUB_REPO", "").strip(),

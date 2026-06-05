@@ -6,6 +6,7 @@ import hashlib
 import json
 import logging
 import sqlite3
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -14,6 +15,8 @@ from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+_GH_GET_RETRY_DELAY_SEC = 2
 
 
 @dataclass(frozen=True)
@@ -112,7 +115,7 @@ def _gh_request(
         return e.code, parsed
 
 
-def _get_remote_sha(cfg: GithubConfig) -> str | None:
+def _get_remote_sha(cfg: GithubConfig, *, retry: bool = True) -> str | None:
     url = (
         f"https://api.github.com/repos/{cfg.repo}/contents/{cfg.file_path}"
         f"?ref={cfg.branch}"
@@ -123,6 +126,9 @@ def _get_remote_sha(cfg: GithubConfig) -> str | None:
     if status == 404:
         return None
     logger.warning("GitHub GET %s status=%s body=%s", url, status, data)
+    if retry:
+        time.sleep(_GH_GET_RETRY_DELAY_SEC)
+        return _get_remote_sha(cfg, retry=False)
     return None
 
 
@@ -130,38 +136,58 @@ def push_to_github(
     payload: dict[str, Any],
     cfg: GithubConfig,
     commit_message: str | None = None,
-) -> bool:
-    """Push payload JSON to GitHub. Returns True if commited, False if skipped/failed."""
+) -> tuple[bool, int | None]:
+    """Push payload JSON to GitHub. Returns (committed, http_status)."""
     if not cfg.is_valid():
-        logger.debug("GitHub export neaktyvus arba n\u0117ra token/repo \u2014 praleid\u017eiu")
-        return False
+        logger.debug("GitHub export neaktyvus arba nera token/repo — praleidziu")
+        return False, None
 
     content_str = json.dumps(payload, ensure_ascii=False, indent=2)
     content_b64 = base64.b64encode(content_str.encode("utf-8")).decode("ascii")
 
-    sha = _get_remote_sha(cfg)
-
     url = f"https://api.github.com/repos/{cfg.repo}/contents/{cfg.file_path}"
-    body: dict[str, Any] = {
-        "message": commit_message
-        or f"chore(data): update items.json {payload.get('generated_at','')}",
-        "content": content_b64,
-        "branch": cfg.branch,
-    }
-    if sha:
-        body["sha"] = sha
+    msg = commit_message or (
+        f"chore(data): update items.json {payload.get('generated_at', '')}"
+    )
 
-    status, data = _gh_request("PUT", url, cfg.token, body)
+    def _attempt_put(sha: str | None) -> tuple[int, dict[str, Any]]:
+        body: dict[str, Any] = {
+            "message": msg,
+            "content": content_b64,
+            "branch": cfg.branch,
+        }
+        if sha:
+            body["sha"] = sha
+        return _gh_request("PUT", url, cfg.token, body)
+
+    sha = _get_remote_sha(cfg)
+    status, data = _attempt_put(sha)
     if status in (200, 201):
         commit = (data or {}).get("commit", {})
         logger.info(
             "GitHub push OK sha=%s message='%s'",
             commit.get("sha", "?")[:7],
-            body["message"],
+            msg,
         )
-        return True
+        return True, status
+
+    if status in (409, 422):
+        logger.warning(
+            "GitHub push status=%s — bandau is naujo su sha", status
+        )
+        sha = _get_remote_sha(cfg)
+        status, data = _attempt_put(sha)
+        if status in (200, 201):
+            commit = (data or {}).get("commit", {})
+            logger.info(
+                "GitHub push OK (retry) sha=%s message='%s'",
+                commit.get("sha", "?")[:7],
+                msg,
+            )
+            return True, status
+
     logger.error("GitHub push FAILED status=%s body=%s", status, data)
-    return False
+    return False, status
 
 
 def export_and_push(
@@ -169,7 +195,7 @@ def export_and_push(
     keywords: list[str],
     local_path: Path,
     cfg: GithubConfig,
-) -> bool:
+) -> tuple[bool, int | None]:
     payload = build_payload(db_path, keywords, cfg.max_items)
     write_local(payload, local_path)
     digest = hashlib.sha256(
@@ -182,5 +208,5 @@ def export_and_push(
         local_path,
     )
     if not cfg.is_valid():
-        return False
+        return False, None
     return push_to_github(payload, cfg)

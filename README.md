@@ -1,4 +1,4 @@
-# Viesiejipirkimai.lt hourly agent (MVP)
+# Viesiejipirkimai.lt agent (MVP)
 
 Agentas **darbo dienomis 7:00–21:00 Vilniaus laiku** (kas valandą, 15 ciklų/dieną)
 automatiškai patikrina [viesiejipirkimai.lt](https://viesiejipirkimai.lt/epps/home.do)
@@ -11,16 +11,32 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 
 - `main.py` – įėjimo taškas, paleidžia APScheduler su
   `CronTrigger(day_of_week="mon-fri", hour="7-21", minute=0, timezone="Europe/Vilnius")`.
-  Grafikas **hardcoded** — keičiama tik kode (`SCHEDULE_*` konstantos `main.py` viršuje).
+  Kiekvienas cron slot'as vykdo **`run_once.py` subprocess'e** su `CYCLE_MAX_SECONDS` timeout
+  (užkerta amžinai kabantį Playwright). Grafikas **hardcoded** — keičiama tik kode
+  (`SCHEDULE_*` konstantos `main.py` viršuje).
 - `src/scraper.py` – Playwright (Chromium) atidaro advanced search, įveda keyword į `#Title`,
   spaudžia „Ieškoti“, parsinamas rezultatų lentelę pagal stulpelių antraštes (`Pavadinimas`,
   `Pirkimo ID`, `Paskelbimo data`, `PV`).
 - `src/db.py` – SQLite `seen_items` lentelė, unikalus raktas `pirkimo_id`.
-- `src/notifier.py` – MVP pranešimas: `stdout` + `notifications.log`.
+- `src/notifier.py` – `ConsoleLogNotifier` (`stdout` + `notifications.log`);
+  pasirinktinai `TelegramNotifier`, `ResendEmailNotifier` (HTTPS) arba
+  `SmtpEmailNotifier` (`stdlib`).
 - `src/agent.py` – orkestruoja ciklą (paieška → dedup → pranešimas → įrašas į DB → export).
 - `src/exporter.py` – nuskaitys SQLite → sugeneruos `items.json` → push'ins į GitHub per REST API.
 - `run_once.py` – lokalus vienkartinis paleidimas (smoke test).
 - `docs/` – statinis frontend'as (HTML/CSS/JS) skirtas GitHub Pages.
+
+## Dokumentacija ir agentams
+
+| Failas | Paskirtis |
+| --- | --- |
+| [`README.md`](README.md) | Projekto aprašas, konfigūracija, deploy, RUNBOOK |
+| [`AGENTS.md`](AGENTS.md) | AI agentų gidas (misija, invariantai, workflow) |
+| [`dod_system.md`](dod_system.md) | **Definition of Done** — patikrinimo sąrašai pagal užduoties tipą |
+| [`.cursor/rules/`](.cursor/rules/) | Modulio taisyklės (auto taikomos pagal glob) |
+| [`CHANGELOG.md`](CHANGELOG.md) | Pakeitimų istorija (Keep a Changelog) |
+
+Prieš merge / deploy: atitinkamas DoD skyrius `dod_system.md` (`FIX`, `CFG`, `SCR`, `DB`, `UI`, `REL`, …).
 
 ## Konfigūracija (env vars)
 
@@ -34,6 +50,9 @@ push'ina `docs/items.json` į GitHub repo, o **GitHub Pages** statiškai rodo re
 | `RUN_ON_START` | `true` | Ar paleisti ciklą iš karto starto metu |
 | `WIPE_DB_ON_START` | `false` | **Operacinis**: įjungus į `true`, prieš scheduler'į ištrina `$STATE_DIR/seen.sqlite3` ir logina warning'ą. Po vienkartinės užduoties **būtina** išjungti atgal (arba pašalinti kintamąjį), kitaip DB bus trinama kiekvieno restart'o metu. |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` |
+| `CYCLE_MAX_SECONDS` | `600` | Maksimalus vieno ciklo (subprocess) trukmė sekundėmis; viršijus — procesas nutraukiamas |
+| `SEARCH_TIMEOUT_MS` | `30000` | Playwright puslapio operacijų timeout (ms) |
+| `OPS_ALERT_ENABLED` | `true` | Ar siųsti Telegram ops perspėjimus apie sistemos gedimus (ne nauji pirkimai) |
 | `GITHUB_EXPORT_ENABLED` | `false` | Ar po kiekvieno ciklo push'inti `items.json` į GitHub |
 | `GITHUB_TOKEN` | – | Fine-grained PAT (Contents: Read & Write teisė) |
 | `GITHUB_REPO` | – | `owner/repo`, pvz. `DITreneris/draudimas` |
@@ -72,6 +91,12 @@ Vienkartinis smoke-test (be scheduler'io):
 python run_once.py
 ```
 
+Offline parserio patikra (be portalo, tik lentelės HTML fixture):
+
+```bash
+python run_parser_check.py
+```
+
 Always-on režimas (darbo dienos 7:00–21:00 Vilniaus laiku):
 
 ```bash
@@ -81,7 +106,8 @@ python main.py
 ## Railway deploy
 
 1. Sukurk naują Railway projektą ir pasirink **Deploy from GitHub repo** (arba `railway up`).
-2. Railway automatiškai naudos `Dockerfile` (bazė: oficiali Playwright Python image).
+2. Railway automatiškai naudos `Dockerfile` (žr. `FROM` eilutę; šiuo metu
+   `mcr.microsoft.com/playwright/python:v1.51.0-jammy`).
 3. **Pridėk Volume**, prijungtą prie `/data` (čia bus SQLite ir log failas).
 4. **Service → Variables** suvesk:
    - `KEYWORDS=draudim,kasko`
@@ -127,6 +153,7 @@ arba norint atkurti teisingą `first_seen_at` tvarką), naudok operacinį
 | `first_seen_at` | TEXT | ISO datetime (UTC), kada pirmą kartą aptikta |
 | `keyword_first_seen` | TEXT | Kuris keyword pirmas aptiko |
 | `published_at` | TEXT | Paskelbimo data (kaip rodoma portale) |
+| `organization` | TEXT | Perkančios organizacijos (PV) pavadinimas, jei ištraukiama |
 
 ## Naujumo logika
 
@@ -136,13 +163,28 @@ arba norint atkurti teisingą `first_seen_at` tvarką), naudok operacinį
   Jei to nenori (pvz. jau turi istoriją), prieš paleisdami pirmą kartą „pre-seed'inkite“
   DB arba paleiskite su `LOG_LEVEL=WARNING` ir vėliau išvalykite log failą.
 
+## Operacinis RUNBOOK (gedimai)
+
+| Simptomas | Veiksmas |
+| --- | --- |
+| Dashboard / `items.json` neatsinaujina >2 val. | Railway **Restart deployment**; loguose ieškok `GitHub push FAILED` arba `Ciklas virsijo` |
+| Loguose `maximum number of running instances reached` | Užstrigęs ciklas; po šio deploy subprocess timeout turėtų užkirsti — vis tiek **restart** |
+| Daug „naujų“ Telegram iš karto | Patikrink ar `WIPE_DB_ON_START` netyčia `true` |
+| `GitHub push FAILED` / HTTP 401 | Atnaujink `GITHUB_TOKEN` (fine-grained PAT) Railway Variables |
+| Po deploy | **24h log watch**: jokio `Ciklas virsijo`, pakartotinio `scheduler skip`, `GitHub push FAILED` |
+
+Būsena: `$STATE_DIR/health.json` (`last_cycle_completed_at`, `last_export_ok`,
+`last_export_http_status`, `keywords_failed`, `zero_results_streak`).
+
 ## Žinomi apribojimai (MVP)
 
 - Nuskaito tik pirmą rezultatų puslapį (iki `MAX_RESULTS_PER_KEYWORD`). Jei naujų per
   valandą būna daugiau – padidinkite reikšmę arba pridėkite puslapiavimą.
-- Pranešimas į konsolę/log **ir** (pasirinktinai) į Telegram asmeninį chat'ą.
-  El. pašto integracija – ateityje.
-- Nėra rate-limit / retry su eksponentiniu backoff – tik paprastas `try/except`.
+- Pranešimas į konsolę/log **ir** (pasirinktinai) į Telegram; el. laiškas per
+  **Resend** (HTTPS) arba **SMTP** (`EMAIL_ENABLED` ir susiję kintamieji).
+- Scraperio **retry**: iki 3 bandymų su fiksuota pauze (`src/scraper.py`
+  konstantos `SEARCH_MAX_ATTEMPTS`, `SEARCH_RETRY_DELAY_SEC`) laikiniams portalo
+  sutrikimams; eksponentinio backoff nėra.
 - Selektoriai remiasi matomais stulpelių antraščių tekstais – jei portalas pervadins
   „Pirkimo ID“, reikės koreguoti `HEADER_*` konstantas `src/scraper.py` viršuje.
 
@@ -199,19 +241,21 @@ KEYWORDS=draudim,kasko,civilin,turto
 
 Po keitimo – restart service'ą (Railway padaro automatiškai po `Variables` update).
 
-## Telegram asmeninis pranešimas
+## Telegram pranešimai
 
 Agentas gali kiekvieną **naują** skelbimą (tą patį, kuris eina į `notifications.log`)
-iš karto nusiųsti į tavo asmeninį Telegram chat'ą. Naudojama tik stdlib `urllib`,
-jokių papildomų dependency'ų.
+iš karto nusiųsti į Telegram (asmeninis chat'as, grupė ar kanalas). Naudojama tik
+stdlib `urllib`, jokių papildomų dependency'ų.
 
 ### Setup (vienkartinis)
 
 1. **Sukurk botą:** Telegram'e atsidaryk [@BotFather](https://t.me/BotFather) → `/newbot`
    → duok pavadinimą → gauk `TELEGRAM_BOT_TOKEN` (formatas `1234567890:AAE...`).
 2. **Paspausk `/start` savo naujam botui** (kitaip jis tau negalės siųsti žinutės).
-3. **Gauk `chat_id`:** atidaryk [@userinfobot](https://t.me/userinfobot) → `/start` →
-   parodys tavo skaitinį `Id: 123456789`. Tai ir yra `TELEGRAM_CHAT_ID`.
+3. **Gauk `chat_id`:** asmeniniam chat'ui – [@userinfobot](https://t.me/userinfobot)
+   → `/start` → `Id: 123456789`. Grupėms / kanalams dažnai neigiamas skaičius
+   (pvz. `-100…`) – gauk per Bot API `getUpdates` po to, kai grupeje parašei
+   botui (arba per Telegram Web → grupės informacija).
 4. **Railway Variables** (arba lokaliam testui `.env`):
    - `TELEGRAM_ENABLED=true`
    - `TELEGRAM_BOT_TOKEN=<iš 1 žingsnio>`

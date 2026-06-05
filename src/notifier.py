@@ -5,6 +5,7 @@ import html
 import json
 import logging
 import smtplib
+import time
 import urllib.error
 import urllib.request
 from email.message import EmailMessage
@@ -13,6 +14,8 @@ from pathlib import Path
 from .scraper import ResultItem
 
 logger = logging.getLogger(__name__)
+
+OPS_ALERT_COOLDOWN_SEC = 1800
 
 
 def _email_subject_and_plain_body(keyword: str, item: ResultItem) -> tuple[str, str]:
@@ -76,6 +79,11 @@ class TelegramNotifier:
         for item in items:
             self.notify(keyword, item)
 
+    def notify_ops(self, text: str) -> None:
+        """Siuncia operacini pranesima (sistemos sveikata, ne naujas pirkimas)."""
+        safe = html.escape(text)
+        self._send(f"<b>Agento perspejimas</b>\n{safe}")
+
     @staticmethod
     def _format_message(keyword: str, item: ResultItem) -> str:
         title = html.escape(item.title or "-")
@@ -127,6 +135,51 @@ class TelegramNotifier:
             logger.exception(
                 "Telegram sendMessage nepavyko (chat_id=%s)", self.chat_id
             )
+
+
+def telegram_from_settings(
+    telegram_enabled: bool,
+    bot_token: str,
+    chat_id: str,
+) -> TelegramNotifier | None:
+    if telegram_enabled and bot_token and chat_id:
+        return TelegramNotifier(bot_token, chat_id)
+    return None
+
+
+def send_ops_alert(
+    *,
+    state_path: Path,
+    ops_alert_enabled: bool,
+    telegram: TelegramNotifier | None,
+    alert_key: str,
+    message: str,
+) -> None:
+    """Rate-limited ops alert (max 1 per alert_key per OPS_ALERT_COOLDOWN_SEC)."""
+    if not ops_alert_enabled:
+        return
+    if telegram is None:
+        logger.error("Ops alert praleistas (Telegram neaktyvus): %s", message)
+        return
+    now = time.time()
+    state: dict[str, float] = {}
+    try:
+        if state_path.is_file():
+            raw = json.loads(state_path.read_text(encoding="utf-8"))
+            if isinstance(raw, dict):
+                state = {str(k): float(v) for k, v in raw.items()}
+    except Exception:
+        logger.debug("Nepavyko nuskaityti ops alert state %s", state_path, exc_info=True)
+    last = state.get(alert_key, 0.0)
+    if now - last < OPS_ALERT_COOLDOWN_SEC:
+        return
+    state[alert_key] = now
+    try:
+        state_path.parent.mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps(state), encoding="utf-8")
+    except Exception:
+        logger.exception("Nepavyko irasyti ops alert state %s", state_path)
+    telegram.notify_ops(message)
 
 
 class ResendEmailNotifier:

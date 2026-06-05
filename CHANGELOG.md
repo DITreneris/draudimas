@@ -7,119 +7,73 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
-### Changed
-- **Playwright 1.51.0** — `requirements.txt` ir `Dockerfile` baze
-  `mcr.microsoft.com/playwright/python:v1.51.0-jammy` (sutampa su pip versija;
-  naudinga ir kai MCR grąžina 429 ant seno tag'o — perbūkinti deploy).
+## [0.3.0] - 2026-06-05
 
 ### Added
-- **Resend el. paštas (HTTPS):** `RESEND_API_KEY` + `EMAIL_FROM` / `EMAIL_TO` — naudojamas
-  prieš SMTP, jei raktas nurodytas (`ResendEmailNotifier`, `urllib`). Tinka Railway,
-  kur outbound SMTP 587 dažnai blokuojamas.
-- **SMTP el. pašto pranešimai** (optional, stdlib `smtplib`): `SmtpEmailNotifier` in
-  `src/notifier.py`, env `EMAIL_ENABLED`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`,
-  `SMTP_PASSWORD`, `EMAIL_FROM`, `EMAIL_TO` (CSV); wired in `src/agent.py` alongside
-  Telegram. Dokumentuota `.env.example`, `README.md`, `AGENTS.md`.
-- **`WIPE_DB_ON_START` env var** (default `false`) - operacinis jungiklis
-  `seen.sqlite3` išvalymui per Railway **Variables**, be shell prieigos ar
-  `Start Command` override'o. `main.py` pradžioje (po `settings.state_dir.mkdir`)
-  jei `true` - `settings.db_path.unlink(missing_ok=True)` + `log.warning` su
-  priminimu išjungti kintamąjį po wipe'o. Pridėta į `src/config.py` `Settings`
-  (`wipe_db_on_start: bool = False` + `_get_bool("WIPE_DB_ON_START", False)`),
-  `.env.example`, `README.md` („Konfigūracija" lentelė + naujas sub-skyrius
-  *DB išvalymas (migracija / backfill)* Railway deploy skyriuje su 3 žingsnių
-  instrukcija).
-- **`organization` laukas visoje pipeline.** `src/scraper.py` jau seniai
-  istraukia perkancios organizacijos (PV) pavadinima i `ResultItem`, bet
-  duomuo buvo ismetamas. Dabar pravestas iki UI:
-  - `src/db.py` - naujas `organization TEXT` stulpelis `seen_items` lenteleje
-    + saugi vienkartine migracija senam volume'ui (`PRAGMA table_info` +
-    `ALTER TABLE ... ADD COLUMN` jei kolona dar neegzistuoja).
-  - `src/db.py` `mark_seen` - naujas `organization` kwarg'as.
-  - `src/agent.py` - `mark_seen` iskvieciamas su `item.organization`.
-  - `src/exporter.py` - `SELECT organization` + `"organization"` key JSON'e.
-  - `docs/index.html` - nauja `Vykdytojas` kolona.
-  - `docs/app.js` - renderinamas organization su `title` atributu pilnam
-    tekstui ant hover; paieska (`#search`) taip pat filtruoja pagal
-    organizacijos pavadinima.
-  - `docs/style.css` - `td.org` ellipsis stilius (max-width 200px).
-- **UI klasifikacija kliente.** `docs/app.js` `classify(title)` gražina 3
-  kategorijas pagal title substring taisykles (case-insensitive):
-  `rinkos konsultacij` -> `market_consultation`; `brok` ar `tarpinink` ->
-  `broker`; kitaip -> `insurer`. Rodoma kaip spalvotas badge'as naujoje
-  `Klase` kolonoje. Papildomai - `UADBB`/`broker` regex paminejimo
-  indikatorius (`*`) greta title'o (jeigu title'e minimas konkretus
-  brokeris). `docs/style.css` - `.cat-broker` (melynas), `.cat-insurer`
-  (zalias), `.cat-market-consultation` (pilkas), `.flag-broker`.
+- **Definition of Done** (`dod_system.md`): uzduociu tipai (`QA`, `FIX`, `FEAT`, `CFG`, `SCR`, `DB`, `UI`, `DOC`, `REL`), patikros sarasai, verifikacijos matrica, escalation ir anti-pattern'ai; nuorodu zemelapis i `AGENTS.md` ir `.cursor/rules/`.
+- **Offline parserio smoke** (`run_parser_check.py`, `fixtures/search_results_table.html`):
+  `_find_header_indices` / `_extract_rows` be portalo (`page.set_content`).
+- **Launch hardening** (`src/agent.py`, `src/exporter.py`, `src/notifier.py`):
+  - `health.json`: `zero_results_streak` (ops alert po 3 is eiles tuscu ciklu),
+    `last_export_http_status`.
+  - GitHub export retry: GET sha po transient klaidos; PUT retry po 409/422.
+  - Ops alert `db_fail:{keyword}` kai DB/notify etapas nepavyko.
+- **Subprocess ciklo izoliacija** (`main.py`): `run_once.py` subprocess su
+  `CYCLE_MAX_SECONDS` (default 600) — uzstriges Playwright nebeblokuoja slot'u.
+- **Ops Telegram alert'ai** (`send_ops_alert`, `notify_ops`): ciklo timeout, export
+  fail, paieskos fail, `WIPE_DB_ON_START`, scheduler skip; rate-limit 30 min /
+  `alert_key` (`ops_alert_state.json`).
+- **`health.json`** (`$STATE_DIR/health.json`): ciklo laikas, export OK,
+  `keywords_failed`, `cycle_exit_code`.
+- Nauji env: `CYCLE_MAX_SECONDS`, `SEARCH_TIMEOUT_MS`, `OPS_ALERT_ENABLED`.
+- **Scraper retry** (`src/scraper.py`): iki 3 bandymu, 15 s pauze; `chromium.launch`
+  timeout 60 s; saugus `context.close()` / `browser.close()`; `search_timeout_ms`
+  is `Settings`.
+- **Resend el. pastas (HTTPS):** `RESEND_API_KEY` + `EMAIL_FROM` / `EMAIL_TO`
+  (`ResendEmailNotifier`, `urllib`).
+- **SMTP el. pasto pranesimai** (`SmtpEmailNotifier`, stdlib `smtplib`).
+- **`WIPE_DB_ON_START`** (default `false`) — operacinis `seen.sqlite3` wipe
+  per Railway Variables (`main.py`).
+- **`organization` laukas** visoje pipeline (DB, export, `docs/` UI).
+- **UI klasifikacija** (`docs/app.js` `classify`): brokeris / draudikas /
+  rinkos konsultacija + broker mention indikatorius.
+- **Telegram pranesimai** (`TelegramNotifier`, Bot API, `urllib`).
+- **Projekto agentu sistema:** `AGENTS.md`, `.cursor/rules/` (8 `.mdc`).
 
 ### Changed
-- **`first_seen_at` tikslumas**: `timespec="seconds"` -> `"microseconds"`
-  (`src/db.py` `mark_seen`). Seconds precision'as buvo neleidziantis
-  surikiuoti batch'o viduje - visi batch'o nariai gaudavo identiska
-  timestamp'a. Microseconds tiebreaker'is isprendzia si atveji.
-- **DB insert eiliskumas `src/agent.py` `run_cycle`** - du atskiri ciklai:
-  `notifier.notify` eina pagal scraper'io tvarka (naujausi publikuoti pirma,
-  kad Telegram chat'e naujausi pasirodytu virsuje); `store.mark_seen`
-  iteruoja `reversed(new_items)` - seniausiai publikuotas irasas gauna
-  anksciausia `first_seen_at` timestamp'a. Tada `ORDER BY first_seen_at DESC`
-  exporter'yje natūraliai patenka naujausiai publikuotas - virsuje.
-
-- **Scheduler: `IntervalTrigger` -> `CronTrigger`** (`main.py`). Darbo valandu
-  grafikas hardcoded: `day_of_week="mon-fri"`, `hour="7-21"`, `minute=0`,
-  `timezone="Europe/Vilnius"` (DST-safe per `zoneinfo`). **15 ciklu/diena x 5
-  darbo dienos = 75 ciklai/savaite** (vietoj 168 = 24 x 7 anksciau, -55%).
-  - `BlockingScheduler(timezone="Europe/Vilnius")` (buvo `"UTC"`).
-  - Job id/name atnaujinti: `business_hours_check` / `"viesiejipirkimai mon-fri
-    7-21:00 Europe/Vilnius"`.
-  - `datetime.utcnow()` -> `datetime.now(timezone.utc)` (Py3.12+ deprecation).
-  - `CHECK_INTERVAL_MINUTES` env var tapo **deprecated** - `main.py` jo
-    nebeizunaudoja. Jei reiksme != 60, `log.warning` pranesa, kad ignoruojama.
-  - `SCHEDULE_TIMEZONE` / `SCHEDULE_DAYS` / `SCHEDULE_HOURS` / `SCHEDULE_MINUTE`
-    konstantos `main.py` virsuje - vieninteli vieta, kur keiciamas grafikas.
-  - `AGENTS.md` + `.cursor/rules/project-map.mdc` + `README.md` (header,
-    Konfiguracija lentele, Railway Variables pavyzdys, commit history
-    apskaiciavimas ~3900/metus vietoj ~8760) sinchronizuoti.
-
-### Added
-- **Telegram asmeninis pranesimas** (`src/notifier.py` `TelegramNotifier`) -
-  kiekvienas naujas skelbimas (tas pats, kuris eina i `notifications.log`)
-  papildomai issiunciamas i Telegram chat'a per Bot API `sendMessage`.
-  - Naudoja tik stdlib `urllib.request` (be naujo dependency).
-  - HTML parse mode, `html.escape` apsauga nuo title/org su `<`, `>`, `&`.
-  - Klaidos (`HTTPError`, timeout, bet koks `Exception`) tik logdinamos -
-    `run_cycle` tesiasi; token'as niekada nelogintas.
-  - 3 nauji env vars: `TELEGRAM_ENABLED` (default `false`), `TELEGRAM_BOT_TOKEN`,
-    `TELEGRAM_CHAT_ID`. Pridet i `src/config.py` `Settings`, `.env.example`,
-    `.env` (su `[RAILWAY-ONLY]` zymejimu secret'ams) ir `README.md`
-    (Konfiguracija + naujas skyrius *Telegram asmeninis pranesimas* su setup
-    per `@BotFather` + `@userinfobot`).
-  - `src/agent.py` `run_cycle` - notifier instancijuojamas tik kai
-    `TELEGRAM_ENABLED=true` IR token'as IR `chat_id` ne tusti; iskvieciamas
-    po `ConsoleLogNotifier.notify` toje pacioje `new_items` ciklo iteracijoje.
-  - **Smoke test (live):** `python run_once.py` su `TELEGRAM_ENABLED=true` -
-    nuskaityta 10 irasu, visi 10 sekmingai issiusti i Telegram asmenini
-    chat'a (HTML formatavimas, diakritikos, URL preview - OK). Jokiu
-    `HTTPError` ar `exception` stack trace'u.
+- **Agentu / DoD integracija:** `AGENTS.md` (§4 Q&A, §5 code-change susieti su `dod_system.md`); `.cursor/rules/qa-changes.mdc` ir `project-map.mdc` — kanoninis DoD pointer; `README.md` — skyrius „Dokumentacija ir agentams“.
+- **`run_cycle`**: `mark_seen` **pries** `notify` (duplicate alert prevencija po
+  crash/restart); DB/notify etapas atskirame `try/except` per keyword.
+- **`export_and_push`** / **`push_to_github`**: grazina `(bool, http_status)`;
+  statusas irasomas i `health.json`.
+- **`send_ops_alert`**: `ERROR` logas, kai `OPS_ALERT_ENABLED=true` bet Telegram
+  neaktyvus.
+- **`run_cycle`** grazina `CycleResult(summary, ok)`; `run_once.py` exit `1` jei
+  `ok=False` arba exception.
+- **`src/agent.py`**: `search_failed` seka; tikrinamas export rezultatas.
+- **Playwright 1.51.0** — `requirements.txt`, `Dockerfile`
+  (`mcr.microsoft.com/playwright/python:v1.51.0-jammy`).
+- **`first_seen_at`**: `timespec="microseconds"` (`src/db.py` `mark_seen`).
+- **DB insert eiliskumas**: `mark_seen` — `reversed(new_items)`; `notify` — scraper
+  tvarka (naujausi virsuje Telegram'e).
+- **Scheduler**: `IntervalTrigger` -> `CronTrigger` (`mon-fri`, `7-21`,
+  `Europe/Vilnius`); `CHECK_INTERVAL_MINUTES` deprecated.
+- **Dokumentacija:** `README.md` (`run_parser_check.py`, 24h log watch runbook,
+  `health.json` laukai), `AGENTS.md`, `.cursor/rules/`, `.env.example`.
 
 ### Fixed
-- **Windows stdout UTF-8** (`main.py` `setup_logging`) - pries konfiguruojant
-  `logging.basicConfig`, iskvieciame `sys.stdout.reconfigure(encoding="utf-8",
-  errors="replace")`. Anksciau lokaliai (PowerShell, Py3.11, cp1252 default)
-  `logger.info(msg)` su lietuviskom diakritikem (pvz. e, u, s su nosinem /
-  varnelem) mesdavo `UnicodeEncodeError` kiekvienam pranesimui. Railway
-  Linux konteineryje stdout jau UTF-8 - fix'as ten no-op. Duomenu failai
-  (`notifications.log`, `items.json`) jau anksciau buvo UTF-8, tik stdout
-  buvo zalojamas.
+- **Windows stdout UTF-8** (`main.py` `setup_logging`) — lietuviskos diakritikos
+  `UnicodeEncodeError` PowerShell'e.
+- **Duplicate pranesimai po restart** — `mark_seen` pries `notify` (`src/agent.py`).
 
-### Added
-- **Projekto agentu sistema**:
-  - `AGENTS.md` sakny - bendras gidas AI agentams (misija, architekturos
-    zemelapis, invariants, Q&A + change workflow).
-  - `.cursor/rules/` rinkinys (8 `.mdc` failai) - `project-map` ir
-    `qa-changes` `alwaysApply: true`; `python-style`, `scraper`, `dedup`,
-    `exporter`, `config`, `frontend` auto-aktyvuojasi pagal `globs`.
-  - Smoke-test patvirtintas live'as: `python run_once.py` - 10 skelbimu
-    surinkta per ~43s (pirmas paleidimas, pilna dedup'o istorija tuscia).
+### Notes
+- **Railway gedimas 2026-05-27–06-05:** uzstriges `run_cycle` + `max_instances=1`
+  — visi cron slot'ai `skipped` (`maximum number of running instances reached`).
+  Fix: subprocess izoliacija + `CYCLE_MAX_SECONDS`. Po deploy — **Restart** Railway.
+- **Railway logai** (~2026-05-08–05-15): 68 ciklai, 69 `GitHub push OK`, 0 push
+  klaidu; ~6.6% paiesku nesekmes (laikini portalo sutrikimai 2026-05-13).
+- **Redeploy / restart:** jei `$STATE_DIR/seen.sqlite3` issilaiko (Volume `/data`)
+  ir `WIPE_DB_ON_START=false`, tie patys `pirkimo_id` **nebesiunciami** dar karta.
 
 ## [0.2.0] - 2026-04-23
 
@@ -152,9 +106,9 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [0.1.0] - 2026-04-23
 
-Pradine MVP versija - agentas kas valanda tikrina viesiejipirkimai.lt
-isplestine paieska, aptinka naujus skelbimus pagal Pirkimo ID, saugo busena
-SQLite'e ir loginsi stdout + `notifications.log`.
+Pradine MVP versija — agentas su `IntervalTrigger` (kas ~60 min, visa para)
+tikrina viesiejipirkimai.lt isplestine paieska, aptinka naujus skelbimus pagal
+Pirkimo ID, saugo busena SQLite'e ir loginsi stdout + `notifications.log`.
 
 ### Added
 - Projekto strukturos pagrindas: `main.py`, `run_once.py`, `src/` modulis.
@@ -172,8 +126,9 @@ SQLite'e ir loginsi stdout + `notifications.log`.
   `RUN_ON_START` palaikymas, SIGINT/SIGTERM handling.
 - **Konfiguracija** (`src/config.py`) - `python-dotenv`, env-based settings
   su saugiais default'ais ir tipu konversija.
-- **Deploy**:
-  - `Dockerfile` bazej `mcr.microsoft.com/playwright/python:v1.47.0-jammy`.
+- **Deploy** (ispleidimo dienos baze; veliau atnaujinta zr. neisskleistos versijos
+  `### Changed`):
+  - `Dockerfile` — pradzioje `mcr.microsoft.com/playwright/python:v1.47.0-jammy`.
   - `railway.json` su Dockerfile builder ir `ON_FAILURE` restart policy.
   - `.dockerignore`, `.gitignore`.
 - **Dokumentacija**: `README.md` su architektura, konfiguracija, lokaliu
@@ -186,6 +141,7 @@ SQLite'e ir loginsi stdout + `notifications.log`.
 - Exporter pipeline: JSON payload korektiskas, lokaliai irasytas, push'as
   praleistas kai `enabled=False`.
 
-[Unreleased]: https://github.com/DITreneris/draudimas/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/DITreneris/draudimas/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/DITreneris/draudimas/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/DITreneris/draudimas/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/DITreneris/draudimas/releases/tag/v0.1.0
