@@ -1,13 +1,103 @@
 {
-  "generated_at": "2026-05-27T14:01:00+00:00",
+  "generated_at": "2026-06-05T05:44:20+00:00",
   "stats": {
-    "total_items": 48,
+    "total_items": 58,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8151017",
+      "title": "Transporto priemonių valdytojų atsakomybės ir turto (Kasko) draudimo, darbuotojų nuo nelaimingų atsitikimų draudimo paslaugos (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8151017",
+      "first_seen_at": "2026-06-05T05:44:20.840139+00:00",
+      "keyword_first_seen": "kasko",
+      "published_at": "02/06/2026 17:01:29",
+      "organization": "Rokiškio rajono savivaldybės administracija"
+    },
+    {
+      "pirkimo_id": "8202849",
+      "title": "Vadovų ir vadovaujančių asmenų civilinės atsakomybės draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8202849",
+      "first_seen_at": "2026-06-05T05:44:18.174113+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/06/2026 05:10:42",
+      "organization": "AB Via Lietuva (PV)"
+    },
+    {
+      "pirkimo_id": "8219021",
+      "title": "Rizikų, susijusių su apdraustųjų civiline atsakomybe, draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8219021",
+      "first_seen_at": "2026-06-05T05:44:18.164127+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/06/2026 19:03:57",
+      "organization": "UAB ILTE"
+    },
+    {
+      "pirkimo_id": "8218677",
+      "title": "\"Turto draudimas (Nr.10784-1)\" atviras konkursas (supaprastintas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8218677",
+      "first_seen_at": "2026-06-05T05:44:18.156013+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/06/2026 16:57:54",
+      "organization": "VšĮ Respublikinė Vilniaus universitetinė ligoninė (PV)"
+    },
+    {
+      "pirkimo_id": "8206272",
+      "title": "Bendrosios civilinės atsakomybės bei darbdavio civilinės atsakomybės draudimo pirkimas (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8206272",
+      "first_seen_at": "2026-06-05T05:44:18.148264+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/06/2026 12:56:35",
+      "organization": "UAB \"Mažeikių šilumos tinklai\" (PV)"
+    },
+    {
+      "pirkimo_id": "7943388",
+      "title": "Nekilnojamojo turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=7943388",
+      "first_seen_at": "2026-06-05T05:44:18.137451+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/06/2026 10:27:36",
+      "organization": "Vilniaus Gedimino technikos universitetas (PV)"
+    },
+    {
+      "pirkimo_id": "8179828",
+      "title": "Rinkos konsulatcija dėl savanoriško darbuotojų sveikatos draudimo paslaugų pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8179828",
+      "first_seen_at": "2026-06-05T05:44:18.124095+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "03/06/2026 09:42:08",
+      "organization": "Akcinė bendrovė Smiltynės perkėla"
+    },
+    {
+      "pirkimo_id": "8151834",
+      "title": "Papildomas savanoriškas sveikatos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8151834",
+      "first_seen_at": "2026-06-05T05:44:18.112456+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "03/06/2026 08:49:06",
+      "organization": "Lietuvos transporto saugos administracija"
+    },
+    {
+      "pirkimo_id": "8171188",
+      "title": "Draudimo paslaugos, Nr. 3734",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=8171188",
+      "first_seen_at": "2026-06-05T05:44:18.103114+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "03/06/2026 05:31:01",
+      "organization": "Grinda UAB (PV)"
+    },
+    {
+      "pirkimo_id": "8148595",
+      "title": "Sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8148595",
+      "first_seen_at": "2026-06-05T05:44:18.087163+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "03/06/2026 05:21:47",
+      "organization": "Lietuvos Respublikos užsienio reikalų ministerija"
+    },
     {
       "pirkimo_id": "7974057",
       "title": "(PU-15034/26) Įvairios draudimo paslaugos",
