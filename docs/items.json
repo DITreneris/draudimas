@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-05T05:44:20+00:00",
+  "generated_at": "2026-06-05T06:00:05+00:00",
   "stats": {
-    "total_items": 58,
+    "total_items": 59,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8221808",
+      "title": "Darbuotojų nuo nelaimingų atsitikimų draudimo paslaugos pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8221808",
+      "first_seen_at": "2026-06-05T06:00:03.566886+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/06/2026 08:51:33",
+      "organization": "UAB \"Mažeikių šilumos tinklai\" (PV)"
+    },
     {
       "pirkimo_id": "8151017",
       "title": "Transporto priemonių valdytojų atsakomybės ir turto (Kasko) draudimo, darbuotojų nuo nelaimingų atsitikimų draudimo paslaugos (Skelbiama apklausa)",
