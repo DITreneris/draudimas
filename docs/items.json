@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-08T14:00:08+00:00",
+  "generated_at": "2026-06-08T15:00:11+00:00",
   "stats": {
-    "total_items": 59,
+    "total_items": 60,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8251251",
+      "title": "DARBUOTOJŲ SAVANORIŠKO SVEIKATOS DRAUDIMO PASLAUGOS (Supaprastintas atviras konkursas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8251251",
+      "first_seen_at": "2026-06-08T15:00:04.572687+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "08/06/2026 17:45:13",
+      "organization": "Jonavos rajono savivaldybės administracija"
+    },
     {
       "pirkimo_id": "8221808",
       "title": "Darbuotojų nuo nelaimingų atsitikimų draudimo paslaugos pirkimas",
