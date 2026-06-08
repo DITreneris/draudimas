@@ -46,6 +46,8 @@ class Settings:
     state_dir: Path = field(default_factory=lambda: Path("./state"))
     run_on_start: bool = True
     wipe_db_on_start: bool = False
+    seed_items_json: str = ""
+    seed_items_fresh: bool = False
     log_level: str = "INFO"
     cycle_max_seconds: int = 600
     search_timeout_ms: int = 30000
@@ -101,6 +103,8 @@ def load_settings() -> Settings:
         state_dir=Path(os.getenv("STATE_DIR", "./state")).resolve(),
         run_on_start=_get_bool("RUN_ON_START", True),
         wipe_db_on_start=_get_bool("WIPE_DB_ON_START", False),
+        seed_items_json=os.getenv("SEED_ITEMS_JSON", "").strip(),
+        seed_items_fresh=_get_bool("SEED_ITEMS_FRESH", False),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         cycle_max_seconds=_get_int("CYCLE_MAX_SECONDS", 600),
         search_timeout_ms=_get_int("SEARCH_TIMEOUT_MS", 30000),

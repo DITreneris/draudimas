@@ -49,6 +49,8 @@ Prieš merge / deploy: atitinkamas DoD skyrius `dod_system.md` (`FIX`, `CFG`, `S
 | `STATE_DIR` | `./state` (lokaliai) / `/data` (Docker) | Kur laikoma SQLite + log |
 | `RUN_ON_START` | `true` | Ar paleisti ciklą iš karto starto metu |
 | `WIPE_DB_ON_START` | `false` | **Operacinis**: įjungus į `true`, prieš scheduler'į ištrina `$STATE_DIR/seen.sqlite3` ir logina warning'ą. Po vienkartinės užduoties **būtina** išjungti atgal (arba pašalinti kintamąjį), kitaip DB bus trinama kiekvieno restart'o metu. |
+| `SEED_ITEMS_JSON` | – | **Operacinis** (Railway): kelias iki `items.json` seed failo, pvz. `fixtures/seed_items_59.json`. Paleidžia seed prieš scheduler'į (be pranešimų). Po vienkartinio atkūrimo **ištrink** kintamąjį. |
+| `SEED_ITEMS_FRESH` | `false` | Su `SEED_ITEMS_JSON`: jei `true`, ištrina esamą DB prieš seed (`--fresh`). |
 | `LOG_LEVEL` | `INFO` | `DEBUG`, `INFO`, `WARNING`, `ERROR` |
 | `CYCLE_MAX_SECONDS` | `600` | Maksimalus vieno ciklo (subprocess) trukmė sekundėmis; viršijus — procesas nutraukiamas |
 | `SEARCH_TIMEOUT_MS` | `30000` | Playwright puslapio operacijų timeout (ms) |
@@ -97,6 +99,12 @@ Offline parserio patikra (be portalo, tik lentelės HTML fixture):
 python run_parser_check.py
 ```
 
+Vienkartinis DB seed iš `items.json` (be pranešimų — tik `seen.sqlite3`):
+
+```bash
+python run_seed_items.py fixtures/seed_items_59.json --fresh
+```
+
 Always-on režimas (darbo dienos 7:00–21:00 Vilniaus laiku):
 
 ```bash
@@ -108,7 +116,9 @@ python main.py
 1. Sukurk naują Railway projektą ir pasirink **Deploy from GitHub repo** (arba `railway up`).
 2. Railway automatiškai naudos `Dockerfile` (žr. `FROM` eilutę; šiuo metu
    `mcr.microsoft.com/playwright/python:v1.51.0-jammy`).
-3. **Pridėk Volume**, prijungtą prie `/data` (čia bus SQLite ir log failas).
+3. **Pridėk Volume** (būtina), prijungtą prie `/data` (čia bus SQLite ir log failas).
+   Be Volume kiekvienas redeploy ištrina `seen.sqlite3` ir vėl siunčia visus matomus
+   skelbimus kaip „naujus“. Canvas'e turi matytis Volume blokas, prijungtas prie serviso.
 4. **Service → Variables** suvesk:
    - `KEYWORDS=draudim,kasko`
    - *(nebereikia `CHECK_INTERVAL_MINUTES` – grafikas hardcoded)*
@@ -167,6 +177,7 @@ arba norint atkurti teisingą `first_seen_at` tvarką), naudok operacinį
 
 | Simptomas | Veiksmas |
 | --- | --- |
+| DB prarasta po redeploy (`db_dydis` staiga mažas, daug `[NEW]`) | **Volume** prijungtas prie `/data`; seed: `python run_seed_items.py fixtures/seed_items_59.json --fresh` (Shell) **arba** Railway Variables `SEED_ITEMS_JSON=fixtures/seed_items_59.json`, `SEED_ITEMS_FRESH=true`, `RUN_ON_START=false` → redeploy → loguose `inserted=59` → **ištrink** `SEED_ITEMS_*` → `RUN_ON_START=true` |
 | Dashboard / `items.json` neatsinaujina >2 val. | Railway **Restart deployment**; loguose ieškok `GitHub push FAILED` arba `Ciklas virsijo` |
 | Loguose `maximum number of running instances reached` | Užstrigęs ciklas; po šio deploy subprocess timeout turėtų užkirsti — vis tiek **restart** |
 | Daug „naujų“ Telegram iš karto | Patikrink ar `WIPE_DB_ON_START` netyčia `true` |

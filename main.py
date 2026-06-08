@@ -153,6 +153,34 @@ def main() -> int:
             message="DB wiped — isjunk WIPE_DB_ON_START",
         )
 
+    if settings.seed_items_json:
+        seed_path = Path(settings.seed_items_json)
+        if not seed_path.is_absolute():
+            seed_path = (_RUN_ONCE_PATH.parent / seed_path).resolve()
+        if not seed_path.is_file():
+            log.error("SEED_ITEMS_JSON nerastas: %s", seed_path)
+            return 1
+        try:
+            from run_seed_items import _load_payload, seed_items
+
+            payload_items = _load_payload(seed_path)
+            inserted, skipped, total = seed_items(
+                settings.db_path,
+                payload_items,
+                fresh=settings.seed_items_fresh,
+            )
+            log.warning(
+                "SEED_ITEMS_JSON=%s -> inserted=%d skipped=%d db_total=%d. "
+                "ISJUNK SEED_ITEMS_JSON (ir SEED_ITEMS_FRESH) po vienkartinio seed.",
+                settings.seed_items_json,
+                inserted,
+                skipped,
+                total,
+            )
+        except Exception:
+            log.exception("SEED_ITEMS_JSON seed nepavyko")
+            return 1
+
     log.info(
         "Start: keywords=%s schedule='%s %s:%02d %s' headless=%s state_dir=%s "
         "run_on_start=%s cycle_max_seconds=%d",

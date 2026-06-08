@@ -7,6 +7,12 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 
 ## [Unreleased]
 
+### Added
+- **DB seed** (`run_seed_items.py`, `fixtures/seed_items_59.json`): vienkartinis
+  `seen.sqlite3` atkūrimas iš `items.json` su originaliu `first_seen_at` (`--fresh`);
+  be `notify` / `run_cycle`. Operacinis startup: `SEED_ITEMS_JSON` + `SEED_ITEMS_FRESH`
+  (`main.py`). README RUNBOOK — Volume `/data` + seed po redeploy.
+
 ## [0.3.0] - 2026-06-05
 
 ### Added
@@ -70,6 +76,15 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
 - **Railway gedimas 2026-05-27–06-05:** uzstriges `run_cycle` + `max_instances=1`
   — visi cron slot'ai `skipped` (`maximum number of running instances reached`).
   Fix: subprocess izoliacija + `CYCLE_MAX_SECONDS`. Po deploy — **Restart** Railway.
+- **v0.3.0 production verify (2026-06-05 ~06:03 UTC, commit `091cbb3`):**
+  - Loguose: `cycle_max_seconds=600`, `run_once` subprocess, `Ciklas BAIGTAS`
+    per **23 s**, `GitHub push OK` (`items.json` 2026-06-05T06:03:37+00:00).
+  - `Apibendrinimas: {'draudim': 10, 'kasko': 10}` — `scheduler_skip` nerasta.
+  - Railway Variables: `STATE_DIR=/data`, `WIPE_DB_ON_START=false` (patvirtinta).
+  - **Atidaryta:** pirmas ciklas po deploy — `db_dydis=20` (ne ~59 kaip pries
+    deploy `items.json`); tipinis backfill (10+10 is pirmo puslapio). Jei Volume
+    `/data` prijungtas — tikrinti ar `seen.sqlite3` nebuvo prarastas per redeploy;
+    antrame cikle turetu buti `nauju nera` dedup'ui.
 - **Railway logai** (~2026-05-08–05-15): 68 ciklai, 69 `GitHub push OK`, 0 push
   klaidu; ~6.6% paiesku nesekmes (laikini portalo sutrikimai 2026-05-13).
 - **Redeploy / restart:** jei `$STATE_DIR/seen.sqlite3` issilaiko (Volume `/data`)
