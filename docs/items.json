@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-09T18:00:07+00:00",
+  "generated_at": "2026-06-10T04:00:08+00:00",
   "stats": {
-    "total_items": 60,
+    "total_items": 61,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8265987",
+      "title": "(595-26) Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=8265987",
+      "first_seen_at": "2026-06-10T04:00:04.340989+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "10/06/2026 05:12:01",
+      "organization": "AB KN Energies (PV)"
+    },
     {
       "pirkimo_id": "8251251",
       "title": "DARBUOTOJŲ SAVANORIŠKO SVEIKATOS DRAUDIMO PASLAUGOS (Supaprastintas atviras konkursas)",
