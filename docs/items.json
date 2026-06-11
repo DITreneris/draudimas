@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-11T11:00:07+00:00",
+  "generated_at": "2026-06-11T12:00:09+00:00",
   "stats": {
-    "total_items": 62,
+    "total_items": 63,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8322189",
+      "title": "Prievolių įvykdymo užtikrinimo dokumentas (laidavimo draudimas) Šiaulių regiono nepavojingų atliekų sąvartynui",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8322189",
+      "first_seen_at": "2026-06-11T12:00:04.309987+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "11/06/2026 14:15:25",
+      "organization": "VšĮ Šiaulių regiono atliekų tvarkymo centras (PV)"
+    },
     {
       "pirkimo_id": "8313260",
       "title": "Amenų civilinės atsakomybės draudimas (skelbiama apklausa)",
