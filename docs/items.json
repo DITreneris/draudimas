@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-11T07:00:07+00:00",
+  "generated_at": "2026-06-11T08:00:08+00:00",
   "stats": {
-    "total_items": 61,
+    "total_items": 62,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8313260",
+      "title": "Amenų civilinės atsakomybės draudimas (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8313260",
+      "first_seen_at": "2026-06-11T08:00:03.975261+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "11/06/2026 10:50:36",
+      "organization": "Kauno rajono savivaldybės administracija"
+    },
     {
       "pirkimo_id": "8265987",
       "title": "(595-26) Draudimo paslaugos",
