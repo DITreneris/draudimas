@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-12T06:00:07+00:00",
+  "generated_at": "2026-06-12T07:00:08+00:00",
   "stats": {
-    "total_items": 63,
+    "total_items": 64,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8336493",
+      "title": "Papildomas darbuotojų sveikatos draudimas PL-352",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8336493",
+      "first_seen_at": "2026-06-12T07:00:04.878002+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/06/2026 09:35:50",
+      "organization": "AB Klaipėdos vanduo (PV)"
+    },
     {
       "pirkimo_id": "8322189",
       "title": "Prievolių įvykdymo užtikrinimo dokumentas (laidavimo draudimas) Šiaulių regiono nepavojingų atliekų sąvartynui",
