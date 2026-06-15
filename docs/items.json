@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-15T08:00:09+00:00",
+  "generated_at": "2026-06-15T09:00:12+00:00",
   "stats": {
-    "total_items": 64,
+    "total_items": 65,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8365672",
+      "title": "Savanoriško sveikatos draudimo paslaugų pirkimas (supaprastintas atviras)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8365672",
+      "first_seen_at": "2026-06-15T09:00:04.537056+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/06/2026 11:41:29",
+      "organization": "Akcinė bendrovė Smiltynės perkėla"
+    },
     {
       "pirkimo_id": "8336493",
       "title": "Papildomas darbuotojų sveikatos draudimas PL-352",
