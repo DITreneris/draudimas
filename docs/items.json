@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-16T10:00:07+00:00",
+  "generated_at": "2026-06-16T11:00:08+00:00",
   "stats": {
-    "total_items": 66,
+    "total_items": 67,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8389801",
+      "title": "Draudimo paslaugų pirkimas 26-01",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8389801",
+      "first_seen_at": "2026-06-16T11:00:03.837357+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "16/06/2026 13:34:00",
+      "organization": "UAB „Utenos šilumos tinklai“ (PV)"
+    },
     {
       "pirkimo_id": "8378884",
       "title": "Draudimo tarpininko (brokerio) paslaugų pirkimas",
