@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-16T04:00:07+00:00",
+  "generated_at": "2026-06-16T05:00:08+00:00",
   "stats": {
-    "total_items": 65,
+    "total_items": 66,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8378884",
+      "title": "Draudimo tarpininko (brokerio) paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8378884",
+      "first_seen_at": "2026-06-16T05:00:04.000964+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "16/06/2026 07:36:23",
+      "organization": "UAB Vilniaus viešasis transportas (PV)"
+    },
     {
       "pirkimo_id": "8365672",
       "title": "Savanoriško sveikatos draudimo paslaugų pirkimas (supaprastintas atviras)",
