@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-17T07:00:21+00:00",
+  "generated_at": "2026-06-17T08:00:10+00:00",
   "stats": {
-    "total_items": 68,
+    "total_items": 69,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8370715",
+      "title": "Turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8370715",
+      "first_seen_at": "2026-06-17T08:00:03.988672+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "17/06/2026 10:18:39",
+      "organization": "Kauno technologijos universitetas (PV)"
+    },
     {
       "pirkimo_id": "7731289",
       "title": "Darbuotojų sveikatos draudimo paslaugos",
