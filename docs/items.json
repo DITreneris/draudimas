@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-19T12:00:08+00:00",
+  "generated_at": "2026-06-19T13:00:13+00:00",
   "stats": {
-    "total_items": 70,
+    "total_items": 71,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8469295",
+      "title": "Rinkos konsultacija dėl Įstaigos nekilnojamo, kilnojamo ir panaudos ar patikėjimo būdu perduoto turto draudimo pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8469295",
+      "first_seen_at": "2026-06-19T13:00:04.625654+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "19/06/2026 15:14:51",
+      "organization": "Lietuvos sveikatos mokslų universiteto ligoninė Kauno klinikos (PV)"
+    },
     {
       "pirkimo_id": "8420602",
       "title": "BENDROSIOS CIVILINĖS ATSAKOMYBĖS DRAUDIMO PASLAUGOS",
