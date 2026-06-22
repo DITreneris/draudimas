@@ -1,13 +1,40 @@
 {
-  "generated_at": "2026-06-19T18:00:09+00:00",
+  "generated_at": "2026-06-22T04:00:10+00:00",
   "stats": {
-    "total_items": 71,
+    "total_items": 74,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8418277",
+      "title": "Sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8418277",
+      "first_seen_at": "2026-06-22T04:00:05.556380+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 05:21:16",
+      "organization": "Lietuvos bankas"
+    },
+    {
+      "pirkimo_id": "8460386",
+      "title": "Laivų korpuso ir laivų savininko (valdytojo) CA draudimai",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8460386",
+      "first_seen_at": "2026-06-22T04:00:05.544709+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 05:21:10",
+      "organization": "Akcinė bendrovė Klaipėdos valstybinio jūrų uosto direkcija (PV)"
+    },
+    {
+      "pirkimo_id": "8464546",
+      "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomasis draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8464546",
+      "first_seen_at": "2026-06-22T04:00:05.512181+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 05:20:53",
+      "organization": "Valstybės įmonė Valstybinių miškų urėdija (PV)"
+    },
     {
       "pirkimo_id": "8469295",
       "title": "Rinkos konsultacija dėl Įstaigos nekilnojamo, kilnojamo ir panaudos ar patikėjimo būdu perduoto turto draudimo pirkimo",
