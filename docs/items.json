@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-06-22T17:00:07+00:00",
+  "generated_at": "2026-06-22T18:00:10+00:00",
   "stats": {
-    "total_items": 77,
+    "total_items": 79,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8496968",
+      "title": "Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8496968",
+      "first_seen_at": "2026-06-22T18:00:04.567669+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 20:10:12",
+      "organization": "VšĮ Jonavos pirminės sveikatos priežiūros centras (PV)"
+    },
+    {
+      "pirkimo_id": "8497024",
+      "title": "Draudimo (turto, civilinės atsakomybės, nelaimingų atsitikimų, transporto) paslaugos (Supaprastintas atviras)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8497024",
+      "first_seen_at": "2026-06-22T18:00:04.551385+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 20:01:57",
+      "organization": "AB Lietuvos radijo ir televizijos centras"
+    },
     {
       "pirkimo_id": "8488785",
       "title": "Nekilnojamo turto draudimo paslauga (skelbiama apklausa)",
