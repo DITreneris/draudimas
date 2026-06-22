@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-22T08:00:07+00:00",
+  "generated_at": "2026-06-22T09:00:11+00:00",
   "stats": {
-    "total_items": 74,
+    "total_items": 75,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8479654",
+      "title": "Transporto priemonių valdytojų privalomasis civilinės atsakomybės draudimas (MV)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8479654",
+      "first_seen_at": "2026-06-22T09:00:04.139543+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 11:12:23",
+      "organization": "Uždaroji akcinė bendrovė „Kėdbusas\" \"(KD)\""
+    },
     {
       "pirkimo_id": "8418277",
       "title": "Sveikatos draudimo paslaugos",
