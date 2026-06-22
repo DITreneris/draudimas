@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-06-22T10:00:08+00:00",
+  "generated_at": "2026-06-22T11:00:10+00:00",
   "stats": {
-    "total_items": 75,
+    "total_items": 77,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8488785",
+      "title": "Nekilnojamo turto draudimo paslauga (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8488785",
+      "first_seen_at": "2026-06-22T11:00:03.702448+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 13:56:55",
+      "organization": "Alytaus profesinio rengimo centras (PV)"
+    },
+    {
+      "pirkimo_id": "8487696",
+      "title": "Transporto priemonių draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8487696",
+      "first_seen_at": "2026-06-22T11:00:03.692835+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/06/2026 13:29:23",
+      "organization": "Alytaus profesinio rengimo centras (PV)"
+    },
     {
       "pirkimo_id": "8479654",
       "title": "Transporto priemonių valdytojų privalomasis civilinės atsakomybės draudimas (MV)",
