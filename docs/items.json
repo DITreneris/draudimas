@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-23T13:00:07+00:00",
+  "generated_at": "2026-06-23T14:00:12+00:00",
   "stats": {
-    "total_items": 80,
+    "total_items": 81,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8518897",
+      "title": "Asmenų civilinės atsakomybės draudimas (skelbiama apklausa) (KARTOJAMAS 2 KARTĄ)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8518897",
+      "first_seen_at": "2026-06-23T14:00:06.184554+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/06/2026 16:06:16",
+      "organization": "Kauno rajono savivaldybės administracija"
+    },
     {
       "pirkimo_id": "8501922",
       "title": "Draudimo tarpininko (brokerio) paslaugos, Nr. 3565/2026/TVPC (pakartotinė rinkos konsultacija)",
