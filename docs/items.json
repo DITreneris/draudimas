@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-23T06:00:07+00:00",
+  "generated_at": "2026-06-23T07:00:08+00:00",
   "stats": {
-    "total_items": 79,
+    "total_items": 80,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8501922",
+      "title": "Draudimo tarpininko (brokerio) paslaugos, Nr. 3565/2026/TVPC (pakartotinė rinkos konsultacija)",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8501922",
+      "first_seen_at": "2026-06-23T07:00:03.647648+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/06/2026 09:47:22",
+      "organization": "Vilniaus universitetas (PV)"
+    },
     {
       "pirkimo_id": "8496968",
       "title": "Draudimo paslaugos",
