@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-26T13:00:08+00:00",
+  "generated_at": "2026-06-26T14:00:10+00:00",
   "stats": {
-    "total_items": 84,
+    "total_items": 85,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8554630",
+      "title": "Turto draudimas (Vandenilio gamykla)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8554630",
+      "first_seen_at": "2026-06-26T14:00:04.196176+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/06/2026 16:17:29",
+      "organization": "AB „Miesto gijos“ (PV)"
+    },
     {
       "pirkimo_id": "8553789",
       "title": "Draudimo brokerių paslaugos",
