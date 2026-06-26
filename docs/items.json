@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-25T18:00:08+00:00",
+  "generated_at": "2026-06-26T04:00:08+00:00",
   "stats": {
-    "total_items": 81,
+    "total_items": 82,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8539677",
+      "title": "Rinkos konsultacija dėl turto draudimo paslaugų įsigijimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8539677",
+      "first_seen_at": "2026-06-26T04:00:04.001838+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "25/06/2026 15:22:39",
+      "organization": "UAB Alytaus regiono atliekų tvarkymo centras (PV)"
+    },
     {
       "pirkimo_id": "8518897",
       "title": "Asmenų civilinės atsakomybės draudimas (skelbiama apklausa) (KARTOJAMAS 2 KARTĄ)",
