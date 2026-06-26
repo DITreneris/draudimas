@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-26T09:00:08+00:00",
+  "generated_at": "2026-06-26T10:00:10+00:00",
   "stats": {
-    "total_items": 83,
+    "total_items": 84,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8553789",
+      "title": "Draudimo brokerių paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8553789",
+      "first_seen_at": "2026-06-26T10:00:04.106764+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/06/2026 12:19:43",
+      "organization": "VšĮ Transporto kompetencijų agentūra (PV)"
+    },
     {
       "pirkimo_id": "8552132",
       "title": "Rinkos konsultacija dėl draudimo paslaugų (Studentų apdraudimas) pirkimo",
