@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-06-26T08:00:08+00:00",
+  "generated_at": "2026-06-26T09:00:08+00:00",
   "stats": {
-    "total_items": 82,
+    "total_items": 83,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8552132",
+      "title": "Rinkos konsultacija dėl draudimo paslaugų (Studentų apdraudimas) pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8552132",
+      "first_seen_at": "2026-06-26T09:00:03.965209+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/06/2026 11:19:30",
+      "organization": "Vytauto Didžiojo universitetas (PV)"
+    },
     {
       "pirkimo_id": "8539677",
       "title": "Rinkos konsultacija dėl turto draudimo paslaugų įsigijimo",
