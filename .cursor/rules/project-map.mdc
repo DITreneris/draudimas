@@ -12,7 +12,7 @@ This is the **viesiejipirkimai.lt agent** — a Python worker that runs **on wee
 - `main.py` — APScheduler `BlockingScheduler` (tz `Europe/Vilnius`), `CronTrigger(day_of_week="mon-fri", hour="7-21", minute=0)`; kiekvienas slot'as — `run_once.py` subprocess su `CYCLE_MAX_SECONDS`. SIGINT/SIGTERM handling. `CHECK_INTERVAL_MINUTES` deprecated.
 - `run_once.py` — single `run_cycle`, smoke-test entry point.
 - `src/config.py` — `Settings` frozen dataclass + env parsers (`_get_bool/int/list`).
-- `search_keyword(kw) -> list[ResultItem]` with bounded retries on transient portal failures; Playwright Chromium sync.
+- `search_keyword(kw) -> list[ResultItem]` / `search_keywords_for_cycle(keywords)` — vienas browser per ciklą; Playwright Chromium sync.
 - `src/db.py` — `SeenStore` (SQLite), `pirkimo_id` PK, `filter_new`/`mark_seen`/`count`.
 - `src/notifier.py` — `ConsoleLogNotifier` (stdout + `notifications.log`); optional `TelegramNotifier`, `ResendEmailNotifier` or `SmtpEmailNotifier`.
 - `src/exporter.py` — `build_payload` / `write_local` / `push_to_github` / `export_and_push`. `urllib` only.

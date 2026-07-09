@@ -43,6 +43,7 @@ class Settings:
     check_interval_minutes: int = 60
     max_results_per_keyword: int = 50
     headless: bool = True
+    chromium_single_process: bool = False
     state_dir: Path = field(default_factory=lambda: Path("./state"))
     run_on_start: bool = True
     wipe_db_on_start: bool = False
@@ -100,6 +101,7 @@ def load_settings() -> Settings:
         check_interval_minutes=_get_int("CHECK_INTERVAL_MINUTES", 60),
         max_results_per_keyword=_get_int("MAX_RESULTS_PER_KEYWORD", 50),
         headless=_get_bool("HEADLESS", True),
+        chromium_single_process=_get_bool("CHROMIUM_SINGLE_PROCESS", False),
         state_dir=Path(os.getenv("STATE_DIR", "./state")).resolve(),
         run_on_start=_get_bool("RUN_ON_START", True),
         wipe_db_on_start=_get_bool("WIPE_DB_ON_START", False),

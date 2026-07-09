@@ -8,7 +8,9 @@ from dataclasses import dataclass
 from typing import Iterable
 
 from playwright.sync_api import (
+    Browser,
     Page,
+    Playwright,
     TimeoutError as PlaywrightTimeoutError,
     sync_playwright,
 )
@@ -42,6 +44,47 @@ class ResultItem:
 
 class SearchError(RuntimeError):
     pass
+
+
+def _build_chromium_launch_args(*, single_process: bool) -> list[str]:
+    args = [
+        "--disable-gpu",
+        "--no-zygote",
+        "--disable-dev-shm-usage",
+    ]
+    if single_process:
+        args.append("--single-process")
+    return args
+
+
+def _launch_browser(
+    p: Playwright, *, headless: bool, single_process: bool
+) -> Browser:
+    return p.chromium.launch(
+        headless=headless,
+        timeout=BROWSER_LAUNCH_TIMEOUT_MS,
+        args=_build_chromium_launch_args(single_process=single_process),
+    )
+
+
+def _close_browser_safe(browser: Browser | None) -> None:
+    if browser is None:
+        return
+    try:
+        browser.close()
+    except Exception:
+        logger.warning("browser.close() nepavyko", exc_info=True)
+
+
+def _is_browser_dead_error(exc: BaseException) -> bool:
+    name = type(exc).__name__
+    if name in {"TargetClosedError", "BrowserClosedError"}:
+        return True
+    msg = str(exc).lower()
+    return (
+        "browser has been closed" in msg
+        or "target page, context or browser has been closed" in msg
+    )
 
 
 def _absolute_url(href: str | None) -> str | None:
@@ -204,94 +247,128 @@ def _log_search_debug(page: Page, keyword: str, attempt: int) -> None:
         )
 
 
-def _search_keyword_once(
+def _search_in_context(
+    browser: Browser,
     keyword: str,
     *,
-    headless: bool,
     max_results: int,
     timeout_ms: int,
     attempt: int,
 ) -> list[ResultItem]:
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=headless, timeout=BROWSER_LAUNCH_TIMEOUT_MS
-        )
-        context = browser.new_context(locale="lt-LT")
-        page = context.new_page()
-        page.set_default_timeout(timeout_ms)
+    context = browser.new_context(locale="lt-LT")
+    page = context.new_page()
+    page.set_default_timeout(timeout_ms)
+    try:
+        page.goto(ADVANCED_SEARCH_URL, wait_until="domcontentloaded")
+        page.wait_for_selector("#Title", timeout=timeout_ms)
+        page.fill("#Title", keyword)
+        _click_search(page)
+
         try:
-            page.goto(ADVANCED_SEARCH_URL, wait_until="domcontentloaded")
-            page.wait_for_selector("#Title", timeout=timeout_ms)
-            page.fill("#Title", keyword)
-            _click_search(page)
+            page.wait_for_load_state("domcontentloaded", timeout=timeout_ms)
+        except PlaywrightTimeoutError:
+            pass
 
-            try:
-                page.wait_for_load_state("domcontentloaded", timeout=timeout_ms)
-            except PlaywrightTimeoutError:
-                pass
-
-            try:
-                page.wait_for_function(
-                    "() => Array.from(document.querySelectorAll('th,td'))"
-                    ".some(el => /Pirkimo\\s*ID/i.test(el.textContent || ''))",
-                    timeout=timeout_ms,
-                )
-            except PlaywrightTimeoutError:
-                logger.warning(
-                    "Laukiant rezultatu lenteles (Pirkimo ID) suveike timeout"
-                )
-
-            title_idx, id_idx, published_idx, org_idx, table = _find_header_indices(page)
-            items = _extract_rows(
-                table, title_idx, id_idx, published_idx, org_idx, max_results
+        try:
+            page.wait_for_function(
+                "() => Array.from(document.querySelectorAll('th,td'))"
+                ".some(el => /Pirkimo\\s*ID/i.test(el.textContent || ''))",
+                timeout=timeout_ms,
             )
-            logger.info("Keyword='%s': rasta %d rezultatu", keyword, len(items))
-            return items
+        except PlaywrightTimeoutError:
+            logger.warning(
+                "Laukiant rezultatu lenteles (Pirkimo ID) suveike timeout"
+            )
+
+        title_idx, id_idx, published_idx, org_idx, table = _find_header_indices(page)
+        return _extract_rows(
+            table, title_idx, id_idx, published_idx, org_idx, max_results
+        )
+    except Exception:
+        _log_search_debug(page, keyword, attempt)
+        raise
+    finally:
+        try:
+            context.close()
         except Exception:
-            _log_search_debug(page, keyword, attempt)
-            raise
-        finally:
-            try:
-                context.close()
-            except Exception:
-                logger.warning(
-                    "context.close() nepavyko keyword='%s' attempt=%d",
-                    keyword,
-                    attempt,
-                    exc_info=True,
-                )
-            try:
-                browser.close()
-            except Exception:
-                logger.warning(
-                    "browser.close() nepavyko keyword='%s' attempt=%d",
-                    keyword,
-                    attempt,
-                    exc_info=True,
-                )
+            logger.warning(
+                "context.close() nepavyko keyword='%s' attempt=%d",
+                keyword,
+                attempt,
+                exc_info=True,
+            )
 
 
-def search_keyword(
+def _relaunch_browser(
+    browser_ref: list[Browser | None],
+    p: Playwright,
+    *,
+    headless: bool,
+    single_process: bool,
     keyword: str,
-    headless: bool = True,
-    max_results: int = 50,
-    timeout_ms: int = 30000,
-) -> list[ResultItem]:
-    logger.info("Ieskau pagal keyword='%s' (max %d)", keyword, max_results)
+) -> bool:
+    _close_browser_safe(browser_ref[0])
+    browser_ref[0] = None
+    try:
+        browser_ref[0] = _launch_browser(
+            p, headless=headless, single_process=single_process
+        )
+        return True
+    except Exception:
+        logger.exception("Chromium relaunch nepavyko keyword='%s'", keyword)
+        return False
+
+
+def _search_keyword_on_browser(
+    browser_ref: list[Browser | None],
+    p: Playwright,
+    keyword: str,
+    *,
+    headless: bool,
+    single_process: bool,
+    max_results: int,
+    timeout_ms: int,
+) -> list[ResultItem] | None:
+    if browser_ref[0] is None:
+        if not _relaunch_browser(
+            browser_ref, p, headless=headless, single_process=single_process, keyword=keyword
+        ):
+            return None
+
     last_err: BaseException | None = None
     for attempt in range(1, SEARCH_MAX_ATTEMPTS + 1):
+        browser = browser_ref[0]
+        if browser is None:
+            return None
         try:
-            return _search_keyword_once(
+            items = _search_in_context(
+                browser,
                 keyword,
-                headless=headless,
                 max_results=max_results,
                 timeout_ms=timeout_ms,
                 attempt=attempt,
             )
+            logger.info("Keyword='%s': rasta %d rezultatu", keyword, len(items))
+            return items
         except Exception as e:
             last_err = e
+            if _is_browser_dead_error(e):
+                if not _relaunch_browser(
+                    browser_ref,
+                    p,
+                    headless=headless,
+                    single_process=single_process,
+                    keyword=keyword,
+                ):
+                    return None
             if attempt >= SEARCH_MAX_ATTEMPTS:
-                raise
+                logger.error(
+                    "Keyword='%s' paieska nepavyko po %d bandymu: %s",
+                    keyword,
+                    SEARCH_MAX_ATTEMPTS,
+                    last_err,
+                )
+                return None
             logger.warning(
                 "Keyword='%s' paieska nepavyko (bandymas %d/%d): %s; "
                 "bandau po %ds",
@@ -302,20 +379,88 @@ def search_keyword(
                 SEARCH_RETRY_DELAY_SEC,
             )
             time.sleep(SEARCH_RETRY_DELAY_SEC)
-    assert last_err is not None
-    raise last_err
+    return None
+
+
+def search_keywords_for_cycle(
+    keywords: Iterable[str],
+    *,
+    headless: bool = True,
+    max_results: int = 50,
+    timeout_ms: int = 30000,
+    single_process: bool = False,
+) -> dict[str, list[ResultItem] | None]:
+    """Vienas Chromium browser visam ciklui; naujas context kiekvienam keyword."""
+    kw_list = list(keywords)
+    if not kw_list:
+        return {}
+
+    logger.info(
+        "Ieskau %d keyword(s) vienu browser (max %d/kw, single_process=%s)",
+        len(kw_list),
+        max_results,
+        single_process,
+    )
+
+    results: dict[str, list[ResultItem] | None] = {}
+    with sync_playwright() as p:
+        browser_ref: list[Browser | None] = [None]
+        try:
+            browser_ref[0] = _launch_browser(
+                p, headless=headless, single_process=single_process
+            )
+        except Exception:
+            logger.exception("Chromium launch nepavyko")
+            return {kw: None for kw in kw_list}
+
+        for keyword in kw_list:
+            logger.info("Ieskau pagal keyword='%s' (max %d)", keyword, max_results)
+            results[keyword] = _search_keyword_on_browser(
+                browser_ref,
+                p,
+                keyword,
+                headless=headless,
+                single_process=single_process,
+                max_results=max_results,
+                timeout_ms=timeout_ms,
+            )
+
+        _close_browser_safe(browser_ref[0])
+        browser_ref[0] = None
+
+    return results
+
+
+def search_keyword(
+    keyword: str,
+    headless: bool = True,
+    max_results: int = 50,
+    timeout_ms: int = 30000,
+    single_process: bool = False,
+) -> list[ResultItem]:
+    results = search_keywords_for_cycle(
+        [keyword],
+        headless=headless,
+        max_results=max_results,
+        timeout_ms=timeout_ms,
+        single_process=single_process,
+    )
+    items = results.get(keyword)
+    if items is None:
+        raise SearchError(f"Keyword='{keyword}' paieska nepavyko")
+    return items
 
 
 def search_keywords(
     keywords: Iterable[str],
     headless: bool = True,
     max_results: int = 50,
+    single_process: bool = False,
 ) -> dict[str, list[ResultItem]]:
-    out: dict[str, list[ResultItem]] = {}
-    for kw in keywords:
-        try:
-            out[kw] = search_keyword(kw, headless=headless, max_results=max_results)
-        except Exception as e:
-            logger.exception("Klaida ieskant keyword='%s': %s", kw, e)
-            out[kw] = []
-    return out
+    raw = search_keywords_for_cycle(
+        keywords,
+        headless=headless,
+        max_results=max_results,
+        single_process=single_process,
+    )
+    return {kw: (items if items is not None else []) for kw, items in raw.items()}

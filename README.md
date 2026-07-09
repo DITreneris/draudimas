@@ -46,6 +46,7 @@ Prieš merge / deploy: atitinkamas DoD skyrius `dod_system.md` (`FIX`, `CFG`, `S
 | `CHECK_INTERVAL_MINUTES` | `60` | **Deprecated** – ignoruojamas, grafikas hardcoded (`CronTrigger mon-fri 7-21:00 Europe/Vilnius`) |
 | `MAX_RESULTS_PER_KEYWORD` | `50` | Kiek rezultatų nuskaitom per keyword |
 | `HEADLESS` | `true` | Playwright headless režimas |
+| `CHROMIUM_SINGLE_PROCESS` | `false` | Mažesnis Chromium RAM (`--single-process`). Railway 512 MB: `true` |
 | `STATE_DIR` | `./state` (lokaliai) / `/data` (Docker) | Kur laikoma SQLite + log |
 | `RUN_ON_START` | `true` | Ar paleisti ciklą iš karto starto metu |
 | `WIPE_DB_ON_START` | `false` | **Operacinis**: įjungus į `true`, prieš scheduler'į ištrina `$STATE_DIR/seen.sqlite3` ir logina warning'ą. Po vienkartinės užduoties **būtina** išjungti atgal (arba pašalinti kintamąjį), kitaip DB bus trinama kiekvieno restart'o metu. |
@@ -124,11 +125,23 @@ python main.py
    - *(nebereikia `CHECK_INTERVAL_MINUTES` – grafikas hardcoded)*
    - `MAX_RESULTS_PER_KEYWORD=50`
    - `HEADLESS=true`
+   - `CHROMIUM_SINGLE_PROCESS=true` (Railway 512 MB atmintis)
+   - `RAILWAY_SHM_SIZE_BYTES=1073741824` (Railway platform kintamasis, ne app env)
    - `STATE_DIR=/data`
    - `RUN_ON_START=true`
    - `LOG_LEVEL=INFO`
 5. Deploy. Service tipas – **worker** (nereikia public networking'o).
 6. Logai – Railway UI (`Deployments → Logs`). Failas `/data/notifications.log` išlieka per deploy'us.
+
+### Playwright atmintis (Railway)
+
+Playwright + Chromium reikalauja **≥512 MB**, rekomenduojama **≥1 GB** cgroup limito.
+Jei loguose `BrowserType.launch: Target page, context or browser has been closed`:
+
+1. Variables: `CHROMIUM_SINGLE_PROCESS=true`, `RAILWAY_SHM_SIZE_BYTES=1073741824`
+2. **Restart deployment**
+3. Tikrink `$STATE_DIR/health.json` → `last_search_ok`, `search_fail_streak`
+4. Jei vis dar failina — pakelk serviso **Memory** limitą (Settings → Resources) iki ≥1 GB
 
 ### DB išvalymas (migracija / backfill)
 
@@ -182,10 +195,12 @@ arba norint atkurti teisingą `first_seen_at` tvarką), naudok operacinį
 | Loguose `maximum number of running instances reached` | Užstrigęs ciklas; po šio deploy subprocess timeout turėtų užkirsti — vis tiek **restart** |
 | Daug „naujų“ Telegram iš karto | Patikrink ar `WIPE_DB_ON_START` netyčia `true` |
 | `GitHub push FAILED` / HTTP 401 | Atnaujink `GITHUB_TOKEN` (fine-grained PAT) Railway Variables |
+| `browser has been closed` / `TargetClosedError` ant `launch` | `CHROMIUM_SINGLE_PROCESS=true`, `RAILWAY_SHM_SIZE_BYTES=1073741824`, Restart; tikrink `health.json` → `last_search_ok`. Jei nepadeda — Memory ≥1 GB |
 | Po deploy | **24h log watch**: jokio `Ciklas virsijo`, pakartotinio `scheduler skip`, `GitHub push FAILED` |
 
 Būsena: `$STATE_DIR/health.json` (`last_cycle_completed_at`, `last_export_ok`,
-`last_export_http_status`, `keywords_failed`, `zero_results_streak`).
+`last_export_http_status`, `keywords_failed`, `last_search_ok`, `search_fail_streak`,
+`zero_results_streak`).
 
 ## Žinomi apribojimai (MVP)
 

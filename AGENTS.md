@@ -17,7 +17,7 @@ On **weekdays (Mon–Fri), every hour from 07:00–21:00 Europe/Vilnius**, poll 
 main.py            -> APScheduler; each slot runs run_once.py subprocess (CYCLE_MAX_SECONDS timeout)
 run_once.py        -> Single run_cycle + exit code; also invoked by main.py scheduler
 src/config.py      -> Settings (frozen dataclass) + load_settings() from env
-src/scraper.py     -> Playwright (Chromium sync) -> ResultItem list
+src/scraper.py     -> Playwright (Chromium sync); vienas browser per run_cycle -> ResultItem list
 src/db.py          -> SeenStore (SQLite, pirkimo_id PK)
 src/notifier.py    -> ConsoleLogNotifier; optional TelegramNotifier; optional ResendEmailNotifier (urllib) or SmtpEmailNotifier (stdlib)
 src/exporter.py    -> SQLite -> items.json -> GitHub REST API (urllib only)
@@ -30,8 +30,8 @@ railway.json       -> Railway deploy config (worker, ON_FAILURE restart)
 Data flow per cycle:
 
 ```
-search_keyword(kw) -> [ResultItem]
-  -> SeenStore.filter_new(ids) -> only new
+search_keywords_for_cycle(keywords) -> [ResultItem] per kw (vienas browser/ciklą)
+ -> SeenStore.filter_new(ids) -> only new
   -> notifier.notify(kw, item)  (also appends to notifications.log)
   -> store.mark_seen(...)       (INSERT OR IGNORE)
 -> for every keyword
