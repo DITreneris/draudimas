@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-09T18:00:06+00:00",
+  "generated_at": "2026-07-10T04:00:07+00:00",
   "stats": {
-    "total_items": 96,
+    "total_items": 97,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8712336",
+      "title": "Įstaigos nekilnojamo, kilnojamo ir panaudos ar patikėjimo būdu perduoto turto draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8712336",
+      "first_seen_at": "2026-07-10T04:00:07.223405+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "10/07/2026 05:21:00",
+      "organization": "Lietuvos sveikatos mokslų universiteto ligoninė Kauno klinikos (PV)"
+    },
     {
       "pirkimo_id": "8688765",
       "title": "Transporto priemonių KASKO draudimo paslaugos",
