@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-13T07:00:06+00:00",
+  "generated_at": "2026-07-13T08:00:15+00:00",
   "stats": {
-    "total_items": 97,
+    "total_items": 98,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8751540",
+      "title": "Bendrosios civilinės atsakomybės draudimo paslaugos pirkimas (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8751540",
+      "first_seen_at": "2026-07-13T08:00:12.583860+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/07/2026 10:50:53",
+      "organization": "UAB \"Jonavos paslaugos\" (PV)"
+    },
     {
       "pirkimo_id": "8712336",
       "title": "Įstaigos nekilnojamo, kilnojamo ir panaudos ar patikėjimo būdu perduoto turto draudimas",
