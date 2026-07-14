@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-14T11:00:06+00:00",
+  "generated_at": "2026-07-14T12:00:08+00:00",
   "stats": {
-    "total_items": 98,
+    "total_items": 99,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8715571",
+      "title": "Turto draudimas (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8715571",
+      "first_seen_at": "2026-07-14T12:00:06.418964+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "14/07/2026 14:14:34",
+      "organization": "Druskininkų švietimo centras (PV)"
+    },
     {
       "pirkimo_id": "8751540",
       "title": "Bendrosios civilinės atsakomybės draudimo paslaugos pirkimas (Skelbiama apklausa)",
