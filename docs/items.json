@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-15T12:21:24+00:00",
+  "generated_at": "2026-07-15T13:00:09+00:00",
   "stats": {
-    "total_items": 99,
+    "total_items": 100,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8805224",
+      "title": "Darbuotojų savanoriškojo sveikatos draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8805224",
+      "first_seen_at": "2026-07-15T13:00:07.202352+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/07/2026 15:42:22",
+      "organization": "ISM Vadybos ir ekonomikos universitetas UAB (PV)"
+    },
     {
       "pirkimo_id": "8715571",
       "title": "Turto draudimas (Skelbiama apklausa)",
