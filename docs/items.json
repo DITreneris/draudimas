@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-16T14:00:06+00:00",
+  "generated_at": "2026-07-16T15:00:08+00:00",
   "stats": {
-    "total_items": 101,
+    "total_items": 102,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8827665",
+      "title": "Darbuotojų draudimo nuo nelaimingų atsitikimų paslaugos (Supaprastintas atviras konkursas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8827665",
+      "first_seen_at": "2026-07-16T15:00:06.865526+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "16/07/2026 16:55:50",
+      "organization": "Akcinė bendrovė Regitra"
+    },
     {
       "pirkimo_id": "8801530",
       "title": "Draudimo paslaugų pirkimas",
