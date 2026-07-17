@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-07-17T08:00:06+00:00",
+  "generated_at": "2026-07-17T09:00:08+00:00",
   "stats": {
-    "total_items": 102,
+    "total_items": 104,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8835639",
+      "title": "Turto draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8835639",
+      "first_seen_at": "2026-07-17T09:00:06.247068+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "17/07/2026 11:57:56",
+      "organization": "Viešoji įstaiga Radviliškio ligoninė"
+    },
+    {
+      "pirkimo_id": "8837502",
+      "title": "Pastatų draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8837502",
+      "first_seen_at": "2026-07-17T09:00:06.171429+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "17/07/2026 11:22:13",
+      "organization": "Viešoji įstaiga Anykščių rajono savivaldybės pirminės sveikatos priežiūros centras"
+    },
     {
       "pirkimo_id": "8827665",
       "title": "Darbuotojų draudimo nuo nelaimingų atsitikimų paslaugos (Supaprastintas atviras konkursas)",
