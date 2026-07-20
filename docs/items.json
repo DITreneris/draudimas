@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-20T13:00:06+00:00",
+  "generated_at": "2026-07-20T14:00:12+00:00",
   "stats": {
-    "total_items": 104,
+    "total_items": 105,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8866854",
+      "title": "Specialicuotos technikos KASKO draudimas (SKELBIAMA APKLAUSA)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8866854",
+      "first_seen_at": "2026-07-20T14:00:06.475731+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "20/07/2026 16:25:49",
+      "organization": "UAB Klaipėdos regiono atliekų tvarkymo centras (PV)"
+    },
     {
       "pirkimo_id": "8835639",
       "title": "Turto draudimo paslauga",
