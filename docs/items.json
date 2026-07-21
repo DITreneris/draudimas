@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-21T11:00:07+00:00",
+  "generated_at": "2026-07-21T12:00:59+00:00",
   "stats": {
-    "total_items": 106,
+    "total_items": 107,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8877415",
+      "title": "Bendrosios ir darbdavio civilinės atsakomybės, darbo santykių ir viešųjų pirkimų atsakomybės draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8877415",
+      "first_seen_at": "2026-07-21T12:00:59.021909+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "21/07/2026 14:56:52",
+      "organization": "AB \"Šiaulių energija\" (PV)"
+    },
     {
       "pirkimo_id": "8828341",
       "title": "Akcinės bendrovės Klaipėdos valstybinio jūrų uosto direkcijos savanoriškojo sveikatos draudimo paslaugos",
