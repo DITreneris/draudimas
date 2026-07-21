@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-20T18:00:06+00:00",
+  "generated_at": "2026-07-21T04:00:08+00:00",
   "stats": {
-    "total_items": 105,
+    "total_items": 106,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8828341",
+      "title": "Akcinės bendrovės Klaipėdos valstybinio jūrų uosto direkcijos savanoriškojo sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8828341",
+      "first_seen_at": "2026-07-21T04:00:07.947056+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "21/07/2026 05:11:27",
+      "organization": "Akcinė bendrovė Klaipėdos valstybinio jūrų uosto direkcija (PV)"
+    },
     {
       "pirkimo_id": "8866854",
       "title": "Specialicuotos technikos KASKO draudimas (SKELBIAMA APKLAUSA)",
