@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-21T18:00:07+00:00",
+  "generated_at": "2026-07-22T04:00:07+00:00",
   "stats": {
-    "total_items": 107,
+    "total_items": 108,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8882055",
+      "title": "Turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8882055",
+      "first_seen_at": "2026-07-22T04:00:07.397564+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "22/07/2026 05:11:29",
+      "organization": "Akcinė bendrovė „Oro navigacija“ (PV)"
+    },
     {
       "pirkimo_id": "8877415",
       "title": "Bendrosios ir darbdavio civilinės atsakomybės, darbo santykių ir viešųjų pirkimų atsakomybės draudimo paslaugos",
