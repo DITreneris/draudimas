@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-23T14:00:08+00:00",
+  "generated_at": "2026-07-23T15:00:10+00:00",
   "stats": {
-    "total_items": 108,
+    "total_items": 109,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8927496",
+      "title": "(PU-15395/26) Draudimo brokerių paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8927496",
+      "first_seen_at": "2026-07-23T15:00:07.272025+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/07/2026 17:04:29",
+      "organization": "AB „Kelių priežiūra“ (PV)"
+    },
     {
       "pirkimo_id": "8882055",
       "title": "Turto draudimo paslaugos",
