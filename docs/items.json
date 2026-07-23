@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-23T17:00:07+00:00",
+  "generated_at": "2026-07-23T18:00:08+00:00",
   "stats": {
-    "total_items": 109,
+    "total_items": 110,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8940267",
+      "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=8940267",
+      "first_seen_at": "2026-07-23T18:00:07.485720+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/07/2026 20:41:29",
+      "organization": "Vilniaus universitetas (PV)"
+    },
     {
       "pirkimo_id": "8927496",
       "title": "(PU-15395/26) Draudimo brokerių paslaugos",
