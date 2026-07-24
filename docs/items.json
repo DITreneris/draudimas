@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-24T11:00:07+00:00",
+  "generated_at": "2026-07-24T12:00:09+00:00",
   "stats": {
-    "total_items": 112,
+    "total_items": 113,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8951737",
+      "title": "(738-26) Profesinės civilinės atsakomybės draudimo paslaugos tarptautiniams SGD terminalų projektams (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8951737",
+      "first_seen_at": "2026-07-24T12:00:07.053453+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "24/07/2026 13:53:15",
+      "organization": "AB KN Energies (PV)"
+    },
     {
       "pirkimo_id": "8943226",
       "title": "Prievolių įvykdymo užtikrinimo dokumentas (laidavimo draudimas) Šiaulių regiono komunalinių atliekų mechaninio biologinio apdorojimo įrenginiams",
