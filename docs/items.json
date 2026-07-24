@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-24T06:00:06+00:00",
+  "generated_at": "2026-07-24T07:00:08+00:00",
   "stats": {
-    "total_items": 111,
+    "total_items": 112,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8943226",
+      "title": "Prievolių įvykdymo užtikrinimo dokumentas (laidavimo draudimas) Šiaulių regiono komunalinių atliekų mechaninio biologinio apdorojimo įrenginiams",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8943226",
+      "first_seen_at": "2026-07-24T07:00:07.402501+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "24/07/2026 09:22:53",
+      "organization": "VšĮ Šiaulių regiono atliekų tvarkymo centras (PV)"
+    },
     {
       "pirkimo_id": "8906204",
       "title": "Kauno MBA ir Zabieliškio MAR turto draudimo paslaugos",
