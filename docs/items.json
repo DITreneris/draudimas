@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-27T10:00:06+00:00",
+  "generated_at": "2026-07-27T11:00:09+00:00",
   "stats": {
-    "total_items": 115,
+    "total_items": 116,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8947120",
+      "title": "Darbuotojų sveikatos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8947120",
+      "first_seen_at": "2026-07-27T11:00:06.771763+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "27/07/2026 13:19:41",
+      "organization": "AB \"Šiaulių energija\" (PV)"
+    },
     {
       "pirkimo_id": "8952765",
       "title": "Bendrovės turto draudimas",
