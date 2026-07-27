@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-07-24T18:00:07+00:00",
+  "generated_at": "2026-07-27T04:00:08+00:00",
   "stats": {
-    "total_items": 113,
+    "total_items": 115,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8952765",
+      "title": "Bendrovės turto draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8952765",
+      "first_seen_at": "2026-07-27T04:00:07.880933+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "27/07/2026 05:10:51",
+      "organization": "UAB Klaipėdos regiono atliekų tvarkymo centras (PV)"
+    },
+    {
+      "pirkimo_id": "8908921",
+      "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8908921",
+      "first_seen_at": "2026-07-27T04:00:07.866772+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "27/07/2026 05:10:39",
+      "organization": "UAB ILTE"
+    },
     {
       "pirkimo_id": "8951737",
       "title": "(738-26) Profesinės civilinės atsakomybės draudimo paslaugos tarptautiniams SGD terminalų projektams (skelbiama apklausa)",
