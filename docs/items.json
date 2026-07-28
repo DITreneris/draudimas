@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-28T13:00:06+00:00",
+  "generated_at": "2026-07-28T14:00:09+00:00",
   "stats": {
-    "total_items": 118,
+    "total_items": 119,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8991947",
+      "title": "Nekilnojamojo turto draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8991947",
+      "first_seen_at": "2026-07-28T14:00:08.796490+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "28/07/2026 16:23:41",
+      "organization": "Valstybės įmonė Valstybinių miškų urėdija (PV)"
+    },
     {
       "pirkimo_id": "8958748",
       "title": "Bendrosios civilinės atsakomybės ir darbdavio civilinės atsakomybės draudimo paslaugos",
