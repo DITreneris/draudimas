@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-28T18:00:07+00:00",
+  "generated_at": "2026-07-29T04:00:07+00:00",
   "stats": {
-    "total_items": 119,
+    "total_items": 120,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "8970045",
+      "title": "Vadovaujančių asmenų civilinės atsakomybės draudimo pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=8970045",
+      "first_seen_at": "2026-07-29T04:00:06.727763+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "29/07/2026 05:21:00",
+      "organization": "Valstybės įmonė Ignalinos atominė elektrinė"
+    },
     {
       "pirkimo_id": "8991947",
       "title": "Nekilnojamojo turto draudimo paslaugos",
