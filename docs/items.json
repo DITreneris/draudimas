@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-29T18:00:08+00:00",
+  "generated_at": "2026-07-30T04:00:08+00:00",
   "stats": {
-    "total_items": 122,
+    "total_items": 123,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9008840",
+      "title": "Darbuotojų savarankiškojo sveikatos draudimo paslaugos.",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9008840",
+      "first_seen_at": "2026-07-30T04:00:07.631913+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/07/2026 05:22:32",
+      "organization": "Klaipėdos miesto savivaldybės administracija"
+    },
     {
       "pirkimo_id": "9002256",
       "title": "Draudimo paslaugos",
