@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-30T11:00:06+00:00",
+  "generated_at": "2026-07-30T12:00:10+00:00",
   "stats": {
-    "total_items": 124,
+    "total_items": 125,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9033440",
+      "title": "Baldų, įrangos draudimo paslaugos 2026 (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9033440",
+      "first_seen_at": "2026-07-30T12:00:07.720655+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/07/2026 14:59:42",
+      "organization": "Lietuvos sveikatos mokslų universitetas (PV)"
+    },
     {
       "pirkimo_id": "9025109",
       "title": "Asmenų civilinės atsakomybės draudimas (skelbiama apklausa) (KARTOJAMAS 4 KARTĄ)",
