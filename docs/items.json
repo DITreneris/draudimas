@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-07-31T10:00:07+00:00",
+  "generated_at": "2026-07-31T11:00:10+00:00",
   "stats": {
-    "total_items": 126,
+    "total_items": 127,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9050962",
+      "title": "Spec. transporto savanoriškojo draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9050962",
+      "first_seen_at": "2026-07-31T11:00:06.966446+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "31/07/2026 13:11:33",
+      "organization": "AB Via Lietuva (PV)"
+    },
     {
       "pirkimo_id": "9033631",
       "title": "Draudimo nuo nelaimingų atsitikimų paslaugos",
