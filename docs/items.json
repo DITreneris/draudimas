@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-04T12:00:07+00:00",
+  "generated_at": "2026-08-04T13:00:11+00:00",
   "stats": {
-    "total_items": 127,
+    "total_items": 128,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9090279",
+      "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomojo draudimo pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9090279",
+      "first_seen_at": "2026-08-04T13:00:07.436951+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/08/2026 15:16:22",
+      "organization": "Uždaroji akcinė bendrovė \"Busturas\" (PV)"
+    },
     {
       "pirkimo_id": "9050962",
       "title": "Spec. transporto savanoriškojo draudimo paslaugos",
