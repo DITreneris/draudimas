@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-06T18:00:07+00:00",
+  "generated_at": "2026-08-07T04:00:10+00:00",
   "stats": {
-    "total_items": 128,
+    "total_items": 129,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9117320",
+      "title": "Bendrosios civilinės atsakomybės draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9117320",
+      "first_seen_at": "2026-08-07T04:00:08.479992+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "07/08/2026 05:11:20",
+      "organization": "UAB \"Kauno švara\""
+    },
     {
       "pirkimo_id": "9090279",
       "title": "Transporto priemonių valdytojų civilinės atsakomybės privalomojo draudimo pirkimas",
