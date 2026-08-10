@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-10T16:00:20+00:00",
+  "generated_at": "2026-08-10T17:00:08+00:00",
   "stats": {
-    "total_items": 129,
+    "total_items": 130,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9166248",
+      "title": "Akmenės rajono savivaldybės darbuotojų savanoriško sveikatos draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9166248",
+      "first_seen_at": "2026-08-10T17:00:07.563476+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "10/08/2026 16:25:20",
+      "organization": "Akmenės rajono savivaldybės administracija"
+    },
     {
       "pirkimo_id": "9117320",
       "title": "Bendrosios civilinės atsakomybės draudimo paslaugų pirkimas",
