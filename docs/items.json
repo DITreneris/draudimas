@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-14T08:00:07+00:00",
+  "generated_at": "2026-08-14T09:00:08+00:00",
   "stats": {
-    "total_items": 132,
+    "total_items": 133,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9232051",
+      "title": "Turto draudimas (Supaprastintas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9232051",
+      "first_seen_at": "2026-08-14T09:00:06.086393+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "14/08/2026 11:17:22",
+      "organization": "Akcinė bendrovė Regitra"
+    },
     {
       "pirkimo_id": "9225104",
       "title": "Darbuotojų savanoriškas sveikatos draudimas",
