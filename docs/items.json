@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-14T07:00:05+00:00",
+  "generated_at": "2026-08-14T08:00:07+00:00",
   "stats": {
-    "total_items": 131,
+    "total_items": 132,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9225104",
+      "title": "Darbuotojų savanoriškas sveikatos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9225104",
+      "first_seen_at": "2026-08-14T08:00:06.356757+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "14/08/2026 10:54:14",
+      "organization": "Uždaroji akcinė bendrovė Jonavos šilumos tinklai (PV)"
+    },
     {
       "pirkimo_id": "9222303",
       "title": "RINKOS KONSULTACIJA dėl Draudimo brokerio paslaugų pirkimo",
