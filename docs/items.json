@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-08-14T09:00:08+00:00",
+  "generated_at": "2026-08-14T10:00:07+00:00",
   "stats": {
-    "total_items": 133,
+    "total_items": 134,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9224174",
+      "title": "(PU-15488/26) Vadovų ir vadovaujančių asmenų atsakomybės draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9224174",
+      "first_seen_at": "2026-08-14T10:00:06.467949+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "14/08/2026 12:10:27",
+      "organization": "AB „Kelių priežiūra“ (PV)"
+    },
     {
       "pirkimo_id": "9232051",
       "title": "Turto draudimas (Supaprastintas)",
