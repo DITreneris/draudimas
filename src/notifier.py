@@ -38,7 +38,7 @@ class ConsoleLogNotifier:
         self.log_path = log_path
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
 
-    def notify(self, keyword: str, item: ResultItem) -> None:
+    def notify(self, keyword: str, item: ResultItem) -> bool:
         msg = (
             f"[NEW] keyword='{keyword}' id={item.pirkimo_id} "
             f"title='{item.title}' org='{item.organization or '-'}' "
@@ -50,10 +50,14 @@ class ConsoleLogNotifier:
                 f.write(msg + "\n")
         except Exception:
             logger.exception("Nepavyko irasyti i log faila %s", self.log_path)
+        return True
 
-    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> bool:
+        ok = True
         for item in items:
-            self.notify(keyword, item)
+            if not self.notify(keyword, item):
+                ok = False
+        return ok
 
 
 class TelegramNotifier:
@@ -71,18 +75,21 @@ class TelegramNotifier:
         self.chat_id = chat_id
         self.timeout = timeout
 
-    def notify(self, keyword: str, item: ResultItem) -> None:
+    def notify(self, keyword: str, item: ResultItem) -> bool:
         text = self._format_message(keyword, item)
-        self._send(text)
+        return self._send(text)
 
-    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> bool:
+        ok = True
         for item in items:
-            self.notify(keyword, item)
+            if not self.notify(keyword, item):
+                ok = False
+        return ok
 
-    def notify_ops(self, text: str) -> None:
+    def notify_ops(self, text: str) -> bool:
         """Siuncia operacini pranesima (sistemos sveikata, ne naujas pirkimas)."""
         safe = html.escape(text)
-        self._send(f"<b>Agento perspejimas</b>\n{safe}")
+        return self._send(f"<b>Agento perspejimas</b>\n{safe}")
 
     @staticmethod
     def _format_message(keyword: str, item: ResultItem) -> str:
@@ -99,10 +106,10 @@ class TelegramNotifier:
             f"Paskelbta: {published}",
         ]
         if item.url:
-            lines.append(item.url)
+            lines.append(html.escape(item.url))
         return "\n".join(lines)
 
-    def _send(self, text: str) -> None:
+    def _send(self, text: str) -> bool:
         url = f"{self.API_BASE}/bot{self.bot_token}/sendMessage"
         body = json.dumps(
             {
@@ -121,6 +128,8 @@ class TelegramNotifier:
                     logger.warning(
                         "Telegram sendMessage netiketas status=%s", resp.status
                     )
+                    return False
+                return True
         except urllib.error.HTTPError as e:
             # Never log the token; URL contains it, so only log the status and
             # the (non-sensitive) response body.
@@ -131,10 +140,12 @@ class TelegramNotifier:
                 self.chat_id,
                 err_body,
             )
+            return False
         except Exception:
             logger.exception(
                 "Telegram sendMessage nepavyko (chat_id=%s)", self.chat_id
             )
+            return False
 
 
 def telegram_from_settings(
@@ -173,13 +184,14 @@ def send_ops_alert(
     last = state.get(alert_key, 0.0)
     if now - last < OPS_ALERT_COOLDOWN_SEC:
         return
+    if not telegram.notify_ops(message):
+        return
     state[alert_key] = now
     try:
         state_path.parent.mkdir(parents=True, exist_ok=True)
         state_path.write_text(json.dumps(state), encoding="utf-8")
     except Exception:
         logger.exception("Nepavyko irasyti ops alert state %s", state_path)
-    telegram.notify_ops(message)
 
 
 class ResendEmailNotifier:
@@ -199,15 +211,18 @@ class ResendEmailNotifier:
         self.mail_to = mail_to
         self.timeout = timeout
 
-    def notify(self, keyword: str, item: ResultItem) -> None:
+    def notify(self, keyword: str, item: ResultItem) -> bool:
         subject, text = _email_subject_and_plain_body(keyword, item)
-        self._send(subject, text)
+        return self._send(subject, text)
 
-    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> bool:
+        ok = True
         for item in items:
-            self.notify(keyword, item)
+            if not self.notify(keyword, item):
+                ok = False
+        return ok
 
-    def _send(self, subject: str, text: str) -> None:
+    def _send(self, subject: str, text: str) -> bool:
         payload = {
             "from": self.mail_from,
             "to": self.mail_to,
@@ -223,11 +238,15 @@ class ResendEmailNotifier:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                 if resp.status not in (200, 201):
                     logger.warning("Resend emails API netiketas status=%s", resp.status)
+                    return False
+                return True
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", errors="replace")
             logger.error("Resend emails API HTTP %s body=%s", e.code, err_body)
+            return False
         except Exception:
             logger.exception("Resend emails API nepavyko")
+            return False
 
 
 class SmtpEmailNotifier:
@@ -255,13 +274,16 @@ class SmtpEmailNotifier:
         self.password = password
         self.timeout = timeout
 
-    def notify(self, keyword: str, item: ResultItem) -> None:
+    def notify(self, keyword: str, item: ResultItem) -> bool:
         msg = self._build_message(keyword, item)
-        self._send(msg)
+        return self._send(msg)
 
-    def notify_batch(self, keyword: str, items: list[ResultItem]) -> None:
+    def notify_batch(self, keyword: str, items: list[ResultItem]) -> bool:
+        ok = True
         for item in items:
-            self.notify(keyword, item)
+            if not self.notify(keyword, item):
+                ok = False
+        return ok
 
     def _build_message(self, keyword: str, item: ResultItem) -> EmailMessage:
         subject, plain = _email_subject_and_plain_body(keyword, item)
@@ -272,7 +294,7 @@ class SmtpEmailNotifier:
         msg.set_content(plain)
         return msg
 
-    def _send(self, message: EmailMessage) -> None:
+    def _send(self, message: EmailMessage) -> bool:
         try:
             if self.port == 465:
                 with smtplib.SMTP_SSL(
@@ -287,9 +309,11 @@ class SmtpEmailNotifier:
                     if self.user:
                         smtp.login(self.user, self.password)
                     smtp.send_message(message)
+            return True
         except Exception:
             logger.exception(
                 "SMTP send_message nepavyko (host=%s port=%s)",
                 self.host,
                 self.port,
             )
+            return False

@@ -17,6 +17,8 @@ alwaysApply: false
 1. `GET /repos/{owner}/{repo}/contents/{path}?ref={branch}` — canonical way to fetch the current `sha`.
    - `200` -> `sha` from JSON.
    - `404` -> file doesn't exist yet; `sha = None` (we'll create it).
+   - `401` / `403` -> `logger.error("GitHub credentials rejected status=...")`, **no** GET retry,
+     **no** PUT. Return `(False, status)`.
    - Otherwise -> `logger.warning`, return `None` (we'll try to create; GitHub will reject if it actually exists).
 2. `PUT /repos/{owner}/{repo}/contents/{path}` body:
    - `message`, `content` (base64), `branch`, `sha` (if present).

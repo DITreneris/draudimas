@@ -5,6 +5,7 @@ import logging
 import re
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Iterable
 
 from playwright.sync_api import (
@@ -57,14 +58,25 @@ def _build_chromium_launch_args(*, single_process: bool) -> list[str]:
     return args
 
 
+def _is_pthread_eagain_error(exc: BaseException) -> bool:
+    msg = str(exc)
+    return "pthread_create" in msg or "Resource temporarily unavailable" in msg
+
+
 def _launch_browser(
     p: Playwright, *, headless: bool, single_process: bool
 ) -> Browser:
-    return p.chromium.launch(
-        headless=headless,
-        timeout=BROWSER_LAUNCH_TIMEOUT_MS,
-        args=_build_chromium_launch_args(single_process=single_process),
-    )
+    try:
+        return p.chromium.launch(
+            headless=headless,
+            timeout=BROWSER_LAUNCH_TIMEOUT_MS,
+            args=_build_chromium_launch_args(single_process=single_process),
+        )
+    except Exception as exc:
+        if single_process or not _is_pthread_eagain_error(exc):
+            raise
+        logger.info("fallback i --single-process del pthread EAGAIN")
+        return _launch_browser(p, headless=headless, single_process=True)
 
 
 def _close_browser_safe(browser: Browser | None) -> None:
@@ -255,10 +267,12 @@ def _search_in_context(
     timeout_ms: int,
     attempt: int,
 ) -> list[ResultItem]:
-    context = browser.new_context(locale="lt-LT")
-    page = context.new_page()
-    page.set_default_timeout(timeout_ms)
+    context = None
+    page = None
     try:
+        context = browser.new_context(locale="lt-LT")
+        page = context.new_page()
+        page.set_default_timeout(timeout_ms)
         page.goto(ADVANCED_SEARCH_URL, wait_until="domcontentloaded")
         page.wait_for_selector("#Title", timeout=timeout_ms)
         page.fill("#Title", keyword)
@@ -285,18 +299,20 @@ def _search_in_context(
             table, title_idx, id_idx, published_idx, org_idx, max_results
         )
     except Exception:
-        _log_search_debug(page, keyword, attempt)
+        if page is not None:
+            _log_search_debug(page, keyword, attempt)
         raise
     finally:
-        try:
-            context.close()
-        except Exception:
-            logger.warning(
-                "context.close() nepavyko keyword='%s' attempt=%d",
-                keyword,
-                attempt,
-                exc_info=True,
-            )
+        if context is not None:
+            try:
+                context.close()
+            except Exception:
+                logger.warning(
+                    "context.close() nepavyko keyword='%s' attempt=%d",
+                    keyword,
+                    attempt,
+                    exc_info=True,
+                )
 
 
 def _relaunch_browser(
@@ -319,6 +335,12 @@ def _relaunch_browser(
         return False
 
 
+def _deadline_exceeded(deadline: datetime | None) -> bool:
+    if deadline is None:
+        return False
+    return datetime.now(timezone.utc) >= deadline
+
+
 def _search_keyword_on_browser(
     browser_ref: list[Browser | None],
     p: Playwright,
@@ -328,6 +350,7 @@ def _search_keyword_on_browser(
     single_process: bool,
     max_results: int,
     timeout_ms: int,
+    deadline: datetime | None = None,
 ) -> list[ResultItem] | None:
     if browser_ref[0] is None:
         if not _relaunch_browser(
@@ -337,6 +360,14 @@ def _search_keyword_on_browser(
 
     last_err: BaseException | None = None
     for attempt in range(1, SEARCH_MAX_ATTEMPTS + 1):
+        if _deadline_exceeded(deadline):
+            logger.warning(
+                "Keyword='%s' paieska nutraukta pries ciklo timeout (bandymas %d/%d)",
+                keyword,
+                attempt,
+                SEARCH_MAX_ATTEMPTS,
+            )
+            return None
         browser = browser_ref[0]
         if browser is None:
             return None
@@ -378,6 +409,15 @@ def _search_keyword_on_browser(
                 e,
                 SEARCH_RETRY_DELAY_SEC,
             )
+            if _deadline_exceeded(deadline):
+                logger.warning(
+                    "Keyword='%s' paieska nutraukta pries ciklo timeout "
+                    "(po bandymo %d/%d)",
+                    keyword,
+                    attempt,
+                    SEARCH_MAX_ATTEMPTS,
+                )
+                return None
             time.sleep(SEARCH_RETRY_DELAY_SEC)
     return None
 
@@ -389,6 +429,7 @@ def search_keywords_for_cycle(
     max_results: int = 50,
     timeout_ms: int = 30000,
     single_process: bool = False,
+    deadline: datetime | None = None,
 ) -> dict[str, list[ResultItem] | None]:
     """Vienas Chromium browser visam ciklui; naujas context kiekvienam keyword."""
     kw_list = list(keywords)
@@ -423,6 +464,7 @@ def search_keywords_for_cycle(
                 single_process=single_process,
                 max_results=max_results,
                 timeout_ms=timeout_ms,
+                deadline=deadline,
             )
 
         _close_browser_safe(browser_ref[0])
@@ -437,6 +479,7 @@ def search_keyword(
     max_results: int = 50,
     timeout_ms: int = 30000,
     single_process: bool = False,
+    deadline: datetime | None = None,
 ) -> list[ResultItem]:
     results = search_keywords_for_cycle(
         [keyword],
@@ -444,6 +487,7 @@ def search_keyword(
         max_results=max_results,
         timeout_ms=timeout_ms,
         single_process=single_process,
+        deadline=deadline,
     )
     items = results.get(keyword)
     if items is None:
@@ -456,11 +500,13 @@ def search_keywords(
     headless: bool = True,
     max_results: int = 50,
     single_process: bool = False,
+    deadline: datetime | None = None,
 ) -> dict[str, list[ResultItem]]:
     raw = search_keywords_for_cycle(
         keywords,
         headless=headless,
         max_results=max_results,
         single_process=single_process,
+        deadline=deadline,
     )
     return {kw: (items if items is not None else []) for kw, items in raw.items()}

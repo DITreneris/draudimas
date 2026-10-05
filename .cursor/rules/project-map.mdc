@@ -36,3 +36,5 @@ python run_once.py
 ```
 
 Must finish without an `exception` stack trace; `state/seen.sqlite3` created; `state/items.json` written.
+Loguose: `rasta X rezultatu`. `$STATE_DIR/health.json`: `last_search_ok=true` (export OK vienas
+neužtenka — skraperis gali būti neveikęs).

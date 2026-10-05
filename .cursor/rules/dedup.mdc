@@ -29,9 +29,18 @@ for it in items:
         seen_in_batch.add(it.pirkimo_id)
 ```
 
+## Notify then mark (`run_cycle`)
+
+- Deliver enabled channels first (`_deliver`). `mark_seen` only if **all** of them return `True`.
+- Console log file write failure still counts as success (stdout is the channel).
+- A failed item stays unmarked so the next cycle retries (duplicate notify only after a failure).
+- `cycle_claimed` blocks a second keyword in the **same** cycle even if `mark_seen` has not run yet.
+
+`mark_seen` uses `reversed(delivered)` so the newest portal row still gets the latest `first_seen_at`.
+
 ## Cross-keyword dedup (important)
 
-- When the same tender matches **multiple keywords**, it is notified **only once** (for the first keyword that finds it in that cycle). This is a side-effect of `store.mark_seen(...)` — the next `search_keyword` still returns that `pirkimo_id`, but `filter_new` drops it.
+- When the same tender matches **multiple keywords**, it is notified **only once** (for the first keyword that finds it in that cycle). Success path: `mark_seen` + next keyword's `filter_new`. Failure path: `cycle_claimed` (same cycle) then retry next cycle.
 - **First-run behavior:** all visible results count as "new" (DB is empty). This is documented in the README.
 
 ## Don't

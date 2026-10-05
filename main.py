@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import os
 import signal
 import subprocess
 import sys
@@ -73,6 +74,47 @@ class _SchedulerSkipAlertHandler(Handler):
             self.handleError(record)
 
 
+def _kill_process_tree(proc: subprocess.Popen[bytes], log: logging.Logger) -> None:
+    if proc.poll() is not None:
+        return
+    pid = proc.pid
+    try:
+        if sys.platform == "win32":
+            kill = subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(pid)],
+                capture_output=True,
+                check=False,
+            )
+            if kill.returncode != 0:
+                log.debug("taskkill PID=%s returncode=%s", pid, kill.returncode)
+        else:
+            os.killpg(pid, signal.SIGKILL)
+    except ProcessLookupError:
+        log.debug("Procesu medis jau baiges PID=%s", pid)
+    except Exception:
+        log.exception("Nepavyko nuzudyti ciklo procesu medzio PID=%s", pid)
+    try:
+        proc.wait(timeout=10)
+    except Exception:
+        log.debug("wait po kill nepavyko PID=%s", pid, exc_info=True)
+
+
+def _run_cycle_subprocess(settings: Settings, log: logging.Logger) -> int:
+    kwargs: dict[str, object] = {}
+    if sys.platform != "win32":
+        kwargs["start_new_session"] = True
+    proc = subprocess.Popen([sys.executable, str(_RUN_ONCE_PATH)], **kwargs)
+    try:
+        return proc.wait(timeout=settings.cycle_max_seconds)
+    except subprocess.TimeoutExpired:
+        log.error(
+            "Ciklas virsijo %ds (subprocess timeout) — nutrauktas",
+            settings.cycle_max_seconds,
+        )
+        _kill_process_tree(proc, log)
+        raise
+
+
 def _job(settings: Settings) -> None:
     log = logging.getLogger(__name__)
     telegram = telegram_from_settings(
@@ -81,16 +123,8 @@ def _job(settings: Settings) -> None:
         settings.telegram_chat_id,
     )
     try:
-        proc = subprocess.run(
-            [sys.executable, str(_RUN_ONCE_PATH)],
-            timeout=settings.cycle_max_seconds,
-            check=False,
-        )
+        returncode = _run_cycle_subprocess(settings, log)
     except subprocess.TimeoutExpired:
-        log.error(
-            "Ciklas virsijo %ds (subprocess timeout) — nutrauktas",
-            settings.cycle_max_seconds,
-        )
         send_ops_alert(
             state_path=settings.ops_alert_state_path,
             ops_alert_enabled=settings.ops_alert_enabled,
@@ -113,14 +147,14 @@ def _job(settings: Settings) -> None:
         )
         return
 
-    if proc.returncode != 0:
-        log.warning("run_once baigesi su exit code %d", proc.returncode)
+    if returncode != 0:
+        log.warning("run_once baigesi su exit code %d", returncode)
         send_ops_alert(
             state_path=settings.ops_alert_state_path,
             ops_alert_enabled=settings.ops_alert_enabled,
             telegram=telegram,
             alert_key="cycle_exit_fail",
-            message=f"Ciklas baigesi su klaida (exit code {proc.returncode})",
+            message=f"Ciklas baigesi su klaida (exit code {returncode})",
         )
 
 

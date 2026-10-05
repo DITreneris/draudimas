@@ -167,7 +167,7 @@ Papildomai taikyti **`FIX` DoD** (be privalomo portalo smoke, jei tik UI).
 - [ ] Visi pakeitimai atitinka savo tipo DoD (`FIX`, `CFG`, …).
 - [ ] `[Unreleased]` CHANGELOG peržiūrėtas; versija / data — pagal semver / Keep a Changelog (rankiniu release metu).
 - [ ] Railway: `STATE_DIR=/data`, volume prijungtas; jokių secret'ų repo.
-- [ ] Po deploy — **24h log watch** (žr. `README.md` RUNBOOK): jokio `Ciklas virsijo`, pakartotinio scheduler skip, `GitHub push FAILED`.
+- [ ] Po deploy — **24h log watch** (žr. `README.md` RUNBOOK): jokio `Ciklas virsijo`, pakartotinio scheduler skip, `GitHub push FAILED`; **`rasta X rezultatu`** ir `health.json` → `last_search_ok=true` (export OK nepakanka).
 - [ ] Jei DB migracija — `WIPE_DB_ON_START` **tik** vienkartiniam redeploy, tada išjungti.
 
 **Done when:** produkcijoje ciklai baigiasi sėkmingai; `health.json` atnaujinamas.

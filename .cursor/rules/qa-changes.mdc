@@ -35,7 +35,7 @@ When the user asks for a code change (DoD: `dod_system.md` §3.2+):
    Must finish with `log.info("Apibendrinimas: %s", summary)` and no `Exception` stack trace.
    If `src/scraper.py` parser changed — also `python run_parser_check.py` (see `dod_system.md` §4).
 5. **CHANGELOG.md** — add a line under `## [Unreleased]` following Keep a Changelog (`### Added` / `### Changed` / `### Fixed` / `### Removed`).
-6. **AGENTS.md / rules / dod_system.md** — if the change affects an invariant (new env var, new schema column, etc.), update the corresponding file.
+6. **AGENTS.md / rules / dod_system.md** — if the change affects an invariant (new env var, new schema column, etc.), update the corresponding file. Incident pamokos — `AGENTS.md` §8 + `CHANGELOG.md` Notes.
 7. **Done** only when all applicable `dod_system.md` checkboxes pass — not when the patch merely applies.
 
 ## Always avoid

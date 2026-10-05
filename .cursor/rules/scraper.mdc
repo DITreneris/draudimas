@@ -32,8 +32,13 @@ alwaysApply: false
 - `search_keyword` — plonas wrapper vienam keyword (kviečia `search_keywords_for_cycle([kw])`).
 - Retry iki `SEARCH_MAX_ATTEMPTS` (default **3**) su `SEARCH_RETRY_DELAY_SEC` (default **15** s):
   portal klaida → naujas context, tas pats browser; browser crash → relaunch.
+- `deadline` (optional, `run_cycle` perduoda `started + cycle_max_seconds - 90`
+  kai `cycle_max_seconds > 150`): prieš naują bandymą ir prieš 15 s sleep
+  grąžina `None`, kad export + `health.json` spėtų prieš tėvo kill. Greitas
+  ciklas (~20 s, default 600) deadline nepaliečia.
 - Launch args: `--disable-gpu`, `--no-zygote`, `--disable-dev-shm-usage`; `--single-process` kai
-  `CHROMIUM_SINGLE_PROCESS=true` (Railway 512 MB).
+  `CHROMIUM_SINGLE_PROCESS=true` (Railway 512 MB) **arba** vienas fallback po `pthread_create` /
+  `Resource temporarily unavailable` (EAGAIN). `TargetClosedError` vienas fallback'o netriggerina.
 
 ## Don't
 
@@ -48,3 +53,21 @@ alwaysApply: false
 2. Verify the `#Title` input selector — if it's no longer `#Title`, update `page.fill("#Title", ...)`.
 3. Verify column headers — update the `HEADER_*` constants.
 4. Run `python run_once.py` with `HEADLESS=false` in `.env` to watch the browser.
+
+## Diagnostika (Playwright / Railway)
+
+- **`TargetClosedError` ant `launch`:** ne portalas — tikrinti ar ciklas naudoja **vieną** browser
+  (`Ieskau N keyword(s) vienu browser` loge); `health.json` → `last_search_ok`.
+- **`pthread_create (11)` / `Resource temporarily unavailable`:** PID/gijų limitas, ne OOM.
+  Didelis `cgroup_memory_limit_mb` + ciklas ~2 s ≠ liepos 6× launch (~64 s). Fallback į
+  `--single-process`; Railway: `CHROMIUM_SINGLE_PROCESS=true` + Restart, ne Memory slider.
+- **`GitHub push OK` be paieškos:** export veikia iš SQLite — skraperis gali būti miręs; žiūrėti
+  `search_fail_streak`, ne tik `last_export_ok`.
+- **`cgroup_memory_limit_mb` / `cgroup_pids_max` / `nproc_soft`:** loguojami ciklo pradžioje
+  (`src/agent.py`); žemas RAM (<1024 MB) reikalauja `CHROMIUM_SINGLE_PROCESS=true`; didelis
+  RAM + `pthread_create` → PID/gijos.
+- **Po ilgo outage:** pirmas sėkmingas ciklas gali siųsti daug `[NEW]` (backlog į DB);
+  jei eilutės jau `mark_seen` — `nauju nera`, laiško nėra.
+- **`--single-process` tarp keyword:** pirmas `rasta`, antras `new_page` / browser
+  closed (1/3) + 15 s retry — tikėtina, ne launch EAGAIN. Outage tik jei nėra
+  antro `rasta`.

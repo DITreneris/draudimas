@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .config import Settings
@@ -29,6 +29,11 @@ _CGROUP_MEMORY_PATHS = (
     "/sys/fs/cgroup/memory.max",
     "/sys/fs/cgroup/memory/memory.limit_in_bytes",
 )
+_CGROUP_PIDS_PATHS = (
+    "/sys/fs/cgroup/pids.max",
+    "/sys/fs/cgroup/pids/pids.max",
+)
+_LOW_MEMORY_ALERT_MB = 1024
 
 
 @dataclass(frozen=True)
@@ -86,6 +91,14 @@ def run_cycle(settings: Settings) -> CycleResult:
     cgroup_mb = _read_cgroup_memory_limit_mb()
     if cgroup_mb is not None:
         logger.info("cgroup_memory_limit_mb=%d", cgroup_mb)
+    pids_max = _read_cgroup_pids_max()
+    nproc_soft = _read_nproc_soft()
+    if pids_max is not None or nproc_soft is not None:
+        logger.info(
+            "cgroup_pids_max=%s nproc_soft=%s",
+            pids_max if pids_max is not None else "-",
+            nproc_soft if nproc_soft is not None else "-",
+        )
     logger.info(
         "Ciklas PRADETAS %s | keywords=%s | max_per_kw=%d | db=%s",
         started.isoformat(timespec="seconds"),
@@ -96,7 +109,9 @@ def run_cycle(settings: Settings) -> CycleResult:
 
     summary: dict[str, int] = {}
     search_failed: dict[str, bool] = {}
+    db_failed: dict[str, bool] = {}
     keyword_result_counts: dict[str, int] = {}
+    cycle_claimed: set[str] = set()
     prev_zero_streak = _read_zero_results_streak(settings.health_path)
     prev_search_fail_streak = _read_search_fail_streak(settings.health_path)
 
@@ -106,6 +121,7 @@ def run_cycle(settings: Settings) -> CycleResult:
         max_results=settings.max_results_per_keyword,
         timeout_ms=settings.search_timeout_ms,
         single_process=settings.chromium_single_process,
+        deadline=_search_deadline(started, settings.cycle_max_seconds),
     )
 
     for keyword in settings.keywords:
@@ -113,6 +129,7 @@ def run_cycle(settings: Settings) -> CycleResult:
         if items is None:
             logger.error("Keyword='%s' paieska nepavyko", keyword)
             search_failed[keyword] = True
+            db_failed[keyword] = False
             summary[keyword] = 0
             send_ops_alert(
                 state_path=settings.ops_alert_state_path,
@@ -124,10 +141,17 @@ def run_cycle(settings: Settings) -> CycleResult:
             continue
 
         search_failed[keyword] = False
+        db_failed[keyword] = False
         keyword_result_counts[keyword] = len(items)
 
         try:
-            new_items = _select_new_items(store, items)
+            new_items = [
+                it
+                for it in _select_new_items(store, items)
+                if it.pirkimo_id not in cycle_claimed
+            ]
+            for it in new_items:
+                cycle_claimed.add(it.pirkimo_id)
             if new_items:
                 logger.info(
                     "Keyword='%s': %d nauju is %d rezultatu",
@@ -135,7 +159,24 @@ def run_cycle(settings: Settings) -> CycleResult:
                     len(new_items),
                     len(items),
                 )
-                for item in reversed(new_items):
+                delivered: list[ResultItem] = []
+                for item in new_items:
+                    if _deliver(
+                        keyword,
+                        item,
+                        notifier=notifier,
+                        telegram=telegram,
+                        email_notifier=email_notifier,
+                    ):
+                        delivered.append(item)
+                    else:
+                        logger.warning(
+                            "Keyword='%s' id=%s pranesimas nepavyko — "
+                            "mark_seen praleistas",
+                            keyword,
+                            item.pirkimo_id,
+                        )
+                for item in reversed(delivered):
                     store.mark_seen(
                         pirkimo_id=item.pirkimo_id,
                         title=item.title,
@@ -144,32 +185,31 @@ def run_cycle(settings: Settings) -> CycleResult:
                         published_at=item.published_at,
                         organization=item.organization,
                     )
-                for item in new_items:
-                    notifier.notify(keyword, item)
-                    if telegram is not None:
-                        telegram.notify(keyword, item)
-                    if email_notifier is not None:
-                        email_notifier.notify(keyword, item)
+                summary[keyword] = len(delivered)
             else:
                 logger.info(
                     "Keyword='%s': nauju nera (is %d rezultatu)", keyword, len(items)
                 )
-            summary[keyword] = len(new_items)
+                summary[keyword] = 0
         except Exception:
-            logger.exception("Keyword='%s' DB/notify etapas nepavyko", keyword)
-            search_failed[keyword] = True
+            logger.exception("Keyword='%s' DB etapas nepavyko", keyword)
+            db_failed[keyword] = True
             summary[keyword] = 0
             send_ops_alert(
                 state_path=settings.ops_alert_state_path,
                 ops_alert_enabled=settings.ops_alert_enabled,
                 telegram=telegram,
                 alert_key=f"db_fail:{keyword}",
-                message=f"Keyword '{keyword}' DB/notify etapas nepavyko",
+                message=f"Keyword '{keyword}' DB etapas nepavyko",
             )
             continue
 
     failed_keywords = [kw for kw, failed in search_failed.items() if failed]
-    if failed_keywords and len(failed_keywords) == len(settings.keywords):
+    db_failed_keywords = [kw for kw, failed in db_failed.items() if failed]
+    all_search_failed = bool(settings.keywords) and len(failed_keywords) == len(
+        settings.keywords
+    )
+    if all_search_failed:
         send_ops_alert(
             state_path=settings.ops_alert_state_path,
             ops_alert_enabled=settings.ops_alert_enabled,
@@ -189,10 +229,10 @@ def run_cycle(settings: Settings) -> CycleResult:
             ops_alert_enabled=settings.ops_alert_enabled,
             telegram=telegram,
             alert_key="search_fail_streak",
-            message=(
-                f"Paieska neveikia (Chromium/launch) {search_fail_streak} ciklus "
-                f"is eiles; keywords_failed={failed_keywords}. "
-                "Tai ne 0 rezultatu — tikrink Railway RAM / CHROMIUM_SINGLE_PROCESS."
+            message=_search_fail_streak_alert(
+                search_fail_streak,
+                failed_keywords,
+                cgroup_mb=cgroup_mb,
             ),
         )
 
@@ -264,7 +304,11 @@ def run_cycle(settings: Settings) -> CycleResult:
                 message="GitHub export FAILED (exception)",
             )
 
-    cycle_ok = not failed_keywords and (export_ok or not settings.github_enabled)
+    cycle_ok = (
+        not failed_keywords
+        and not db_failed_keywords
+        and (export_ok or not settings.github_enabled)
+    )
     last_search_ok = not failed_keywords
     _write_health(
         settings.health_path,
@@ -274,6 +318,7 @@ def run_cycle(settings: Settings) -> CycleResult:
         export_http_status=export_http_status,
         db_count=db_count,
         keywords_failed=failed_keywords,
+        keywords_db_failed=db_failed_keywords,
         cycle_ok=cycle_ok,
         zero_results_streak=zero_results_streak,
         last_search_ok=last_search_ok,
@@ -309,6 +354,56 @@ def _read_search_fail_streak(path: Path) -> int:
     return 0
 
 
+def _search_fail_streak_alert(
+    search_fail_streak: int,
+    failed_keywords: list[str],
+    *,
+    cgroup_mb: int | None,
+) -> str:
+    message = (
+        f"Paieska neveikia (Chromium/launch) {search_fail_streak} ciklus "
+        f"is eiles; keywords_failed={failed_keywords}. "
+        "Tai ne 0 rezultatu — tikrink pthread/PID limita, "
+        "CHROMIUM_SINGLE_PROCESS, Restart."
+    )
+    if cgroup_mb is not None and cgroup_mb < _LOW_MEMORY_ALERT_MB:
+        message += (
+            f" cgroup_memory_limit_mb={cgroup_mb} (zemas) — Memory slider."
+        )
+    return message
+
+
+def _read_cgroup_pids_max() -> str | None:
+    for path_str in _CGROUP_PIDS_PATHS:
+        path = Path(path_str)
+        try:
+            if not path.is_file():
+                continue
+            raw = path.read_text(encoding="utf-8").strip()
+            if raw:
+                return raw
+        except Exception:
+            logger.debug(
+                "Nepavyko nuskaityti cgroup pids is %s", path_str, exc_info=True
+            )
+    return None
+
+
+def _read_nproc_soft() -> int | None:
+    try:
+        import resource
+    except ImportError:
+        return None
+    try:
+        if not hasattr(resource, "RLIMIT_NPROC"):
+            return None
+        soft, _hard = resource.getrlimit(resource.RLIMIT_NPROC)
+        return int(soft)
+    except Exception:
+        logger.debug("Nepavyko nuskaityti RLIMIT_NPROC", exc_info=True)
+        return None
+
+
 def _read_cgroup_memory_limit_mb() -> int | None:
     for path_str in _CGROUP_MEMORY_PATHS:
         path = Path(path_str)
@@ -329,6 +424,12 @@ def _read_cgroup_memory_limit_mb() -> int | None:
     return None
 
 
+def _search_deadline(started: datetime, cycle_max_seconds: int) -> datetime | None:
+    if cycle_max_seconds <= 150:
+        return None
+    return started + timedelta(seconds=cycle_max_seconds - 90)
+
+
 def _next_search_fail_streak(
     prev: int,
     *,
@@ -337,7 +438,7 @@ def _next_search_fail_streak(
 ) -> int:
     if not keywords:
         return 0
-    if failed_keywords:
+    if failed_keywords and len(failed_keywords) == len(keywords):
         return prev + 1
     return 0
 
@@ -369,6 +470,7 @@ def _write_health(
     export_http_status: int | None,
     db_count: int,
     keywords_failed: list[str],
+    keywords_db_failed: list[str],
     cycle_ok: bool,
     zero_results_streak: int,
     last_search_ok: bool,
@@ -381,6 +483,7 @@ def _write_health(
         "last_export_http_status": export_http_status,
         "db_count": db_count,
         "keywords_failed": keywords_failed,
+        "keywords_db_failed": keywords_db_failed,
         "cycle_exit_code": 0 if cycle_ok else 1,
         "zero_results_streak": zero_results_streak,
         "last_search_ok": last_search_ok,
@@ -393,6 +496,50 @@ def _write_health(
         )
     except Exception:
         logger.exception("Nepavyko irasyti health.json i %s", path)
+
+
+def _deliver(
+    keyword: str,
+    item: ResultItem,
+    *,
+    notifier: ConsoleLogNotifier,
+    telegram: TelegramNotifier | None,
+    email_notifier: ResendEmailNotifier | SmtpEmailNotifier | None,
+) -> bool:
+    ok = True
+    try:
+        if not notifier.notify(keyword, item):
+            ok = False
+    except Exception:
+        logger.exception(
+            "Keyword='%s' id=%s konsoles pranesimas nepavyko",
+            keyword,
+            item.pirkimo_id,
+        )
+        ok = False
+    if telegram is not None:
+        try:
+            if not telegram.notify(keyword, item):
+                ok = False
+        except Exception:
+            logger.exception(
+                "Keyword='%s' id=%s Telegram pranesimas nepavyko",
+                keyword,
+                item.pirkimo_id,
+            )
+            ok = False
+    if email_notifier is not None:
+        try:
+            if not email_notifier.notify(keyword, item):
+                ok = False
+        except Exception:
+            logger.exception(
+                "Keyword='%s' id=%s el. pasto pranesimas nepavyko",
+                keyword,
+                item.pirkimo_id,
+            )
+            ok = False
+    return ok
 
 
 def _select_new_items(

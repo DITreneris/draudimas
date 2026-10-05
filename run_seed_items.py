@@ -12,7 +12,7 @@ from typing import Any
 
 from main import setup_logging
 from src.config import load_settings
-from src.db import SCHEMA
+from src.db import SeenStore
 
 logger = logging.getLogger("run_seed_items")
 
@@ -67,9 +67,9 @@ def seed_items(
         db_path.unlink()
         logger.info("--fresh: istrinta esama DB %s", db_path)
 
+    SeenStore(db_path)
     conn = sqlite3.connect(db_path)
     try:
-        conn.executescript(SCHEMA)
         inserted = 0
         skipped = 0
         for index, row in enumerate(items, start=1):

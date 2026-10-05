@@ -115,21 +115,26 @@ def _gh_request(
         return e.code, parsed
 
 
-def _get_remote_sha(cfg: GithubConfig, *, retry: bool = True) -> str | None:
+def _get_remote_sha(
+    cfg: GithubConfig, *, retry: bool = True
+) -> tuple[str | None, int | None]:
     url = (
         f"https://api.github.com/repos/{cfg.repo}/contents/{cfg.file_path}"
         f"?ref={cfg.branch}"
     )
     status, data = _gh_request("GET", url, cfg.token)
     if status == 200 and isinstance(data, dict):
-        return data.get("sha")
+        return data.get("sha"), status
     if status == 404:
-        return None
+        return None, status
+    if status in (401, 403):
+        logger.error("GitHub credentials rejected status=%s", status)
+        return None, status
     logger.warning("GitHub GET %s status=%s body=%s", url, status, data)
     if retry:
         time.sleep(_GH_GET_RETRY_DELAY_SEC)
         return _get_remote_sha(cfg, retry=False)
-    return None
+    return None, status
 
 
 def push_to_github(
@@ -160,7 +165,10 @@ def push_to_github(
             body["sha"] = sha
         return _gh_request("PUT", url, cfg.token, body)
 
-    sha = _get_remote_sha(cfg)
+    sha, get_status = _get_remote_sha(cfg)
+    if get_status in (401, 403):
+        return False, get_status
+
     status, data = _attempt_put(sha)
     if status in (200, 201):
         commit = (data or {}).get("commit", {})
@@ -175,7 +183,9 @@ def push_to_github(
         logger.warning(
             "GitHub push status=%s — bandau is naujo su sha", status
         )
-        sha = _get_remote_sha(cfg)
+        sha, get_status = _get_remote_sha(cfg)
+        if get_status in (401, 403):
+            return False, get_status
         status, data = _attempt_put(sha)
         if status in (200, 201):
             commit = (data or {}).get("commit", {})

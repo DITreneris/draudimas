@@ -33,7 +33,7 @@ Data flow per cycle:
 search_keywords_for_cycle(keywords) -> [ResultItem] per kw (vienas browser/ciklą)
  -> SeenStore.filter_new(ids) -> only new
   -> notifier.notify(kw, item)  (also appends to notifications.log)
-  -> store.mark_seen(...)       (INSERT OR IGNORE)
+  -> store.mark_seen(...)       (INSERT OR IGNORE, tik jei visi ijungti kanalai True)
 -> for every keyword
 -> export_and_push(db_path, keywords, local_path, GithubConfig)
 ```
@@ -94,7 +94,23 @@ Follow **[`dod_system.md`](dod_system.md)** for the full checklist. Summary:
 - **GitHub Pages:** `docs/` folder on `main` branch; `items.json` is committed via the agent's REST call.
 - **Email:** optional — **Resend** (`RESEND_API_KEY` + `EMAIL_FROM` + `EMAIL_TO`) preferred on Railway (HTTPS); else **SMTP** (`SMTP_*`, same `EMAIL_FROM`/`EMAIL_TO`). Never log `RESEND_API_KEY` or passwords.
 
-## 8. What **not** to do
+## 8. Operational lessons (incident log)
+
+Trumpas agentų / maintainer'ių cheat sheet — detales `[Unreleased]` Notes `CHANGELOG.md`.
+
+| # | Pamoka | Signalas | Veiksmas |
+| --- | --- | --- | --- |
+| 1 | **Export OK ≠ skraperis OK** | `GitHub push OK` bet nėra `rasta X rezultatu` | Tikrinti `health.json` → `last_search_ok`, `search_fail_streak` |
+| 2 | **Volume būtinas** | Po redeploy `db_dydis` staiga mažas, daug `[NEW]` | Volume `/data`, seed (`SEED_ITEMS_*`) |
+| 3 | **Vienas browser per ciklą** | `TargetClosedError` ant `launch`, ciklas ~64 s | `search_keywords_for_cycle` (nuo `eeb9660`); ne 6× launch |
+| 4 | **RAM ne visada kaltas** | `cgroup_memory_limit_mb` didelis, bet launch fail | Restart + architektūra, ne tik Memory slider |
+| 5 | **Backlog po outage** | Pirmas sėkmingas ciklas — daug `[NEW]` | Tikėtina; jei 10 jau įrašyti anksčiau — kitas ciklas `nauju nera` (2026-10-05: 152→162, paskui 0 naujų) |
+| 6 | **Health laukai** | Ops/debug | `last_search_ok`, `search_fail_streak`, `keywords_failed` (search `None`), `keywords_db_failed`, `zero_results_streak` |
+| 7 | **PID/gijos, ne RAM** | `cgroup_memory_limit_mb` didelis + `pthread_create (11)` + ciklas ~2 s | `CHROMIUM_SINGLE_PROCESS=true`, Restart; ne 6× launch ir ne OOM. Verify 10:51 UTC: `rasta 10`+`rasta 10`, push OK |
+| 8 | **single-process tarp keyword** | `draudim` `rasta`, tada `kasko` `new_page` closed, 1/3 + 15 s | Retry / relaunch; ne outage kol antras keyword irgi `rasta` |
+| 9 | **Laiškas tik naujiems** | `Resend ... aktyvus` bet laiško nėra | `nauju nera` — notify nekviečiamas; export/Pages vis tiek atsinaujina |
+
+## 9. What **not** to do
 
 - Don't introduce a test framework (pytest, etc.) unless asked. Smoke tests go through `run_once.py`.
 - Don't add FastAPI / Flask / Django — this is a worker, not a web service.

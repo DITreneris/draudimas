@@ -18,17 +18,67 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   Chromium RAM ant Railway.
 
 ### Changed
+- **Notify tada mark_seen** (`src/agent.py`): ijungti kanalai pirmi; `mark_seen`
+  tik jei visi grazino `True`. `cycle_claimed` blokuoja antra keyword tame
+  paciame cikle. Dublikatas galimas tik po kanalo klaidos. Notifieriai
+  grazina `bool`.
+- **search_fail vs DB fail**: `search_fail_streak` / `search_fail:all` tik kai
+  visu keyword paieska `None`. DB klaida -> `keywords_db_failed` + `db_fail`.
+  `last_search_ok` nuo DB nepriklauso; `cycle_ok` vis tiek false.
+- **Cycle timeout** (`main.py`): Linux `killpg`, Windows `taskkill /T` —
+  Playwright medis nezombieja po `CYCLE_MAX_SECONDS`.
+- **Search deadline**: retry sustoja `cycle_max_seconds-90s` pries tevo kill
+  (tik kai `CYCLE_MAX_SECONDS > 150`), kad `health.json` + export spetu.
+- **Seed migracija**: `run_seed_items.py` pries INSERT atidaro `SeenStore`
+  (`organization` ALTER), `first_seen_at` is JSON lieka.
+- **Parserio patikra**: `run_parser_check.py` tikrina pirmo fixture iraso
+  id, title, url, data ir organizacija (stulpeliu poslinkis nebepraslysta).
 - **Scraper** (`src/scraper.py`): vienas `chromium.launch` per `run_cycle`
   (`search_keywords_for_cycle`); naujas context kiekvienam keyword; container launch
   args (`--disable-gpu`, `--no-zygote`, `--disable-dev-shm-usage`).
 - **`run_cycle`**: viena batch paieska vietoj atskiru `search_keyword` kvietimu;
   ciklo pradzioje log `cgroup_memory_limit_mb` (Linux).
+- **Chromium launch fallback**: jei `single_process=false` ir klaida turi
+  `pthread_create` / `Resource temporarily unavailable` — vienas pakartotinis
+  launch su `--single-process` (pirmas launch ir `_relaunch_browser`).
+- **`run_cycle` diagnostika**: Linux `cgroup_pids_max` + `nproc_soft`;
+  `search_fail_streak` ops alert — pthread/PID + Restart; RAM tik jei
+  `cgroup_memory_limit_mb` < 1024.
+- **GitHub export**: GET 401/403 — vienas `credentials rejected` ERROR, be
+  retry ir be PUT.
 
 ### Fixed
+- **Telegram URL**: `item.url` eina per `html.escape` (`parse_mode=HTML`).
+- **Ops alert cooldown**: `ops_alert_state.json` rasomas tik po sekmingo
+  Telegram `notify_ops` — nepavykes siuntimas kito ciklo nebetylina 30 min.
+- **Scraper context**: `new_context` / `new_page` `try/finally` — `new_page`
+  klaida uzdaro context (`--single-process` kasko).
 - **False-positive „sistema veikia“**: GitHub export OK nebeslepia visiskai neveikianio
   skraperio — `search_fail_streak` + `last_search_ok` health.json.
 
 ### Notes
+- **pthread EAGAIN + GitHub 401 (2026-10-05):**
+  - **Simptomai (04:00–06:00 UTC):** `pthread_create: Resource temporarily
+    unavailable (11)` tada `TargetClosedError` ant `launch`; ciklas **2–4 s**;
+    `rasta X` nera; `db_dydis=152`; lokalus export digest `a9993a23e936`;
+    GitHub GET/PUT **401 Bad credentials**; `exit code 1`. D-Bus
+    `/run/dbus/system_bus_socket` — triukšmas.
+  - **Root cause (du nepriklausomi):** (1) PID/gijų limitas, ne OOM
+    (`cgroup_memory_limit_mb=7629`, `single_process=False`, vienas browser —
+    ne liepos 6× launch). (2) nebegaliojantis `GITHUB_TOKEN`.
+  - **Fix:** vienas `--single-process` fallback ant EAGAIN; 401/403 be retry;
+    Railway: `CHROMIUM_SINGLE_PROCESS=true`, Restart, naujas PAT.
+  - **Production verify (~10:51 UTC, deploy `416c7970`):** env
+    `CHROMIUM_SINGLE_PROCESS=true` + Restart (senas image — nėra
+    `cgroup_pids_max` loge); `draudim` **rasta 10**; `kasko` 1/3
+    `new_page` / browser closed (`--single-process` krito po pirmo
+    keyword); po 15 s retry **rasta 10**; `nauju nera`, `db_dydis=162`
+    (ryte 152 — 10 jau buvo ankstesniame cikle), trukme **21.2 s**;
+    **GitHub push OK** `sha=50ca618` digest `17889abbf167`. Tokenas
+    pataisytas atskirai nuo kodo.
+  - **Ops:** `nauju nera` = laiško / Telegram `[NEW]` nėra (dedup);
+    dashboard vis tiek atsinaujina. `kasko` 1/3 warning su `--single-process`
+    yra tikėtinas, kol retry duoda `rasta`.
 - **Railway Volume + DB atkūrimas (2026-06-08, commit `29508fe`):**
   - **Root cause:** Volume nebuvo prijungtas prie `/data` — kiekvienas redeploy
     pradėdavo su tuscia `seen.sqlite3` (false-positive `[NEW]` pranešimai).
@@ -40,6 +90,19 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
     `GitHub push OK` (`items.json` `2026-06-08T07:33:10+00:00`, `total_items=59`).
   - **Laikinas portalo timeout (~07:22–07:26 UTC):** abu keyword `#Title` timeout
     (3/3 bandymai) — ne Volume bug; `db_dydis=20` issilaikė, `nauji=0`.
+- **Playwright launch gedimas + atkūrimas (2026-07-09, commit `eeb9660`):**
+  - **Simptomai (~2026-06-26 – 07-09):** `BrowserType.launch: Target page, context or browser
+    has been closed`; 0× `rasta X rezultatu`; ciklas ~64 s; `exit code 1`; bet `GitHub push OK`
+    ir `db_dydis=85` — **export maskavo neveikiantį skraperį**.
+  - **Root cause (patvirtinta po fix):** per daug `chromium.launch` per ciklą (2 keyword × 3
+    retry = iki 6 launch); ne cgroup RAM limitas (production `cgroup_memory_limit_mb=7629`).
+  - **Fix:** vienas browser per `run_cycle` (`search_keywords_for_cycle`); `health.json`
+    `last_search_ok` / `search_fail_streak`; ops alert po 2 nesėkmingų ciklų.
+  - **Production verify (~15:06 UTC):** `rasta 10` + `rasta 10`, ciklas **20.0 s**,
+    `db_dydis=96`, `GitHub push OK` (`sha=f8ffa47`); pirmas ciklas po outage — **11 [NEW]**
+    (backlog, tikėtina).
+  - **Monitor:** ne tik `GitHub push OK` — tikrinti `last_search_ok`, `rasta X rezultatu`,
+    `search_fail_streak` (`$STATE_DIR/health.json`).
 
 ## [0.3.0] - 2026-06-05
 
