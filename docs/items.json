@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-05T12:00:24+00:00",
+  "generated_at": "2026-10-05T13:00:22+00:00",
   "stats": {
-    "total_items": 163,
+    "total_items": 164,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9915599",
+      "title": "Rinkos konsultacija - Bendrosios civilinės atsakomybės draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=9915599",
+      "first_seen_at": "2026-10-05T13:00:21.632972+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/10/2026 15:47:24",
+      "organization": "Akcinė bendrovė „Oro navigacija“ (PV)"
+    },
     {
       "pirkimo_id": "9912182",
       "title": "Pastatų draudimo paslaugos (skelbiama apklausa)",
