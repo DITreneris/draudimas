@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-07T13:00:21+00:00",
+  "generated_at": "2026-10-07T14:00:25+00:00",
   "stats": {
-    "total_items": 166,
+    "total_items": 167,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9949334",
+      "title": "Transporto priemonių draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9949334",
+      "first_seen_at": "2026-10-07T14:00:25.104558+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "07/10/2026 16:06:11",
+      "organization": "Priešgaisrinės apsaugos ir gelbėjimo departamentas prie Vidaus reikalų ministerijos"
+    },
     {
       "pirkimo_id": "9942258",
       "title": "Nacionalinės žemės tarnybos prie Aplinkos ministerijos valstybės tarnautojų ir darbuotojų, dirbančių pagal darbo sutartis, savanoriško sveikatos draudimo paslaugos",
