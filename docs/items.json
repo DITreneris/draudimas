@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-07T11:00:23+00:00",
+  "generated_at": "2026-10-07T12:00:25+00:00",
   "stats": {
-    "total_items": 165,
+    "total_items": 166,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9942258",
+      "title": "Nacionalinės žemės tarnybos prie Aplinkos ministerijos valstybės tarnautojų ir darbuotojų, dirbančių pagal darbo sutartis, savanoriško sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9942258",
+      "first_seen_at": "2026-10-07T12:00:24.654161+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "07/10/2026 14:14:53",
+      "organization": "Nacionalinė žemės tarnyba prie Aplinkos ministerijos"
+    },
     {
       "pirkimo_id": "9883451",
       "title": "NEKILNOJAMOJO TURTO DRAUDIMO PASLAUGOS",
