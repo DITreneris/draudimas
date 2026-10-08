@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-08T13:00:23+00:00",
+  "generated_at": "2026-10-08T14:00:23+00:00",
   "stats": {
-    "total_items": 171,
+    "total_items": 172,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9970449",
+      "title": "Bendrosios civilinės atsakomybės draudimas ir Vadovų civilinės atsakomybės draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9970449",
+      "first_seen_at": "2026-10-08T14:00:23.324288+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "08/10/2026 16:35:02",
+      "organization": "Nacionalinis bendrųjų funkcijų centras"
+    },
     {
       "pirkimo_id": "9967336",
       "title": "Bendrosios civilinės atsakomybės draudimo paslaugos",
