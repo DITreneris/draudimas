@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-10-08T11:00:23+00:00",
+  "generated_at": "2026-10-08T12:00:23+00:00",
   "stats": {
-    "total_items": 169,
+    "total_items": 171,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9967336",
+      "title": "Bendrosios civilinės atsakomybės draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9967336",
+      "first_seen_at": "2026-10-08T12:00:22.444344+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "08/10/2026 14:49:27",
+      "organization": "Visagino savivaldybės administracija"
+    },
+    {
+      "pirkimo_id": "9963805",
+      "title": "VP-3344 Vadovų civilinės atsakomybės draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9963805",
+      "first_seen_at": "2026-10-08T12:00:22.431965+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "08/10/2026 14:15:46",
+      "organization": "Akcinė bendrovė Turto bankas (PV)"
+    },
     {
       "pirkimo_id": "9964278",
       "title": "Rinkos konsultacija dėl sveikatos draudimo paslaugų",
