@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-08T10:00:22+00:00",
+  "generated_at": "2026-10-08T11:00:23+00:00",
   "stats": {
-    "total_items": 168,
+    "total_items": 169,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9964278",
+      "title": "Rinkos konsultacija dėl sveikatos draudimo paslaugų",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=9964278",
+      "first_seen_at": "2026-10-08T11:00:22.916417+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "08/10/2026 13:32:19",
+      "organization": "VĮ Registrų centras (PV)"
+    },
     {
       "pirkimo_id": "9898573",
       "title": "Transporto priemonių draudimo paslaugų pirkimas",
