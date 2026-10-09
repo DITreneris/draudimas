@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-10-09T10:00:21+00:00",
+  "generated_at": "2026-10-09T11:00:22+00:00",
   "stats": {
-    "total_items": 172,
+    "total_items": 174,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "9983998",
+      "title": "Civilinės ir kitų atsakomybių draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9983998",
+      "first_seen_at": "2026-10-09T11:00:21.838742+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "09/10/2026 13:37:40",
+      "organization": "VšĮ Jonavos pirminės sveikatos priežiūros centras (PV)"
+    },
+    {
+      "pirkimo_id": "9982633",
+      "title": "Kelionių draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=9982633",
+      "first_seen_at": "2026-10-09T11:00:21.821767+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "09/10/2026 13:05:39",
+      "organization": "LITGRID AB (PV)"
+    },
     {
       "pirkimo_id": "9970449",
       "title": "Bendrosios civilinės atsakomybės draudimas ir Vadovų civilinės atsakomybės draudimas",
