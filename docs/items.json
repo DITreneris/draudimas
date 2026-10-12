@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-10-12T13:00:22+00:00",
+  "generated_at": "2026-10-12T14:00:24+00:00",
   "stats": {
-    "total_items": 174,
+    "total_items": 176,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10008192",
+      "title": "Lietuvos Respublikos muitinės tarnybinių transporto priemonių (KASKO) draudimo paslaugų viešasis pirkimas (atviras supaprastintas konkursas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10008192",
+      "first_seen_at": "2026-10-12T14:00:23.296302+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/10/2026 16:58:25",
+      "organization": "Muitinės departamentas prie Lietuvos Respublikos finansų ministerijos"
+    },
+    {
+      "pirkimo_id": "10008811",
+      "title": "RK. Tarpininkavimo ir konsultacinės draudimo tarpininko (brokerio) paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10008811",
+      "first_seen_at": "2026-10-12T14:00:23.192103+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/10/2026 16:37:53",
+      "organization": "Akcinė bendrovė „Oro navigacija“ (PV)"
+    },
     {
       "pirkimo_id": "9983998",
       "title": "Civilinės ir kitų atsakomybių draudimo paslaugos",
