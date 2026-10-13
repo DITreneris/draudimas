@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-13T10:00:22+00:00",
+  "generated_at": "2026-10-13T11:00:23+00:00",
   "stats": {
-    "total_items": 176,
+    "total_items": 177,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "1427929",
+      "title": "(10333) Darbuotojų savanoriško sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=1427929",
+      "first_seen_at": "2026-10-13T11:00:23.064469+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/10/2026 13:25:04",
+      "organization": "AB KN Energies (PV)"
+    },
     {
       "pirkimo_id": "10008192",
       "title": "Lietuvos Respublikos muitinės tarnybinių transporto priemonių (KASKO) draudimo paslaugų viešasis pirkimas (atviras supaprastintas konkursas)",
