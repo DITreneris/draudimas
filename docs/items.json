@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-14T18:00:23+00:00",
+  "generated_at": "2026-10-15T04:00:24+00:00",
   "stats": {
-    "total_items": 178,
+    "total_items": 179,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10041239",
+      "title": "Turto draudimo, bendrosios ir darbdavio civilinės atsakomybės draudimų ir darbuotojų draudimo nuo nelaimingų atsitikimų paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10041239",
+      "first_seen_at": "2026-10-15T04:00:24.054315+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "15/10/2026 05:10:33",
+      "organization": "Uždaroji akcinė bendrovė \"TOKSIKA\" (PV)"
+    },
     {
       "pirkimo_id": "2175768",
       "title": "(10714) Bendrosios, produkto civilinės atsakomybės ir civilinės atsakomybės už žalą gamtai draudimas",
