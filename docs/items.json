@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-16T09:00:22+00:00",
+  "generated_at": "2026-10-16T10:00:23+00:00",
   "stats": {
-    "total_items": 179,
+    "total_items": 180,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10071932",
+      "title": "Turto ir verslo nutrūkimo draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10071932",
+      "first_seen_at": "2026-10-16T10:00:22.548019+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "16/10/2026 12:21:40",
+      "organization": "UAB \"Šiaulių energija\" (PV)"
+    },
     {
       "pirkimo_id": "10041239",
       "title": "Turto draudimo, bendrosios ir darbdavio civilinės atsakomybės draudimų ir darbuotojų draudimo nuo nelaimingų atsitikimų paslaugos",
