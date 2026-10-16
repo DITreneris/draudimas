@@ -18,6 +18,11 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   Chromium RAM ant Railway.
 
 ### Changed
+- **Email delivery**: Resend siuncia per `/emails/batch` po viena gaveja
+  (klientai nemato kitu `EMAIL_TO` adresu); SMTP taip pat siuncia po viena
+  gaveja ir nebeignoruoja daliniu `send_message` atmetimu.
+- **`health.json`**: `notify_failed_count`; ops alert `notify_fail` kai
+  bent vienam naujam pirkimui nepavyko ijungtas pranesimu kanalas.
 - **Notify tada mark_seen** (`src/agent.py`): ijungti kanalai pirmi; `mark_seen`
   tik jei visi grazino `True`. `cycle_claimed` blokuoja antra keyword tame
   paciame cikle. Dublikatas galimas tik po kanalo klaidos. Notifieriai
@@ -48,6 +53,9 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   retry ir be PUT.
 
 ### Fixed
+- **Email config guard**: `EMAIL_FROM` validuojamas starto metu (`user@example.com`
+  arba `Name <user@example.com>`). Kai `EMAIL_ENABLED=true`, bet el. pasto
+  konfiguracija bloga, nauji pirkimai nebepazymimi kaip matyti be laisko.
 - **Telegram URL**: `item.url` eina per `html.escape` (`parse_mode=HTML`).
 - **Ops alert cooldown**: `ops_alert_state.json` rasomas tik po sekmingo
   Telegram `notify_ops` — nepavykes siuntimas kito ciklo nebetylina 30 min.
@@ -57,6 +65,21 @@ versijavimas - [Semantic Versioning](https://semver.org/lang/lt/).
   skraperio — `search_fail_streak` + `last_search_ok` health.json.
 
 ### Notes
+- **Resend 422 + senas image (2026-10-16):**
+  - **Simptomai:** `Resend email notifier aktyvus`, naujas pirkimas
+    `10071932`, tada `Resend emails API HTTP 422 ... Invalid from field`;
+    vis tiek `nauji=1`, `db_dydis=180`, `GitHub push OK`.
+  - **Root cause (du nepriklausomi):** (1) Railway `EMAIL_FROM` tapo
+    netinkamo formato (pvz. kabutes, `EMAIL_FROM=` pacioje reiksmeje arba
+    vardas be `<addr>`). (2) production sukosi senas image, kuriame
+    `mark_seen` vyko pries el. pasto siuntima, todel 422 klaida nebuvo
+    pakartota kitame cikle.
+  - **Fix:** `EMAIL_FROM` formato guard + `email_config` ops alert;
+    `notify_failed_count` + `notify_fail`; el. pasto misconfig nebeleidzia
+    `mark_seen`; atskiras laiskas kiekvienam gavejui.
+  - **Ops:** pirma pataisyti Railway `EMAIL_FROM`, tik tada redeploy is `main`.
+    Po deploy tikrinti `cgroup_pids_max` loga (naujas image) ir
+    `health.json` -> `notify_failed_count=0`.
 - **pthread EAGAIN + GitHub 401 (2026-10-05):**
   - **Simptomai (04:00–06:00 UTC):** `pthread_create: Resource temporarily
     unavailable (11)` tada `TargetClosedError` ant `launch`; ciklas **2–4 s**;

@@ -15,6 +15,7 @@ from .notifier import (
     ResendEmailNotifier,
     SmtpEmailNotifier,
     TelegramNotifier,
+    _is_valid_from,
     send_ops_alert,
     telegram_from_settings,
 )
@@ -55,11 +56,29 @@ def run_cycle(settings: Settings) -> CycleResult:
         logger.info("Telegram notifier aktyvus (chat_id=%s)", settings.telegram_chat_id)
 
     email_notifier: ResendEmailNotifier | SmtpEmailNotifier | None = None
+    email_config_ok = True
     if settings.email_enabled:
+        if settings.email_from and not _is_valid_from(settings.email_from):
+            email_config_ok = False
+            logger.error(
+                "EMAIL_ENABLED=true bet EMAIL_FROM netinkamo formato - "
+                "el. pastas neveiks"
+            )
+            send_ops_alert(
+                state_path=settings.ops_alert_state_path,
+                ops_alert_enabled=settings.ops_alert_enabled,
+                telegram=telegram,
+                alert_key="email_config",
+                message=(
+                    "EMAIL_FROM netinkamo formato. Naudok user@example.com "
+                    "arba Name <user@example.com>."
+                ),
+            )
         if (
             settings.resend_api_key
             and settings.email_from
             and settings.email_to
+            and email_config_ok
         ):
             email_notifier = ResendEmailNotifier(
                 api_key=settings.resend_api_key,
@@ -71,6 +90,7 @@ def run_cycle(settings: Settings) -> CycleResult:
             settings.smtp_host
             and settings.email_from
             and settings.email_to
+            and email_config_ok
         ):
             email_notifier = SmtpEmailNotifier(
                 host=settings.smtp_host,
@@ -82,10 +102,21 @@ def run_cycle(settings: Settings) -> CycleResult:
             )
             logger.info("SMTP email notifier aktyvus (host=%s)", settings.smtp_host)
         else:
-            logger.warning(
-                "EMAIL_ENABLED=true bet truksta RESEND_API_KEY arba SMTP_HOST, "
-                "ir EMAIL_FROM / EMAIL_TO - el. pastas praleidziamas"
-            )
+            if email_config_ok:
+                logger.warning(
+                    "EMAIL_ENABLED=true bet truksta RESEND_API_KEY arba SMTP_HOST, "
+                    "ir EMAIL_FROM / EMAIL_TO - el. pastas neveiks"
+                )
+                send_ops_alert(
+                    state_path=settings.ops_alert_state_path,
+                    ops_alert_enabled=settings.ops_alert_enabled,
+                    telegram=telegram,
+                    alert_key="email_config",
+                    message=(
+                        "EMAIL_ENABLED=true, bet truksta RESEND_API_KEY arba SMTP_HOST "
+                        "ir EMAIL_FROM / EMAIL_TO."
+                    ),
+                )
 
     started = datetime.now(timezone.utc)
     cgroup_mb = _read_cgroup_memory_limit_mb()
@@ -112,6 +143,7 @@ def run_cycle(settings: Settings) -> CycleResult:
     db_failed: dict[str, bool] = {}
     keyword_result_counts: dict[str, int] = {}
     cycle_claimed: set[str] = set()
+    notify_failed_count = 0
     prev_zero_streak = _read_zero_results_streak(settings.health_path)
     prev_search_fail_streak = _read_search_fail_streak(settings.health_path)
 
@@ -167,9 +199,13 @@ def run_cycle(settings: Settings) -> CycleResult:
                         notifier=notifier,
                         telegram=telegram,
                         email_notifier=email_notifier,
+                        email_required_unavailable=(
+                            settings.email_enabled and email_notifier is None
+                        ),
                     ):
                         delivered.append(item)
                     else:
+                        notify_failed_count += 1
                         logger.warning(
                             "Keyword='%s' id=%s pranesimas nepavyko — "
                             "mark_seen praleistas",
@@ -203,6 +239,18 @@ def run_cycle(settings: Settings) -> CycleResult:
                 message=f"Keyword '{keyword}' DB etapas nepavyko",
             )
             continue
+
+    if notify_failed_count > 0:
+        send_ops_alert(
+            state_path=settings.ops_alert_state_path,
+            ops_alert_enabled=settings.ops_alert_enabled,
+            telegram=telegram,
+            alert_key="notify_fail",
+            message=(
+                f"Pranesimai nepavyko {notify_failed_count} pirkimams; "
+                "ziurek Resend/SMTP/Telegram ERROR logus."
+            ),
+        )
 
     failed_keywords = [kw for kw, failed in search_failed.items() if failed]
     db_failed_keywords = [kw for kw, failed in db_failed.items() if failed]
@@ -323,6 +371,7 @@ def run_cycle(settings: Settings) -> CycleResult:
         zero_results_streak=zero_results_streak,
         last_search_ok=last_search_ok,
         search_fail_streak=search_fail_streak,
+        notify_failed_count=notify_failed_count,
     )
 
     return CycleResult(summary=summary, ok=cycle_ok)
@@ -475,6 +524,7 @@ def _write_health(
     zero_results_streak: int,
     last_search_ok: bool,
     search_fail_streak: int,
+    notify_failed_count: int,
 ) -> None:
     payload = {
         "last_cycle_started_at": started_at.isoformat(timespec="seconds"),
@@ -488,6 +538,7 @@ def _write_health(
         "zero_results_streak": zero_results_streak,
         "last_search_ok": last_search_ok,
         "search_fail_streak": search_fail_streak,
+        "notify_failed_count": notify_failed_count,
     }
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -505,6 +556,7 @@ def _deliver(
     notifier: ConsoleLogNotifier,
     telegram: TelegramNotifier | None,
     email_notifier: ResendEmailNotifier | SmtpEmailNotifier | None,
+    email_required_unavailable: bool = False,
 ) -> bool:
     ok = True
     try:
@@ -528,6 +580,9 @@ def _deliver(
                 item.pirkimo_id,
             )
             ok = False
+    if email_required_unavailable:
+        logger.error("El. pastas ijungtas, bet notifier nesukurtas del konfiguracijos")
+        ok = False
     if email_notifier is not None:
         try:
             if not email_notifier.notify(keyword, item):

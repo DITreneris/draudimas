@@ -4,6 +4,7 @@ from __future__ import annotations
 import html
 import json
 import logging
+import re
 import smtplib
 import time
 import urllib.error
@@ -16,6 +17,23 @@ from .scraper import ResultItem
 logger = logging.getLogger(__name__)
 
 OPS_ALERT_COOLDOWN_SEC = 1800
+_EMAIL_ADDR_RE = re.compile(r"^[^@\s<>\"']+@[^@\s<>\"']+\.[^@\s<>\"']+$")
+_EMAIL_FROM_WITH_NAME_RE = re.compile(r"^[^<>\"']+\s<([^<>\s\"']+)>$")
+
+
+def _is_valid_from(value: str) -> bool:
+    """Return True for Resend/SMTP From values accepted by common providers."""
+    raw = value.strip()
+    if not raw or raw != value:
+        return False
+    if raw.upper().startswith("EMAIL_FROM="):
+        return False
+    if _EMAIL_ADDR_RE.fullmatch(raw):
+        return True
+    match = _EMAIL_FROM_WITH_NAME_RE.fullmatch(raw)
+    if match is None:
+        return False
+    return _EMAIL_ADDR_RE.fullmatch(match.group(1)) is not None
 
 
 def _email_subject_and_plain_body(keyword: str, item: ResultItem) -> tuple[str, str]:
@@ -197,7 +215,7 @@ def send_ops_alert(
 class ResendEmailNotifier:
     """Send email via Resend REST API (HTTPS, urllib). API key is never logged."""
 
-    API_URL = "https://api.resend.com/emails"
+    API_BATCH_URL = "https://api.resend.com/emails/batch"
 
     def __init__(
         self,
@@ -223,29 +241,34 @@ class ResendEmailNotifier:
         return ok
 
     def _send(self, subject: str, text: str) -> bool:
-        payload = {
-            "from": self.mail_from,
-            "to": self.mail_to,
-            "subject": subject,
-            "text": text,
-        }
+        payload = [
+            {
+                "from": self.mail_from,
+                "to": [recipient],
+                "subject": subject,
+                "text": text,
+            }
+            for recipient in self.mail_to
+        ]
         body = json.dumps(payload).encode("utf-8")
-        req = urllib.request.Request(self.API_URL, data=body, method="POST")
+        req = urllib.request.Request(self.API_BATCH_URL, data=body, method="POST")
         req.add_header("Authorization", f"Bearer {self.api_key}")
         req.add_header("Content-Type", "application/json")
         req.add_header("User-Agent", "viesiejipirkimai-agent")
         try:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                 if resp.status not in (200, 201):
-                    logger.warning("Resend emails API netiketas status=%s", resp.status)
+                    logger.warning(
+                        "Resend emails batch API netiketas status=%s", resp.status
+                    )
                     return False
                 return True
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", errors="replace")
-            logger.error("Resend emails API HTTP %s body=%s", e.code, err_body)
+            logger.error("Resend emails batch API HTTP %s body=%s", e.code, err_body)
             return False
         except Exception:
-            logger.exception("Resend emails API nepavyko")
+            logger.exception("Resend emails batch API nepavyko")
             return False
 
 
@@ -275,8 +298,8 @@ class SmtpEmailNotifier:
         self.timeout = timeout
 
     def notify(self, keyword: str, item: ResultItem) -> bool:
-        msg = self._build_message(keyword, item)
-        return self._send(msg)
+        subject, plain = _email_subject_and_plain_body(keyword, item)
+        return self._send(subject, plain)
 
     def notify_batch(self, keyword: str, items: list[ResultItem]) -> bool:
         ok = True
@@ -285,16 +308,15 @@ class SmtpEmailNotifier:
                 ok = False
         return ok
 
-    def _build_message(self, keyword: str, item: ResultItem) -> EmailMessage:
-        subject, plain = _email_subject_and_plain_body(keyword, item)
+    def _build_message(self, subject: str, plain: str, recipient: str) -> EmailMessage:
         msg = EmailMessage()
         msg["Subject"] = subject
         msg["From"] = self.mail_from
-        msg["To"] = ", ".join(self.mail_to)
+        msg["To"] = recipient
         msg.set_content(plain)
         return msg
 
-    def _send(self, message: EmailMessage) -> bool:
+    def _send(self, subject: str, plain: str) -> bool:
         try:
             if self.port == 465:
                 with smtplib.SMTP_SSL(
@@ -302,14 +324,13 @@ class SmtpEmailNotifier:
                 ) as smtp:
                     if self.user:
                         smtp.login(self.user, self.password)
-                    smtp.send_message(message)
+                    return self._send_all(smtp, subject, plain)
             else:
                 with smtplib.SMTP(self.host, self.port, timeout=self.timeout) as smtp:
                     smtp.starttls()
                     if self.user:
                         smtp.login(self.user, self.password)
-                    smtp.send_message(message)
-            return True
+                    return self._send_all(smtp, subject, plain)
         except Exception:
             logger.exception(
                 "SMTP send_message nepavyko (host=%s port=%s)",
@@ -317,3 +338,16 @@ class SmtpEmailNotifier:
                 self.port,
             )
             return False
+
+    def _send_all(
+        self, smtp: smtplib.SMTP | smtplib.SMTP_SSL, subject: str, plain: str
+    ) -> bool:
+        ok = True
+        for recipient in self.mail_to:
+            refused = smtp.send_message(
+                self._build_message(subject, plain, recipient)
+            )
+            if refused:
+                logger.error("SMTP rejected recipients: %s", sorted(refused))
+                ok = False
+        return ok

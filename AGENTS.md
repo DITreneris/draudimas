@@ -105,10 +105,11 @@ Trumpas agentų / maintainer'ių cheat sheet — detales `[Unreleased]` Notes `C
 | 3 | **Vienas browser per ciklą** | `TargetClosedError` ant `launch`, ciklas ~64 s | `search_keywords_for_cycle` (nuo `eeb9660`); ne 6× launch |
 | 4 | **RAM ne visada kaltas** | `cgroup_memory_limit_mb` didelis, bet launch fail | Restart + architektūra, ne tik Memory slider |
 | 5 | **Backlog po outage** | Pirmas sėkmingas ciklas — daug `[NEW]` | Tikėtina; jei 10 jau įrašyti anksčiau — kitas ciklas `nauju nera` (2026-10-05: 152→162, paskui 0 naujų) |
-| 6 | **Health laukai** | Ops/debug | `last_search_ok`, `search_fail_streak`, `keywords_failed` (search `None`), `keywords_db_failed`, `zero_results_streak` |
+| 6 | **Health laukai** | Ops/debug | `last_search_ok`, `search_fail_streak`, `keywords_failed` (search `None`), `keywords_db_failed`, `zero_results_streak`, `notify_failed_count` |
 | 7 | **PID/gijos, ne RAM** | `cgroup_memory_limit_mb` didelis + `pthread_create (11)` + ciklas ~2 s | `CHROMIUM_SINGLE_PROCESS=true`, Restart; ne 6× launch ir ne OOM. Verify 10:51 UTC: `rasta 10`+`rasta 10`, push OK |
 | 8 | **single-process tarp keyword** | `draudim` `rasta`, tada `kasko` `new_page` closed, 1/3 + 15 s | Retry / relaunch; ne outage kol antras keyword irgi `rasta` |
 | 9 | **Laiškas tik naujiems** | `Resend ... aktyvus` bet laiško nėra | `nauju nera` — notify nekviečiamas; export/Pages vis tiek atsinaujina |
+| 10 | **Resend 422 + senas image** | `Invalid from field`, bet `nauji=1` / DB auga | Pataisyti `EMAIL_FROM`, redeploy nauja `main`, tikrinti `notify_failed_count` + deploy commit (`cgroup_pids_max` logas) |
 
 ## 9. What **not** to do
 
