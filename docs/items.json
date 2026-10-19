@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-19T10:00:21+00:00",
+  "generated_at": "2026-10-19T11:00:22+00:00",
   "stats": {
-    "total_items": 180,
+    "total_items": 181,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10098139",
+      "title": "Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10098139",
+      "first_seen_at": "2026-10-19T11:00:22.134431+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "19/10/2026 13:07:27",
+      "organization": "VšĮ Lietuvos nacionalinis radijas ir televizija (PV)"
+    },
     {
       "pirkimo_id": "10071932",
       "title": "Turto ir verslo nutrūkimo draudimas",
