@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-21T12:00:21+00:00",
+  "generated_at": "2026-10-21T13:00:24+00:00",
   "stats": {
-    "total_items": 182,
+    "total_items": 183,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10101824",
+      "title": "Komandiruočių į užsienį (lėktuvo, traukinių bilietai, apgyvendinimas, kelionių draudimas) organizavimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10101824",
+      "first_seen_at": "2026-10-21T13:00:24.141757+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "21/10/2026 15:47:39",
+      "organization": "Lietuvos Respublikos švietimo mokslo ir sporto ministerija"
+    },
     {
       "pirkimo_id": "10125481",
       "title": "Rinkos konsultacija dėl sveikatos draudimo paslaugų pirkimo",
