@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-23T09:00:22+00:00",
+  "generated_at": "2026-10-23T10:00:24+00:00",
   "stats": {
-    "total_items": 183,
+    "total_items": 184,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10176107",
+      "title": "Rinkos konsultacija dėl transporto priemonių draudimo paslaugų pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10176107",
+      "first_seen_at": "2026-10-23T10:00:24.212527+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/10/2026 12:01:01",
+      "organization": "Lietuvos Respublikos vadovybės apsaugos tarnyba"
+    },
     {
       "pirkimo_id": "10101824",
       "title": "Komandiruočių į užsienį (lėktuvo, traukinių bilietai, apgyvendinimas, kelionių draudimas) organizavimo paslaugos",
