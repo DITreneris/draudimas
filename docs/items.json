@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-29T08:00:22+00:00",
+  "generated_at": "2026-10-29T09:00:23+00:00",
   "stats": {
-    "total_items": 184,
+    "total_items": 185,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10250257",
+      "title": "Transporto priemonių civilinės atsakomybės draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10250257",
+      "first_seen_at": "2026-10-29T09:00:23.089268+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "29/10/2026 10:33:01",
+      "organization": "Viešojo saugumo tarnyba prie Vidaus reikalų ministerijos"
+    },
     {
       "pirkimo_id": "10176107",
       "title": "Rinkos konsultacija dėl transporto priemonių draudimo paslaugų pirkimo",
