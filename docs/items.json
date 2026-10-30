@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-29T19:00:22+00:00",
+  "generated_at": "2026-10-30T05:00:23+00:00",
   "stats": {
-    "total_items": 185,
+    "total_items": 186,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10253075",
+      "title": "34756 Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=10253075",
+      "first_seen_at": "2026-10-30T05:00:23.753082+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/10/2026 05:20:47",
+      "organization": "LTG Kompetencijų centras UAB (PV)"
+    },
     {
       "pirkimo_id": "10250257",
       "title": "Transporto priemonių civilinės atsakomybės draudimas",
