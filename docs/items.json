@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-10-30T14:00:22+00:00",
+  "generated_at": "2026-10-30T15:00:22+00:00",
   "stats": {
-    "total_items": 186,
+    "total_items": 187,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10290632",
+      "title": "PRIEVOLIŲ ĮVYKDYMO UŽTIKRINIMŲ (DRAUDIMO BENDROVĖS ATLIKIMO LAIDAVIMO DRAUDIMO RAŠTŲ ARBA BANKO GARANTIJŲ) SUTEIKIMO PASLAUGOS (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10290632",
+      "first_seen_at": "2026-10-30T15:00:22.611780+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "30/10/2026 16:14:16",
+      "organization": "UAB Panevėžio regiono atliekų tvarkymo centras (PV)"
+    },
     {
       "pirkimo_id": "10253075",
       "title": "34756 Draudimo paslaugos",
