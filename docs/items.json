@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-10-30T19:00:22+00:00",
+  "generated_at": "2026-11-02T05:00:23+00:00",
   "stats": {
-    "total_items": 187,
+    "total_items": 189,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10256758",
+      "title": "Draudimo tarpininko, konsultanto (draudimo brokerio) paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10256758",
+      "first_seen_at": "2026-11-02T05:00:23.129794+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "02/11/2026 05:11:55",
+      "organization": "UAB Alytaus regiono atliekų tvarkymo centras (PV)"
+    },
+    {
+      "pirkimo_id": "10285706",
+      "title": "10285706 Transporto priemonių draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10285706",
+      "first_seen_at": "2026-11-02T05:00:23.114793+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "02/11/2026 05:10:53",
+      "organization": "Lietuvos Respublikos vadovybės apsaugos tarnyba"
+    },
     {
       "pirkimo_id": "10290632",
       "title": "PRIEVOLIŲ ĮVYKDYMO UŽTIKRINIMŲ (DRAUDIMO BENDROVĖS ATLIKIMO LAIDAVIMO DRAUDIMO RAŠTŲ ARBA BANKO GARANTIJŲ) SUTEIKIMO PASLAUGOS (skelbiama apklausa)",
