@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-03T19:00:22+00:00",
+  "generated_at": "2026-11-04T05:00:23+00:00",
   "stats": {
-    "total_items": 189,
+    "total_items": 190,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10308544",
+      "title": "Sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10308544",
+      "first_seen_at": "2026-11-04T05:00:23.451174+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/11/2026 05:30:38",
+      "organization": "Lietuvos Respublikos vadovybės apsaugos tarnyba"
+    },
     {
       "pirkimo_id": "10256758",
       "title": "Draudimo tarpininko, konsultanto (draudimo brokerio) paslaugos",
