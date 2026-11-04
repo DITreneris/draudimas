@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-04T15:00:23+00:00",
+  "generated_at": "2026-11-04T16:00:23+00:00",
   "stats": {
-    "total_items": 191,
+    "total_items": 192,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10331803",
+      "title": "Draudimo brokerio paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10331803",
+      "first_seen_at": "2026-11-04T16:00:23.070912+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "04/11/2026 17:37:06",
+      "organization": "AB Lietuvos radijo ir televizijos centras"
+    },
     {
       "pirkimo_id": "10328728",
       "title": "Bendrovės civilinės atsakomybės draudimas",
