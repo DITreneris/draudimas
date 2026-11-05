@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-11-05T09:00:22+00:00",
+  "generated_at": "2026-11-05T10:00:23+00:00",
   "stats": {
-    "total_items": 192,
+    "total_items": 194,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10169796",
+      "title": "Papildomojo (savanoriškojo) sveikatos draudimo paslaugos (atviras supaprastintas konkursas)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10169796",
+      "first_seen_at": "2026-11-05T10:00:23.374477+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/11/2026 11:11:40",
+      "organization": "APLINKOS APSAUGOS AGENTŪRA"
+    },
+    {
+      "pirkimo_id": "10337160",
+      "title": "Transporto priemonių KASKO draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10337160",
+      "first_seen_at": "2026-11-05T10:00:23.361089+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/11/2026 10:53:07",
+      "organization": "Viešojo saugumo tarnyba prie Vidaus reikalų ministerijos"
+    },
     {
       "pirkimo_id": "10331803",
       "title": "Draudimo brokerio paslaugos",
