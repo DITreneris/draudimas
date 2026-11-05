@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-05T18:00:23+00:00",
+  "generated_at": "2026-11-05T19:00:23+00:00",
   "stats": {
-    "total_items": 195,
+    "total_items": 196,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10351719",
+      "title": "(905-26) Draudiminės rizikos vertinimo ir draudiminės rizikos ataskaitos parengimo paslaugos/ (905-26) Services for conducting an Underwriting Assessment and preparing an Underwriting Report",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10351719",
+      "first_seen_at": "2026-11-05T19:00:23.058749+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "05/11/2026 20:38:41",
+      "organization": "AB KN Energies (PV)"
+    },
     {
       "pirkimo_id": "10348358",
       "title": "Rinkos konsultacija. Vadovaujančių asmenų civilinės atsakomybės draudimo paslauga",
