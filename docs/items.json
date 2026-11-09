@@ -1,13 +1,85 @@
 {
-  "generated_at": "2026-11-06T19:00:21+00:00",
+  "generated_at": "2026-11-09T05:00:30+00:00",
   "stats": {
-    "total_items": 196,
+    "total_items": 204,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10368091",
+      "title": "Administracinio pastato draudimas (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10368091",
+      "first_seen_at": "2026-11-09T05:00:30.115667+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 15:35:59",
+      "organization": "LITGRID AB (PV)"
+    },
+    {
+      "pirkimo_id": "10367862",
+      "title": "Transporto priemonių privalomosios civilinės atsakomybės draudimo ir KASKO draudimo paslaugos (Skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10367862",
+      "first_seen_at": "2026-11-09T05:00:30.107185+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 15:28:54",
+      "organization": "UAB Klaipėdos regiono atliekų tvarkymo centras (PV)"
+    },
+    {
+      "pirkimo_id": "10361228",
+      "title": "Savanoriškas sveikatos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10361228",
+      "first_seen_at": "2026-11-09T05:00:30.077692+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 13:53:33",
+      "organization": "Viešoji įstaiga Inovacijų agentūra (PV)"
+    },
+    {
+      "pirkimo_id": "10359288",
+      "title": "Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10359288",
+      "first_seen_at": "2026-11-09T05:00:30.056612+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 11:01:07",
+      "organization": "VšĮ Alytaus apskrities S. Kudirkos ligoninė"
+    },
+    {
+      "pirkimo_id": "10358252",
+      "title": "Savanoriško sveikatos draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10358252",
+      "first_seen_at": "2026-11-09T05:00:30.051634+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 10:56:38",
+      "organization": "Šiaulių apskaitos centras"
+    },
+    {
+      "pirkimo_id": "10356074",
+      "title": "Kogeneracinės jėgainės nekilnojamo ir kilnojamo turto draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10356074",
+      "first_seen_at": "2026-11-09T05:00:30.033957+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 10:36:56",
+      "organization": "Uždaroji akcinė bendrovė „Visagino energija“ (PV)"
+    },
+    {
+      "pirkimo_id": "10316372",
+      "title": "Sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=10316372",
+      "first_seen_at": "2026-11-09T05:00:30.020868+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 05:20:43",
+      "organization": "VĮ Registrų centras (PV)"
+    },
+    {
+      "pirkimo_id": "10302454",
+      "title": "Draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/dps/prepareViewCfTDPSWS.do?resourceId=10302454",
+      "first_seen_at": "2026-11-09T05:00:29.993709+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "06/11/2026 05:20:28",
+      "organization": "VĮ Registrų centras (PV)"
+    },
     {
       "pirkimo_id": "10351719",
       "title": "(905-26) Draudiminės rizikos vertinimo ir draudiminės rizikos ataskaitos parengimo paslaugos/ (905-26) Services for conducting an Underwriting Assessment and preparing an Underwriting Report",
