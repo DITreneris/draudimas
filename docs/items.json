@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-11-12T12:00:22+00:00",
+  "generated_at": "2026-11-12T13:00:22+00:00",
   "stats": {
-    "total_items": 207,
+    "total_items": 209,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10441028",
+      "title": "DARBUOTOJŲ DRAUDIMO PASLAUGOS",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10441028",
+      "first_seen_at": "2026-11-12T13:00:22.933094+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/11/2026 14:21:00",
+      "organization": "Kauno miesto socialinių paslaugų centras"
+    },
+    {
+      "pirkimo_id": "10444455",
+      "title": "Rinkos konsultacija dėl darbuotojų sveikatos draudimo paslaugos pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10444455",
+      "first_seen_at": "2026-11-12T13:00:22.917537+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/11/2026 14:17:31",
+      "organization": "Uždaroji akcinė bendrovė \"Busturas\" (PV)"
+    },
     {
       "pirkimo_id": "10424496",
       "title": "Savanoriškas sveikatos draudimas",
