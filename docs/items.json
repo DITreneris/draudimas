@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-12T13:00:22+00:00",
+  "generated_at": "2026-11-12T14:00:22+00:00",
   "stats": {
-    "total_items": 209,
+    "total_items": 210,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10422043",
+      "title": "Darbuotojų savanoriškojo sveikatos draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10422043",
+      "first_seen_at": "2026-11-12T14:00:22.965597+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/11/2026 15:42:04",
+      "organization": "UAB „Šiaulių vandenys“ (PV)"
+    },
     {
       "pirkimo_id": "10441028",
       "title": "DARBUOTOJŲ DRAUDIMO PASLAUGOS",
