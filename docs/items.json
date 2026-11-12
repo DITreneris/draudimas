@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-12T11:00:22+00:00",
+  "generated_at": "2026-11-12T12:00:22+00:00",
   "stats": {
-    "total_items": 206,
+    "total_items": 207,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10424496",
+      "title": "Savanoriškas sveikatos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10424496",
+      "first_seen_at": "2026-11-12T12:00:22.808331+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "12/11/2026 13:36:56",
+      "organization": "Viešoji įstaiga Indėlių ir investicijų draudimas"
+    },
     {
       "pirkimo_id": "10404964",
       "title": "Utenos regioninio nepavojingų atliekų sąvartyno, MBA, atliekų priėmimo ir laikino saugojimo aikštelių bei kompostavimo aikštelių atliekų naudojimo ar šalinimo laidavimo draudimo paslaugos",
