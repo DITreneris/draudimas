@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-13T12:00:21+00:00",
+  "generated_at": "2026-11-13T13:00:24+00:00",
   "stats": {
-    "total_items": 211,
+    "total_items": 212,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10367372",
+      "title": "Nekilnojamojo turto bei turto ir įrangos draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10367372",
+      "first_seen_at": "2026-11-13T13:00:23.991703+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/11/2026 14:20:17",
+      "organization": "Kauno technologijų mokymo centras"
+    },
     {
       "pirkimo_id": "10458101",
       "title": "Bendrovės civilinės atsakomybės draudimo paslauga",
