@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-13T10:00:21+00:00",
+  "generated_at": "2026-11-13T11:00:24+00:00",
   "stats": {
-    "total_items": 210,
+    "total_items": 211,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10458101",
+      "title": "Bendrovės civilinės atsakomybės draudimo paslauga",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10458101",
+      "first_seen_at": "2026-11-13T11:00:24.314442+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "13/11/2026 12:33:21",
+      "organization": "AB „Kauno energija“ (PV)"
+    },
     {
       "pirkimo_id": "10422043",
       "title": "Darbuotojų savanoriškojo sveikatos draudimo paslauga",
