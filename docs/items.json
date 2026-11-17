@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-17T13:00:23+00:00",
+  "generated_at": "2026-11-17T14:00:24+00:00",
   "stats": {
-    "total_items": 213,
+    "total_items": 214,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10509426",
+      "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10509426",
+      "first_seen_at": "2026-11-17T14:00:24.729622+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "17/11/2026 15:13:18",
+      "organization": "Lietuvos Respublikos susisiekimo ministerija"
+    },
     {
       "pirkimo_id": "10502033",
       "title": "Darbo veiklos civilinės atsakomybės draudimo paslaugų pirkimas",
