@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-17T16:00:23+00:00",
+  "generated_at": "2026-11-17T17:00:24+00:00",
   "stats": {
-    "total_items": 214,
+    "total_items": 215,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10514527",
+      "title": "draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10514527",
+      "first_seen_at": "2026-11-17T17:00:24.459617+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "17/11/2026 18:37:30",
+      "organization": "UAB Jonavos autobusai (PV)"
+    },
     {
       "pirkimo_id": "10509426",
       "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos (skelbiama apklausa)",
