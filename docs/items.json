@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-18T12:00:24+00:00",
+  "generated_at": "2026-11-18T13:00:26+00:00",
   "stats": {
-    "total_items": 215,
+    "total_items": 216,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10528290",
+      "title": "Turto draudimo paslaugos (rinkos konsultacija)",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10528290",
+      "first_seen_at": "2026-11-18T13:00:26.739627+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "18/11/2026 14:01:38",
+      "organization": "LITGRID AB (PV)"
+    },
     {
       "pirkimo_id": "10514527",
       "title": "draudimo paslaugos",
