@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-20T08:00:23+00:00",
+  "generated_at": "2026-11-20T09:00:24+00:00",
   "stats": {
-    "total_items": 217,
+    "total_items": 218,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10564236",
+      "title": "Techninės specifikacijos projektas dėl planuojamo Bendrovės vadovų ir vadovaujančių asmenų civilinės atsakomybės draudimo paslaugų pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10564236",
+      "first_seen_at": "2026-11-20T09:00:24.064863+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "20/11/2026 10:25:11",
+      "organization": "Akcinė bendrovė Klaipėdos valstybinio jūrų uosto direkcija (PV)"
+    },
     {
       "pirkimo_id": "10555156",
       "title": "Rinkos konsultacija dėl bendrosios civilinės atsakomybės draudimo paslaugų pirkimo",
