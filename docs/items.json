@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-20T14:00:24+00:00",
+  "generated_at": "2026-11-20T15:00:23+00:00",
   "stats": {
-    "total_items": 219,
+    "total_items": 220,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10563902",
+      "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10563902",
+      "first_seen_at": "2026-11-20T15:00:23.957901+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "20/11/2026 16:16:48",
+      "organization": "Valstybinė teritorijų planavimo ir statybos inspekcija prie Aplinkos ministerijos"
+    },
     {
       "pirkimo_id": "10564166",
       "title": "DRAUDIMO BROKERIŲ PASLAUGŲ PIRKIMAS",
