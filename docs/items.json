@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-23T06:00:21+00:00",
+  "generated_at": "2026-11-23T07:00:28+00:00",
   "stats": {
-    "total_items": 220,
+    "total_items": 221,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10505453",
+      "title": "Turto draudimas (skelbiama apklausa)",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10505453",
+      "first_seen_at": "2026-11-23T07:00:28.913712+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/11/2026 08:49:56",
+      "organization": "VšĮ Alytaus poliklinika (PV)"
+    },
     {
       "pirkimo_id": "10563902",
       "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos",
