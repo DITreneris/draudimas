@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-23T16:00:21+00:00",
+  "generated_at": "2026-11-23T17:00:23+00:00",
   "stats": {
-    "total_items": 221,
+    "total_items": 222,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10597977",
+      "title": "Sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10597977",
+      "first_seen_at": "2026-11-23T17:00:23.157906+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "23/11/2026 18:35:33",
+      "organization": "Lietuvos geologijos tarnyba prie Aplinkos ministerijos"
+    },
     {
       "pirkimo_id": "10505453",
       "title": "Turto draudimas (skelbiama apklausa)",
