@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-24T07:00:21+00:00",
+  "generated_at": "2026-11-24T08:00:23+00:00",
   "stats": {
-    "total_items": 222,
+    "total_items": 223,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10601145",
+      "title": "Rinkos konsultacija dėl turto draudimo paslaugų pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10601145",
+      "first_seen_at": "2026-11-24T08:00:23.698793+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "24/11/2026 09:09:10",
+      "organization": "UAB 'Litesko\" (PV)"
+    },
     {
       "pirkimo_id": "10597977",
       "title": "Sveikatos draudimo paslaugos",
