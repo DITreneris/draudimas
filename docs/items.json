@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-24T11:00:23+00:00",
+  "generated_at": "2026-11-24T12:00:22+00:00",
   "stats": {
-    "total_items": 223,
+    "total_items": 224,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10608814",
+      "title": "Darbuotojų sveikatos draudimo paslaugos pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10608814",
+      "first_seen_at": "2026-11-24T12:00:22.020989+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "24/11/2026 13:27:41",
+      "organization": "Uždaroji akcinė bendrovė \"Busturas\" (PV)"
+    },
     {
       "pirkimo_id": "10601145",
       "title": "Rinkos konsultacija dėl turto draudimo paslaugų pirkimo",
