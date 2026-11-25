@@ -1,13 +1,31 @@
 {
-  "generated_at": "2026-11-25T11:00:21+00:00",
+  "generated_at": "2026-11-25T12:00:22+00:00",
   "stats": {
-    "total_items": 226,
+    "total_items": 228,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10600610",
+      "title": "Darbuotojų sveikatos draudimo paslaugos pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10600610",
+      "first_seen_at": "2026-11-25T12:00:22.361704+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "25/11/2026 13:58:12",
+      "organization": "UAB „Dzūkijos vandenys“ (PV)"
+    },
+    {
+      "pirkimo_id": "10611365",
+      "title": "Rinkos konsultacija_Savanoriškojo sveikatos draudimo paslaugos",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10611365",
+      "first_seen_at": "2026-11-25T12:00:22.353148+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "25/11/2026 13:19:08",
+      "organization": "Druskininkų savivaldybės administracija"
+    },
     {
       "pirkimo_id": "10624706",
       "title": "Savanoriško darbuotojų sveikatos draudimo paslaugos",
