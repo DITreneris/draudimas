@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-26T18:00:22+00:00",
+  "generated_at": "2026-11-26T19:00:22+00:00",
   "stats": {
-    "total_items": 231,
+    "total_items": 232,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10657393",
+      "title": "Civilinės atsakomybės draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10657393",
+      "first_seen_at": "2026-11-26T19:00:22.113873+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/11/2026 20:22:46",
+      "organization": "Nacionalinė sporto agentūra prie Lietuvos Respublikos švietimo mokslo ir sporto ministerijos"
+    },
     {
       "pirkimo_id": "10657003",
       "title": "Civilinės atsakomybės draudimo paslaugų pirkimas",
