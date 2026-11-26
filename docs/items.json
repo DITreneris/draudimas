@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-26T06:00:21+00:00",
+  "generated_at": "2026-11-26T07:00:22+00:00",
   "stats": {
-    "total_items": 228,
+    "total_items": 229,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10638187",
+      "title": "2026-GEN-424-Biokuro ir garo katilinių turto draudimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10638187",
+      "first_seen_at": "2026-11-26T07:00:22.814705+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/11/2026 08:48:56",
+      "organization": "UAB Ignitis grupės paslaugų centras (PV)"
+    },
     {
       "pirkimo_id": "10600610",
       "title": "Darbuotojų sveikatos draudimo paslaugos pirkimas",
