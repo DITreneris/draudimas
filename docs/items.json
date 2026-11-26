@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-26T17:00:21+00:00",
+  "generated_at": "2026-11-26T18:00:22+00:00",
   "stats": {
-    "total_items": 230,
+    "total_items": 231,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10657003",
+      "title": "Civilinės atsakomybės draudimo paslaugų pirkimas",
+      "url": "https://viesiejipirkimai.lt/epps/cft/prepareViewCfTWS.do?resourceId=10657003",
+      "first_seen_at": "2026-11-26T18:00:22.253321+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/11/2026 19:26:33",
+      "organization": "Lietuvos Respublikos žemės ūkio ministerija"
+    },
     {
       "pirkimo_id": "10649013",
       "title": "Rinkos konsultacija dėl statinio projektuotojo civilinės atsakomybės privalomojo draudimo paslaugos pirkimo",
