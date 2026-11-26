@@ -1,13 +1,22 @@
 {
-  "generated_at": "2026-11-26T11:00:22+00:00",
+  "generated_at": "2026-11-26T12:00:22+00:00",
   "stats": {
-    "total_items": 229,
+    "total_items": 230,
     "keywords": [
       "draudim",
       "kasko"
     ]
   },
   "items": [
+    {
+      "pirkimo_id": "10649013",
+      "title": "Rinkos konsultacija dėl statinio projektuotojo civilinės atsakomybės privalomojo draudimo paslaugos pirkimo",
+      "url": "https://viesiejipirkimai.lt/epps/pmc/viewPmc.do?resourceId=10649013",
+      "first_seen_at": "2026-11-26T12:00:22.473876+00:00",
+      "keyword_first_seen": "draudim",
+      "published_at": "26/11/2026 13:50:39",
+      "organization": "AB „Kauno energija“ (PV)"
+    },
     {
       "pirkimo_id": "10638187",
       "title": "2026-GEN-424-Biokuro ir garo katilinių turto draudimas",
